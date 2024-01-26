@@ -1,11 +1,12 @@
-import Nav from "./Nav";
+// barre de menu à gauche de la page
+// complete si largeur écran > 1280px
+// seulement icones si largeur 640px < écran < 1280px
+//  sous les 640px, menu en pied de page avec le composant Footer
 
 export default function Header() {
   return (
-    <div>
-      <div className="w-full lg:w-1/2 border-b-4 border-amber-200 p-8 text-4xl font-semibold text-center mx-auto flex xl:flex-col">
-        The Pinoux Fighting Club
+      <div className="">
+        Header !!!
       </div>
-    </div>
   );
 }
