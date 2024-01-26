@@ -7,7 +7,7 @@ export default function Main() {
   return (
     <div className="min-h-screen max-w-7xl bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50 flex mx-auto relative">
       {/* Menu pour pc / tablette */}
-      <div className="hidden min-h-screen absolute top-0 bottom-0 left-0 sm:block sm:w-28 xl:w-72 p-8 border-r-2 border-neutral-500">
+      <div className="hidden min-h-screen fixed top-0 bottom-0 left-0 sm:block  sm:w-32 xl:w-72 p-8 border-r-2 border-neutral-500">
         <Header />
       </div>
       {/* Menu pour smartphone en pieds de page */}
@@ -16,12 +16,12 @@ export default function Main() {
       </div>
 
       {/* twit */}
-      <div className=" lg:mr-72 xl:mr-80 sm:ml-28 xl:ml-72 ">
+      <div className=" lg:mr-72 xl:mr-80 sm:ml-32 xl:ml-72 ">
         <Outlet />
       </div>
 
       {/* colonne lien blog à droite de l'écran pc/tablette */}
-      <div className="hidden absolute w-72 bottom-0 top-0 right-0 lg:block xl:w-80 border-l-2 border-neutral-500">
+      <div className="hidden fixed w-72 bottom-0 top-0 right-0 lg:block xl:w-80 border-l-2 border-neutral-500">
         <Blog />
       </div>
     </div>

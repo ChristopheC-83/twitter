@@ -6,12 +6,12 @@ export default function NavlinkHeader({ to = "/", icon, text }) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex text-6xl items-center justify-end xl:justify-start xl:text-4xl gap-x-8 font-semibold ${
+        `flex text-6xl items-center justify-center xl:justify-start xl:text-3xl gap-x-8 font-semibold ${
           isActive ? "text-blue-500 font-bold" : "text-neutral-50"
         }`
       }
     >
-      {icon}
+      <div className="h-9 w-9">{icon}</div>
       <span className="hidden xl:block">{text}</span>
     </NavLink>
   );
