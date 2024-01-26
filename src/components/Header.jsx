@@ -9,7 +9,11 @@ import NavlinkHeader from "./toolsComponents/NavlinkHeader";
 
 export default function Header() {
   return (
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-y-8">
+        <NavlinkHeader to="/"  icon = {<LuHome/>} text = {"Accueil"}/>
+        <NavlinkHeader to="/"  icon = {<LuHome/>} text = {"Accueil"}/>
+        <NavlinkHeader to="/"  icon = {<LuHome/>} text = {"Accueil"}/>
+        <NavlinkHeader to="/"  icon = {<LuHome/>} text = {"Accueil"}/>
         <NavlinkHeader to="/"  icon = {<LuHome/>} text = {"Accueil"}/>
       </div>
   );
