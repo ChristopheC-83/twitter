@@ -4,7 +4,6 @@ import Main from "./layout/Main";
 import { lazy, Suspense } from "react";
 
 const Home = lazy(() => import("./pages/Home"));
-const Factory = lazy(() => import("./pages/Factory"));
 
 
 function App() {
@@ -26,13 +25,6 @@ function App() {
           path: "/*",
           element: (
             <Error/>
-          ),
-        },{
-          path: "/factory",
-          element: (
-            <Suspense>
-              <Factory />
-            </Suspense>
           ),
         },
 
