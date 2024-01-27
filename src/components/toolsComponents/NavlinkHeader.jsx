@@ -6,7 +6,7 @@ export default function NavlinkHeader({ to = "/", icon, text }) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex text-6xl items-center justify-center xl:justify-start xl:text-3xl gap-x-8 font-semibold ${
+        `flex text-4xl items-center justify-center xl:justify-start xl:text-3xl gap-x-8 font-semibold ${
           isActive ? "text-blue-500 font-bold" : "text-neutral-50"
         }`
       }
