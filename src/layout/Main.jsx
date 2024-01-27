@@ -5,7 +5,7 @@ import { Outlet, useNavigation } from "react-router-dom";
 
 export default function Main() {
   return (
-    <div className="flex min-h-screen mx-auto max-w-7xl bg-neutral-50 text-neutral-900 dark:bg-neutral-700 dark:text-neutral-50">
+    <div className="flex min-h-screen mx-auto max-w-7xl bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50">
       {/* Menu pour pc / tablette */}
       <div className="relative hidden p-4 border-r-2 sm:block sm:min-w-32 xl:min-w-72 xl:p-8 border-neutral-500">
         <Header />

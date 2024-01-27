@@ -13,7 +13,7 @@ import NavlinkHeader from "./toolsComponents/NavlinkHeader";
 
 export default function Header() {
   return (
-    <div className="flex flex-col items-center xl:items-start justify-between h-full max-h-[700px] gap-y-8 ">
+    <div className="flex flex-col items-center xl:items-start justify-between h-screen max-h-[700px] gap-y-8 ">
       <NavlinkHeader to="/" icon={<LuHome />} text={"Accueil"} />
       <NavlinkHeader to="/hashtags" icon={<FaHashtag />} text={"HashTags"} />
       <NavlinkHeader to="/favoris" icon={<GoHeart />} text={"Favoris"} />
