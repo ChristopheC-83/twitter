@@ -1,7 +1,11 @@
 import { NavLink } from "react-router-dom";
 
-export default function NavlinkHeader({ to = "/", icon, text }) {
-  return (
+
+ export default function NavLinkFooter({ to = "/", icon, text }) {
+
+
+
+return (
     <NavLink
       to={to}
       className={({ isActive }) =>
@@ -13,5 +17,7 @@ export default function NavlinkHeader({ to = "/", icon, text }) {
       <div className="h-9 w-9">{icon}</div>
       <span className="hidden xl:block">{text}</span>
     </NavLink>
+
   );
+
 }

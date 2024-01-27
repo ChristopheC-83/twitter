@@ -11,7 +11,7 @@ export default function Main() {
         <Header />
       </div>
       {/* Menu pour smartphone en pieds de page */}
-      <div className="fixed bottom-0 left-0 right-0 z-10 w-full h-24 p-4 border-t-2 bg-neutral-50 dark:bg-neutral-900 sm:hidden border-neutral-500">
+      <div className="fixed bottom-0 left-0 right-0 z-10 w-full h-24 border-t-2 bg-neutral-50 dark:bg-neutral-900 sm:hidden border-neutral-500">
         <Footer />
       </div>
 
@@ -24,6 +24,8 @@ export default function Main() {
       <div className="relative hidden border-l-2 w-72 lg:block lg:min-w-80 border-neutral-500">
         <Blog />
       </div>
+
+      
     </div>
   );
 }

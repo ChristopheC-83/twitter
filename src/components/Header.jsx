@@ -7,10 +7,9 @@ import { LuHome } from "react-icons/lu";
 import { FaHashtag } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
 import { SlLogin } from "react-icons/sl";
-// import { SlLogout } from "react-icons/sl";<SlLogout />
+// import { SlLogout } from "react-icons/sl";<SlLogout />  //pour logout, au cas où !
 import { FaFeather } from "react-icons/fa";
 import NavlinkHeader from "./toolsComponents/NavlinkHeader";
-import Btn from "./toolsComponents/Btn";
 
 export default function Header() {
   return (
