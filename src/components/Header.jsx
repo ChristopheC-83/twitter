@@ -9,9 +9,14 @@ import { FaRegUser } from "react-icons/fa6";
 import { SlLogin } from "react-icons/sl";
 // import { SlLogout } from "react-icons/sl";<SlLogout />  //pour logout, au cas où !
 import { FaFeather } from "react-icons/fa";
+import { useModalPost } from "../stores/useModalPost";
+import { createPortal } from "react-dom";
 import NavlinkHeader from "./toolsComponents/NavlinkHeader";
+import ModalFormPost from "./ModalFormPost";
 
 export default function Header() {
+  const { modalPost, setModalPost } = useModalPost();
+
   return (
     <div className="flex flex-col items-center xl:items-start justify-between h-screen max-h-[500px] gap-y-8 ">
       <NavlinkHeader to="/" icon={<LuHome />} text={"Accueil"} />
@@ -19,12 +24,21 @@ export default function Header() {
       <NavlinkHeader to="/favoris" icon={<GoHeart />} text={"Favoris"} />
       <NavlinkHeader to="/profil" icon={<FaRegUser />} text={"Profil"} />
       <NavlinkHeader to="/connexion" icon={<SlLogin />} text={"Connexion"} />
-      <button className="px-4 py-4 text-xl font-bold bg-blue-500 border-white rounded-full flexMid hover:bg-blue-600 xl:mx-auto xl:py-2">
-        <span className="hidden xl:block ">Ecrire</span>
+      <button
+        className="px-4 py-4 text-xl font-bold bg-blue-500 border-white rounded-full xl:w-full flexMid hover:bg-blue-600 xl:mx-auto xl:py-2"
+        onClick={() => setModalPost(!modalPost)}
+      >
+        <span className="hidden mr-4 xl:block">Ecrire</span>
         <span className="text-4xl">
           <FaFeather />
         </span>
       </button>
+
+      {modalPost &&
+        createPortal(
+          <ModalFormPost closeModal={() => setModalPost(false)} />,
+          document.body
+        )}
     </div>
   );
 }
