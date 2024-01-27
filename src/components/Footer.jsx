@@ -24,7 +24,7 @@ export default function Footer() {
       </div>
       <button
         onClick={() => setModalPost(!modalPost)}
-        className="absolute p-4 text-3xl font-bold bg-blue-500 border-white rounded-full top-[-80px] right-[10px] flexMid hover:bg-blue-600 xl:mx-auto"
+        className="absolute p-4 text-3xl font-bold bg-blue-500  rounded-full top-[-80px] right-[10px] flexMid hover:bg-blue-600 xl:mx-auto"
       >
         <span className="text-4xl">
           <FaFeather />

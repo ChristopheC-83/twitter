@@ -25,7 +25,7 @@ export default function Header() {
       <NavlinkHeader to="/profil" icon={<FaRegUser />} text={"Profil"} />
       <NavlinkHeader to="/connexion" icon={<SlLogin />} text={"Connexion"} />
       <button
-        className="px-4 py-4 text-xl font-bold bg-blue-500 border-white rounded-full xl:w-full flexMid hover:bg-blue-600 xl:mx-auto xl:py-2"
+        className="px-4 py-4 text-xl font-bold bg-blue-500 rounded-full xl:w-full flexMid hover:bg-blue-600 xl:mx-auto xl:py-2"
         onClick={() => setModalPost(!modalPost)}
       >
         <span className="hidden mr-4 xl:block">Ecrire</span>

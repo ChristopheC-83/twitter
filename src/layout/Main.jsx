@@ -1,6 +1,7 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Blog from "../components/Blog";
+import { Toaster } from "sonner";
 import { Outlet, useNavigation } from "react-router-dom";
 
 export default function Main() {
@@ -17,6 +18,7 @@ export default function Main() {
 
       {/* twit */}
       <div className="flex-grow">
+      <Toaster position="top-center" richColors expand={true} />
         <Outlet />
       </div>
 
