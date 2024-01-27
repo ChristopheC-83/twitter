@@ -13,13 +13,13 @@ import NavlinkHeader from "./toolsComponents/NavlinkHeader";
 
 export default function Header() {
   return (
-    <div className="flex flex-col items-center xl:items-start justify-between h-screen max-h-[700px] gap-y-8 ">
+    <div className="flex flex-col items-center xl:items-start justify-between h-screen max-h-[500px] gap-y-8 ">
       <NavlinkHeader to="/" icon={<LuHome />} text={"Accueil"} />
       <NavlinkHeader to="/hashtags" icon={<FaHashtag />} text={"HashTags"} />
       <NavlinkHeader to="/favoris" icon={<GoHeart />} text={"Favoris"} />
       <NavlinkHeader to="/profil" icon={<FaRegUser />} text={"Profil"} />
       <NavlinkHeader to="/connexion" icon={<SlLogin />} text={"Connexion"} />
-      <button className="p-4 text-3xl font-bold bg-blue-500 border-white rounded-full flexMid hover:bg-blue-600 xl:mx-auto">
+      <button className="px-4 py-4 text-xl font-bold bg-blue-500 border-white rounded-full flexMid hover:bg-blue-600 xl:mx-auto xl:py-2">
         <span className="hidden xl:block ">Ecrire</span>
         <span className="text-4xl">
           <FaFeather />
