@@ -2,5 +2,5 @@
 
 export default function Blog() {
   // mettre en fixed si on ne veut pas que cette section descende au scroll
-  return <div className="absolute top-0 h-full w-80">Blog</div>;
+  return <div className="fixed top-0 h-full w-80">Blog</div>;
 }
