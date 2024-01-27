@@ -1,8 +1,12 @@
 import { useRef } from "react";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useModalPost } from "../stores/useModalPost";
 
 export default function ModalFormPost({ closeModal }) {
+    
+  const { modalPost, setModalPost } = useModalPost();
+  
   // refs
   const text = useRef("");
   const img = useRef("");
@@ -54,6 +58,9 @@ export default function ModalFormPost({ closeModal }) {
     } else {
       toast.success("Post enregistré !");
     }
+
+    setModalPost(false);
+    
   };
 
   return (

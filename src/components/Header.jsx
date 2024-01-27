@@ -18,7 +18,7 @@ export default function Header() {
   const { modalPost, setModalPost } = useModalPost();
 
   return (
-    <div className="flex flex-col items-center xl:items-start justify-between h-screen max-h-[500px] gap-y-8 ">
+    <div className="fixed flex flex-col items-center xl:items-start justify-between h-screen max-h-[500px] gap-y-8 ">
       <NavlinkHeader to="/" icon={<LuHome />} text={"Accueil"} />
       <NavlinkHeader to="/hashtags" icon={<FaHashtag />} text={"HashTags"} />
       <NavlinkHeader to="/favoris" icon={<GoHeart />} text={"Favoris"} />
