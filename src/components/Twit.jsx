@@ -3,8 +3,10 @@ import { ImBubble2 } from "react-icons/im";
 import { FaRetweet } from "react-icons/fa6";
 // import { GoHeartFill } from "react-icons/go"; <GoHeartFill />
 import { GoHeart } from "react-icons/go";
-// import { FaBookmark } from "react-icons/fa6"; <FaBookmark /> 
+// import { FaBookmark } from "react-icons/fa6"; <FaBookmark />
 import { FaRegBookmark } from "react-icons/fa6";
+
+import { NavLink } from "react-router-dom";
 
 export default function Twit({ twit }) {
   // Utilise useState directement pour initialiser la date
@@ -20,13 +22,11 @@ export default function Twit({ twit }) {
   );
 
   return (
-    <div className="flex flex-col w-full p-8 border-t border-b rounded shadow-md border-neutral-500 bg-neutral-900">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center w-full">
-          <div className="flex items-center justify-between w-full">
-            <span className="font-bold">{twit.author}</span>
-            <span className="text-sm text-gray-500">{dateModif}</span>
-          </div>
+    <div className="flex flex-col w-full p-4 border-t border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">
+      <div className="flex items-center justify-between w-full mb-4">
+        <div className="flex items-center justify-between w-full">
+          <NavLink to={`./${twit.author}`}><span className="font-bold">{twit.author}</span></NavLink>
+          <span className="text-sm text-gray-500">{dateModif}</span>
         </div>
       </div>
       <div className="mb-8">{twit.text}</div>
@@ -65,7 +65,7 @@ export default function Twit({ twit }) {
           <span className="mb-0.5">{twit.likes}</span>
         </div>
         <div className="flex items-center gap-2 text-neutral-500">
-          <FaRegBookmark  />
+          <FaRegBookmark />
           {/* pour les enregistrés il faudrait plus un tableau contenant ceux qui ont enregistré */}
           {/* ainsi si user connecté et que son nom est dans le tableau, le bookmark est plein */}
           {/*  */}

@@ -5,6 +5,7 @@ import { useModalPost } from "../stores/useModalPost";
 
 export default function ModalFormPost({ closeModal }) {
     
+  const navigate = useNavigate();
   const { modalPost, setModalPost } = useModalPost();
   
   // refs
@@ -27,6 +28,7 @@ export default function ModalFormPost({ closeModal }) {
     }
 
     createPost();
+    navigate(`/`);
   };
 
   const createPost = async () => {
@@ -60,6 +62,7 @@ export default function ModalFormPost({ closeModal }) {
     }
 
     setModalPost(false);
+    
     
   };
 

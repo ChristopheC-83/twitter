@@ -7,6 +7,7 @@ import Profil from "./pages/Profil";
 import { lazy, Suspense } from "react";
 
 const Home = lazy(() => import("./pages/Home"));
+const TimeLine = lazy(() => import("./pages/TimeLine"));
 
 
 function App() {
@@ -42,10 +43,17 @@ function App() {
             <Profil/>
           ),
         },{
-        },{
           path: "/connexion",
           element: (
             <Hashtags/>
+          ),
+        },{
+        },{
+          path: "/:idUser",
+          element: (
+            <Suspense>
+              <TimeLine/>
+            </Suspense>
           ),
         },{
           path: "/*",
