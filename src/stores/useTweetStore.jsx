@@ -7,16 +7,4 @@ export const useTweetStore = create((set) => ({
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 }))

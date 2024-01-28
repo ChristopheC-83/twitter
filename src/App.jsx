@@ -9,9 +9,7 @@ import { lazy, Suspense } from "react";
 const Home = lazy(() => import("./pages/Home"));
 const TimeLine = lazy(() => import("./pages/TimeLine"));
 
-
 function App() {
-
   const router = createBrowserRouter([
     {
       path: "/",
@@ -25,58 +23,54 @@ function App() {
               <Home />
             </Suspense>
           ),
-        },{
+        },
+        {
           path: "/hashtags",
-          element: (
-            <Hashtags/>
-          ),
-        },{
-        },{
+          element: <Hashtags />,
+        },
+        {},
+        {
           path: "/favoris",
-          element: (
-            <Favoris/>
-          ),
-        },{
-        },{
+          element: <Favoris />,
+        },
+        {},
+        {
           path: "/profil",
-          element: (
-            <Profil/>
-          ),
-        },{
+          element: <Profil />,
+        },
+        {
           path: "/connexion",
-          element: (
-            <Hashtags/>
-          ),
-        },{
-        },{
+          element: <Hashtags />,
+        },
+        {
           path: "/:idUser",
           element: (
             <Suspense>
-              <TimeLine/>
+              <TimeLine />
             </Suspense>
           ),
-        },{
-          path: "/*",
-          element: (
-            <Error/>
-          ),
         },
-
-
-
-
-
-
-
-      ]}
-    ])
-
+        // {
+        //   path: "/:idTwit",
+        //   element: (
+        //     <Suspense>
+        //       <TimeLine />
+        //     </Suspense>
+        //   ),
+        // },
+        {
+          path: "/*",
+          element: <Error />,
+        },
+      ],
+    },
+  ]);
 
   return (
     <div>
       <RouterProvider router={router} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -6,7 +6,7 @@ import { GoHeart } from "react-icons/go";
 // import { FaBookmark } from "react-icons/fa6"; <FaBookmark />
 import { FaRegBookmark } from "react-icons/fa6";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 export default function Twit({ twit }) {
   // Utilise useState directement pour initialiser la date
@@ -20,20 +20,28 @@ export default function Twit({ twit }) {
       minute: "numeric",
     })
   );
+  //
 
+  //
   return (
     <div className="flex flex-col w-full p-4 border-t border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">
       <div className="flex items-center justify-between w-full mb-4">
         <div className="flex items-center justify-between w-full">
-          <NavLink to={`./${twit.author}`}><span className="font-bold">{twit.author}</span></NavLink>
+          <div>
+            <span className="font-bold">
+              <Link to={`/${twit.author}`}>{twit.author}</Link>
+            </span>
+          </div>
           <span className="text-sm text-gray-500">{dateModif}</span>
         </div>
       </div>
-      <div className="mb-8">{twit.text}</div>
-      {twit.img && (
-        <img className="mx-auto w-8/10" src={twit.img} alt={twit.author} />
-      )}
-
+      <NavLink to={`/${twit.id}`}>
+        <div className="mb-8">{twit.text}</div>
+        {twit.img && (
+          <img className="mx-auto w-8/10" src={twit.img} alt={twit.author} />
+        )}
+      </NavLink>
+      ????
       {twit.hashtags > 0 && (
         <div className="flex flex-wrap">
           {twit.hashtags.map((hashtag) => (
@@ -44,10 +52,6 @@ export default function Twit({ twit }) {
         </div>
       )}
       <div className="flex justify-between mt-4">
-        {/* <div className="flex items-center">
-          <span className="mr-4">{twit.likes}</span>
-          <span>{twit.comments.length}</span>
-        </div> */}
         <div className="flex items-center gap-2 text-neutral-500">
           <ImBubble2 />
           <span>{twit.comments.length}</span>

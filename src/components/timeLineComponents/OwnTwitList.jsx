@@ -11,7 +11,7 @@ export default function OwnTwitList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  function fetchUserTweets(username) {
+  function fetchUserTweets(username="") {
     setLoading(true);
     fetch(
       "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/posts.json"
@@ -28,6 +28,7 @@ export default function OwnTwitList() {
         setLoading(false);
 
         // Filtrer les tweets pour récupérer seulement ceux de l'utilisateur spécifié
+        
         const userTweets = Object.values(data).filter(
           (tweet) => tweet.author === username
         );

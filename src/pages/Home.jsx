@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { FaSpinner } from "react-icons/fa";
@@ -15,16 +14,20 @@ export default function Home() {
       "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/posts.json"
     )
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (!response.ok) {
           toast.error("Un erreur est survenue !");
         }
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setLoading(false);
-        setTweets(Object.values(data));
+        const tweetsArray = Object.entries(data).map(([id, twit]) => ({
+          id,
+          ...twit,
+        }));
+        setTweets(tweetsArray);
       })
       .catch((error) => {
         setError(error);

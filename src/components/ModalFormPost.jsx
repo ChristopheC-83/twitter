@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useModalPost } from "../stores/useModalPost";
 
 export default function ModalFormPost({ closeModal }) {
-    
   const navigate = useNavigate();
   const { modalPost, setModalPost } = useModalPost();
-  
+
   // refs
   const text = useRef("");
   const img = useRef("");
@@ -28,11 +27,11 @@ export default function ModalFormPost({ closeModal }) {
     }
 
     createPost();
-    navigate(`/`);
   };
 
   const createPost = async () => {
     const newPost = {
+      id:null,
       text: text.current.value,
       img: img.current.value,
       author: author.current.value,
@@ -57,13 +56,39 @@ export default function ModalFormPost({ closeModal }) {
     if (!response.ok) {
       toast.error("Un erreur est survenue !");
       return;
-    } else {
-      toast.success("Post enregistré !");
     }
+    // get id
+    const {name : idTwit} = await response.json();
 
+    // const updatedPost = {
+    //   ...newPost,
+    //   id: idTwit, // Update the id field with the received ID
+    // };
+  
+    // Perform a PATCH request to update the tweet with the new ID
+    const updateResponse = await fetch(
+      `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/posts/${idTwit}.json`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: idTwit }), // You can update other fields if needed
+      }
+    );
+  
+    // If there is an error in the update
+    if (!updateResponse.ok) {
+      toast.error("Un erreur est survenue lors de la mise à jour !");
+      return;
+    }
+  
+    // Continue with your logic after successful creation and update
     setModalPost(false);
     
-    
+    navigate(`/`);
+    window.location.reload()
+  
   };
 
   return (
@@ -115,7 +140,7 @@ export default function ModalFormPost({ closeModal }) {
           />
           <button
             onClick={onBeforeSubmitHandler}
-            className="px-4 py-4 ml-auto text-xl font-bold bg-blue-500 rounded-full w-fit flexMid hover:bg-blue-600 "
+            className="px-4 py-2 ml-auto text-xl font-bold bg-blue-500 rounded-full w-fit flexMid hover:bg-blue-600 "
           >
             Post
           </button>
