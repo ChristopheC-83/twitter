@@ -10,7 +10,7 @@ export default function HeaderUser() {
 
   return (
     <div>
-      <div>{idUser}</div>
+      <div>Profil de {idUser}</div>
     </div>
   );
 }
