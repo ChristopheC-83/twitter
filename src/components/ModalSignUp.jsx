@@ -22,7 +22,7 @@ export default function ModalSignUp({ closeModal }) {
 
   return (
     <div
-      className={`fixed inset-0 bg-neutral-800/50 midFlex text-neutral-50 ${signUpHidden && "hidden" }`}
+      className={`fixed inset-0 pt-12 bg-neutral-800/70 midFlex text-neutral-50 ${signUpHidden && "hidden" }`}
       onClick={closeModal}
     >
       <div

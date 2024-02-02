@@ -93,7 +93,7 @@ export default function ModalFormPost({ closeModal }) {
 
   return (
     <div
-      className="fixed inset-0 bg-neutral-800/50 midFlex text-neutral-50"
+      className="fixed inset-0 bg-neutral-800/70 midFlex text-neutral-50"
       onClick={closeModal}
     >
       <div

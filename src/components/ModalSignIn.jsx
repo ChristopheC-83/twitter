@@ -14,7 +14,7 @@ import { useRef, useState } from "react";
 
 return (
   <div
-  className="fixed inset-0 bg-neutral-800/50 midFlex text-neutral-50"
+  className="fixed inset-0 pt-12 bg-neutral-800/70 midFlex text-neutral-50"
   onClick={closeModal}
 >
   <div
@@ -55,9 +55,17 @@ return (
         id="password"
         className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
       />
+      <input
+        type="password"
+        placeholder="Validez votre mot de passe"
+        name="password"
+        ref={password}
+        id="password"
+        className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
+      />
       <button
         // onClick={onBeforeSubmitHandler}
-        className="px-4 py-2 mx-auto my-10 text-xl font-bold bg-blue-500 rounded-full w-fit flexMid hover:bg-blue-600 "
+        className="px-4 py-2 mx-auto mt-10 text-xl font-bold bg-blue-500 rounded-full w-fit flexMid hover:bg-blue-600 "
       >
         Je m'inscris.
       </button>
