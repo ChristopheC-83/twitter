@@ -19,7 +19,7 @@ export default function Footer() {
         <NavlinkFooter to="/" icon={<LuHome />} text={"Accueil"} />
         <NavlinkFooter to="/hashtags" icon={<FaHashtag />} text={"Hashtags"} />
         <NavlinkFooter to="/favoris" icon={<GoHeart />} text={"Favoris"} />
-        <NavlinkFooter to="/profil" icon={<FaRegUser />} text={"Profil"} />
+        {/* <NavlinkFooter to="/profil" icon={<FaRegUser />} text={"Profil"} /> */}
         <NavlinkFooter to="/connexion" icon={<SlLogin />} text={"Connexion"} />
       </div>
       <button

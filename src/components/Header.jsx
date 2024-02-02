@@ -26,8 +26,8 @@ export default function Header() {
     <div className="fixed flex flex-col items-center xl:items-start justify-between h-screen max-h-[500px] gap-y-8 ">
       <NavlinkHeader to="/" icon={<LuHome />} text={"Accueil"} />
       <NavlinkHeader to="/hashtags" icon={<FaHashtag />} text={"HashTags"} />
-      <NavlinkHeader to="/favoris" icon={<GoHeart />} text={"Favoris"} />
-      <NavlinkHeader to="/profil" icon={<FaRegUser />} text={"Profil"} />
+      {/* <NavlinkHeader to="/favoris" icon={<GoHeart />} text={"Favoris"} />    si connecté*/} 
+      {/* <NavlinkHeader to="/profil" icon={<FaRegUser />} text={"Profil"} />    si connecté*/}
       {/* bouton de connection */}
       <button
         className={`flex text-4xl items-center justify-center xl:justify-start xl:text-2xl gap-x-8 font-semibold`}
