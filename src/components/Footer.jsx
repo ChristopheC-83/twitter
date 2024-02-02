@@ -4,7 +4,7 @@ import { FaHashtag } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
 import { SlLogin } from "react-icons/sl";
 import { FaFeather } from "react-icons/fa";
-import { useModalPost } from "../stores/useModalPost";
+import { useModalsStore } from "../stores/useModalsStore";
 import { createPortal } from "react-dom";
 import NavlinkFooter from "./toolsComponents/NavLinkFooter";
 import ModalFormPost from "./ModalFormPost";
@@ -12,7 +12,7 @@ import ModalFormPost from "./ModalFormPost";
 //  menu en pied de page pour les écran < 640px de large
 
 export default function Footer() {
-  const { modalPost, setModalPost } = useModalPost();
+  const { modalPost, setModalPost } = useModalsStore();
   return (
     <footer>
       <div className="flex items-center h-24 justify-evenly">

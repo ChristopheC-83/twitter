@@ -1,11 +1,11 @@
 import { useRef } from "react";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { useModalPost } from "../stores/useModalPost";
+// import { useModalsStore } from "../stores/useModalsStore";
 
 export default function ModalFormPost({ closeModal }) {
   const navigate = useNavigate();
-  const { modalPost, setModalPost } = useModalPost();
+  // const { modalPost, setModalPost } = useModalsStore();
 
   // refs
   const text = useRef("");
@@ -84,8 +84,8 @@ export default function ModalFormPost({ closeModal }) {
     }
   
     // Continue with your logic after successful creation and update
-    setModalPost(false);
-    
+    // setModalPost(false);
+    closeModal()
     navigate(`/`);
     window.location.reload()
   
