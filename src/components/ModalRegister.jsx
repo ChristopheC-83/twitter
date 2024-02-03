@@ -1,5 +1,5 @@
 // import { useModalsStore } from "../stores/useModalsStore";
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -9,7 +9,6 @@ import { auth } from "../firebase-config";
 import { UserContext } from "../context/userContext";
 import { useModalsStore } from "../stores/useModalsStore";
 import { toast } from "sonner";
-import { FirebaseError } from "firebase/app";
 
 export default function ModalRegister({ closeModal }) {
   const { signUp } = useContext(UserContext);
@@ -19,79 +18,140 @@ export default function ModalRegister({ closeModal }) {
     modalConnection,
     setModalConnection,
   } = useModalsStore();
-  const [validation, setValidation] = useState("");
 
+  //  les States
+
+  const [validation, setValidation] = useState("");
+  const [loginsList, setLoginsList] = useState([]);
+
+  //  use =REf pour formulaires
   const login = useRef("");
   const email = useRef("");
   const password = useRef("");
   const passwordVerification = useRef("");
   const formRegister = useRef("");
 
-  const listPseudo = ["toto", "tata", "titi", "tutu"]; //à recup avec appel api
-  const listEmail = [""]; //à recup avec appel api
+  // récupération des logins pour vérifier si le login est déjà utilisé
+  async function getAllLogins() {
+    try {
+      const response = await fetch(
+        "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users.json"
+      );
 
+      if (!response.ok) {
+        // Gestion des erreurs
+        console.error(
+          "Une erreur est survenue lors de la récupération des utilisateurs"
+        );
+        return [];
+      }
+
+      const data = await response.json();
+      if (data) {
+        setLoginsList(Object.values(data).map((user) => user.login));
+      }
+      console.log(loginsList);
+      return loginsList;
+    } catch (error) {
+      console.error("Une erreur inattendue est survenue :", error);
+      return [];
+    }
+  }
+  useEffect(() => {
+    getAllLogins();
+  }, []);
   // le formulaire est il rempli avec des données cohérentes ?
   function validationFormDatas() {
+    console.log(loginsList);
+    setValidation("");
     if (login.current.value === "") {
       setValidation("Veuillez renseigner un pseudo.");
-      return;
+      return false;
     }
-    // le login exite déjà ?
-    if (listPseudo.includes(login.current.value)) {
+    if (loginsList.includes(login.current.value)) {
       setValidation(
         "Ce pseudo est déjà utilisé. Veuillez en choisir un autre."
       );
-      return;
+      return false;
     }
     if (email.current.value === "") {
       setValidation("Veuillez renseigner un email.");
-      return;
+      return false;
     }
-    // if (listEmail.includes(email.current.value)) {
-    //   setValidation(
-    //     "Cet email est déjà utilisé. Veuillez en choisir un autre."
-    //   );
-    //   return;
-    // }
     if (password.current.value.length < 6) {
       setValidation("Le mot de passe doit contenir au moins 6 caractères.");
-      return;
+      return false;
     }
     if (password.current.value !== passwordVerification.current.value) {
       setValidation("Les mots de passe ne correspondent pas.");
+      return false;
+    }
+    return true;
+  }
+  // insertion dans DB détaillées du user
+  async function RegisterUserJson(userID) {
+    const newUser = {
+      id: userID,
+      login: login.current.value,
+      email: email.current.value,
+      avatarURL:
+        "https://mycloud.barpat.fun/public/assets/Images/bureautique/avatar_neutre.png",
+      bio: "",
+      personnalPage: "https://www.google.fr/",
+      idSavedTwits: [""],
+      idCaractersFollowed: [""],
+    };
+
+    console.log(newUser);
+
+    // Add to firebase realtime
+    const response = await fetch(
+      "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users.json",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      }
+    );
+
+    // Error
+    if (!response.ok) {
+      toast.error("Une erreur est intervenue dans la bdd");
       return;
     }
   }
-
   // inscription après validation des données
   const handleFormRegister = async (e) => {
     e.preventDefault();
-    validationFormDatas();
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email.current.value,
-        password.current.value
-      );
-      // L'utilisateur nouvellement créé
-      const user = userCredential.user;
-      console.log("Utilisateur enregistré :", user);
-      formRegister.current.reset();
-      setValidation("");
-      setModalRegister(false)
-      toast.success("Inscription réussie ! Vous êtes connecté.");
-    } catch (error) {
-      console.dir(error)
-      if (error.code === "auth/email-already-in-use") {
-        toast.error("Cet email est déjà utilisé. Veuillez en choisir un autre.");
-        return
+    // longueur mdp, cohérence des2 mdp...
+    if (validationFormDatas()) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        );
+        const userID = userCredential.user.uid; // recup nouvel ID
+
+        // enregistrement dans db du user
+        RegisterUserJson(userID);
+        formRegister.current.reset();
+        setValidation("");
+        setModalRegister(false);
+        toast.success("Inscription réussie ! Vous êtes connecté.");
+      } catch (error) {
+        console.dir(error);
+        if (error.code === "auth/email-already-in-use") {
+          setValidation(
+            "Cet email est déjà utilisé. Veuillez en choisir un autre."
+          );
+        }
+        if(error.code === "auth/invalid-email"){
+          setValidation("Cet email n'est pas valide.")
+        }
       }
-      if (error.code === "auth/invalid-email") {
-        toast.error("Email invalide.");
-        return
-      }
-      toast.error("Erreur d'inscription, veuillez réessayer.");
-    
     }
   };
 
@@ -114,9 +174,7 @@ export default function ModalRegister({ closeModal }) {
         <h2 className="mb-6 text-3xl font-semibold text-center">
           Inscrivez-vous !
         </h2>
-        <form
-          ref={formRegister}
-        >
+        <form ref={formRegister}>
           <input
             type="text"
             placeholder="Votre pseudo"
