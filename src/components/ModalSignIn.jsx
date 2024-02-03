@@ -1,18 +1,58 @@
-import { useModalsStore } from "../stores/useModalsStore";
+// import { useModalsStore } from "../stores/useModalsStore";
 import { useRef, useState } from "react";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged
+} from "firebase/auth";
+import { auth } from "../firebase-config";
 
 export default function ModalSignIn({ closeModal }) {
-  const { modalSignUp, setModalSignUp } = useModalsStore();
-  const { modalSignIn, setModalSignIn } = useModalsStore();
-  const [alertPseudo, setAlertPseudo] = useState(false);
-  const [alertEmail, setAlertEmail] = useState(false);
-  const [alertPassword, setAlertPassword] = useState(false);
-  const [alertPasswords, setAlertPasswords] = useState(false);
+  // const { modalSignUp, setModalSignUp, modalSignIn, setModalSignIn } = useModalsStore();
+  const [validation, setValidation] = useState("");
 
   const login = useRef("");
   const email = useRef("");
   const password = useRef("");
   const passwordVerification = useRef("");
+
+  const listPseudo= ["toto", "tata", "titi", "tutu"];   //à recup avec appel api
+  const listEmail= ["kiketdule@gmail.com"];   //à recup avec appel api
+
+
+  function validationFormDatas(){
+    if (login.current.value === "") {
+      setValidation("Veuillez renseigner un pseudo.");
+      return
+    }
+    // le login exite déjà ?
+    if (listPseudo.includes(login.current.value)) {
+      setValidation("Ce pseudo est déjà utilisé. Veuillez en choisir un autre.");
+      return
+    }
+    if (email.current.value === "") {
+      setValidation("Veuillez renseigner un email.");
+      return
+    }
+    if (listEmail.includes(email.current.value)) {
+      setValidation("Cet email est déjà utilisé. Veuillez en choisir un autre.");
+      return
+    }
+    if (password.current.value.length < 6) {
+      setValidation("Le mot de passe doit contenir au moins 6 caractères.");
+      return
+    }
+    if (password.current.value !== passwordVerification.current.value) {
+     setValidation("Les mots de passe ne correspondent pas.");
+     return
+    }
+    setValidation("");
+  }
+
+  function handleFormSignIn(e) {
+    e.preventDefault();
+    validationFormDatas();
+  }
 
   return (
     <div
@@ -33,53 +73,46 @@ export default function ModalSignIn({ closeModal }) {
         <h2 className="mb-6 text-3xl font-semibold text-center">
           Inscrivez-vous !
         </h2>
-        <form>
+        <form onSubmit={handleFormSignIn}>
           <input
             type="text"
             placeholder="Votre pseudo"
-            id="login"
+            // id="login"
             ref={login}
-            name="login"
+            // name="login"
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
-          <p className="font-thin text-red-600 text-md">
-            {alertPseudo ? "Pseudo déjà utilisé" : " "}
-          </p>
+
           <input
             type="email"
             placeholder="Votre email"
-            name="email"
+            // name="email"
             ref={email}
-            id="email"
+            // id="email".current.value
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
-          <p className="font-thin text-red-600 text-md">
-            {alertEmail ? "Mail déjà enregistré" : " "}
-          </p>
           <input
             type="password"
             placeholder="Votre mot de passe (6 caractères minimum)"
-            name="password"
+            // name="password"
             ref={password}
-            id="password"
+            // id="password"
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
-          /><p className="font-thin text-red-600 text-md">
-          {alertPassword ? "Le mot de passe doit contenir au moins 6 caratères" : " "}
-        </p>
+          />
           <input
             type="password"
             placeholder="Validez votre mot de passe"
-            name="passwordVerification"
+            // name="passwordVerification"
             ref={passwordVerification}
-            id="passwordVerification"
+            // id="passwordVerification"
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
-          <p className="font-thin text-red-600 text-md">
-            {alertPasswords ? "Les mots de passe ne correspondent pas" : " "}
+           <p className="text-red-600 font-semithin text-md">
+            {validation && validation }
           </p>
           <button
-            // onClick={onBeforeSubmitHandler}
-            className="px-4 py-2 mx-auto mt-10 text-xl font-bold bg-blue-500 rounded-full w-fit flexMid hover:bg-blue-600 "
+            onClick={handleFormSignIn}
+            className="px-4 py-2 mx-auto mt-6 text-xl font-bold bg-blue-500 rounded-full w-fit flexMid hover:bg-blue-600 "
           >
             Je m'inscris.
           </button>
