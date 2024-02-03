@@ -1,58 +1,99 @@
 // import { useModalsStore } from "../stores/useModalsStore";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  onAuthStateChanged
+  onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../firebase-config";
+import { UserContext } from "../context/userContext";
+import { useModalsStore } from "../stores/useModalsStore";
+import { toast } from "sonner";
+import { FirebaseError } from "firebase/app";
 
 export default function ModalRegister({ closeModal }) {
-  // const { modalRegister, setModalRegister, modalConnection, setModalConnection} = useModalsStore();
+  const { signUp } = useContext(UserContext);
+  const {
+    modalRegister,
+    setModalRegister,
+    modalConnection,
+    setModalConnection,
+  } = useModalsStore();
   const [validation, setValidation] = useState("");
 
   const login = useRef("");
   const email = useRef("");
   const password = useRef("");
   const passwordVerification = useRef("");
+  const formRegister = useRef("");
 
-  const listPseudo= ["toto", "tata", "titi", "tutu"];   //à recup avec appel api
-  const listEmail= ["kiketdule@gmail.com"];   //à recup avec appel api
+  const listPseudo = ["toto", "tata", "titi", "tutu"]; //à recup avec appel api
+  const listEmail = [""]; //à recup avec appel api
 
-
-  function validationFormDatas(){
+  // le formulaire est il rempli avec des données cohérentes ?
+  function validationFormDatas() {
     if (login.current.value === "") {
       setValidation("Veuillez renseigner un pseudo.");
-      return
+      return;
     }
     // le login exite déjà ?
     if (listPseudo.includes(login.current.value)) {
-      setValidation("Ce pseudo est déjà utilisé. Veuillez en choisir un autre.");
-      return
+      setValidation(
+        "Ce pseudo est déjà utilisé. Veuillez en choisir un autre."
+      );
+      return;
     }
     if (email.current.value === "") {
       setValidation("Veuillez renseigner un email.");
-      return
+      return;
     }
-    if (listEmail.includes(email.current.value)) {
-      setValidation("Cet email est déjà utilisé. Veuillez en choisir un autre.");
-      return
-    }
+    // if (listEmail.includes(email.current.value)) {
+    //   setValidation(
+    //     "Cet email est déjà utilisé. Veuillez en choisir un autre."
+    //   );
+    //   return;
+    // }
     if (password.current.value.length < 6) {
       setValidation("Le mot de passe doit contenir au moins 6 caractères.");
-      return
+      return;
     }
     if (password.current.value !== passwordVerification.current.value) {
-     setValidation("Les mots de passe ne correspondent pas.");
-     return
+      setValidation("Les mots de passe ne correspondent pas.");
+      return;
     }
-    setValidation("");
   }
 
-  function handleFormRegister(e) {
+  // inscription après validation des données
+  const handleFormRegister = async (e) => {
     e.preventDefault();
     validationFormDatas();
-  }
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      );
+      // L'utilisateur nouvellement créé
+      const user = userCredential.user;
+      console.log("Utilisateur enregistré :", user);
+      formRegister.current.reset();
+      setValidation("");
+      setModalRegister(false)
+      toast.success("Inscription réussie ! Vous êtes connecté.");
+    } catch (error) {
+      console.dir(error)
+      if (error.code === "auth/email-already-in-use") {
+        toast.error("Cet email est déjà utilisé. Veuillez en choisir un autre.");
+        return
+      }
+      if (error.code === "auth/invalid-email") {
+        toast.error("Email invalide.");
+        return
+      }
+      toast.error("Erreur d'inscription, veuillez réessayer.");
+    
+    }
+  };
 
   return (
     <div
@@ -73,7 +114,9 @@ export default function ModalRegister({ closeModal }) {
         <h2 className="mb-6 text-3xl font-semibold text-center">
           Inscrivez-vous !
         </h2>
-        <form onSubmit={handleFormRegister}>
+        <form
+          ref={formRegister}
+        >
           <input
             type="text"
             placeholder="Votre pseudo"
@@ -107,8 +150,8 @@ export default function ModalRegister({ closeModal }) {
             // id="passwordVerification"
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
-           <p className="text-red-600 font-semithin text-md">
-            {validation && validation }
+          <p className="text-red-600 font-semithin text-md">
+            {validation && validation}
           </p>
           <button
             onClick={handleFormRegister}
