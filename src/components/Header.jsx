@@ -10,9 +10,9 @@ import { FaRegUser } from "react-icons/fa6";
 import { SlLogin } from "react-icons/sl";
 // import { SlLogout } from "react-icons/sl";<SlLogout />  //pour logout, au cas où !
 import { FaFeather } from "react-icons/fa";
-import { useModalsStore } from "../stores/useModalsStore";
 import { createPortal } from "react-dom";
 import NavlinkHeader from "./toolsComponents/NavlinkHeader";
+import { useModalsStore } from "../stores/useModalsStore";
 import ModalFormPost from "./ModalFormPost";
 import ModalSignUp from "./ModalSignUp";
 import ModalSignIn from "./ModalSignIn";

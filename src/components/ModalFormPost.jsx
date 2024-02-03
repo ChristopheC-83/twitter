@@ -93,11 +93,11 @@ export default function ModalFormPost({ closeModal }) {
 
   return (
     <div
-      className="fixed inset-0 bg-neutral-800/70 midFlex text-neutral-50"
+      className="fixed inset-0 z-20 pt-12 bg-neutral-800/70 midFlex text-neutral-50"
       onClick={closeModal}
     >
       <div
-        className="relative w-4/5 max-w-[600px] px-10 py-8 mx-auto border-2 rounded-md  bg-neutral-900 border-neutral-500 "
+        className="relative w-11/12 max-w-[600px] px-6 md:px-10 py-8 mx-auto border-2 rounded-md  bg-neutral-900 border-neutral-500 "
         onClick={(e) => e.stopPropagation()}
       >
         <button

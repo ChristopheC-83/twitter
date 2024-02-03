@@ -22,11 +22,11 @@ export default function ModalSignUp({ closeModal }) {
 
   return (
     <div
-      className={`fixed inset-0 pt-12 bg-neutral-800/70 midFlex text-neutral-50 ${signUpHidden && "hidden" }`}
+      className={`fixed inset-0 pt-12 z-20 bg-neutral-800/70 midFlex text-neutral-50 ${signUpHidden && "hidden" }`}
       onClick={closeModal}
     >
       <div
-        className="relative w-4/5 max-w-[600px] px-10 py-8 mx-auto border-2 rounded-md  bg-neutral-900 border-neutral-500 "
+         className="relative w-11/12  max-w-[600px] px-4 md:px-10 py-8 mx-auto border-2 rounded-md  bg-neutral-900 border-neutral-500 "
         onClick={(e) => e.stopPropagation()}
       >
         <button
