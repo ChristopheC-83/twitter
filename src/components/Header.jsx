@@ -14,13 +14,16 @@ import { createPortal } from "react-dom";
 import NavlinkHeader from "./toolsComponents/NavlinkHeader";
 import { useModalsStore } from "../stores/useModalsStore";
 import ModalFormPost from "./ModalFormPost";
-import ModalSignUp from "./ModalSignUp";
-import ModalSignIn from "./ModalSignIn";
+import ModalConnection from "./ModalConnection";
+import ModalRegister from "./ModalRegister";
 
 export default function Header() {
-  const { modalPost, setModalPost } = useModalsStore();
-  const { modalSignIn, setModalSignIn } = useModalsStore();
-  const { modalSignUp, setModalSignUp } = useModalsStore();
+  const { modalPost, setModalPost } = useModalsStore();const {
+    modalRegister,
+    setModalRegister,
+    modalConnection,
+    setModalConnection,
+  } = useModalsStore();
 
   return (
     <div className="fixed flex flex-col items-center xl:items-start justify-between h-screen max-h-[500px] gap-y-8 ">
@@ -31,7 +34,7 @@ export default function Header() {
       {/* bouton de connection */}
       <button
         className={`flex text-4xl items-center justify-center xl:justify-start xl:text-2xl gap-x-8 font-semibold`}
-        onClick={() => setModalSignUp(!modalSignUp)}
+        onClick={() => setModalConnection(!modalConnection)}
       
       >
         <div className="w-9 h-9">
@@ -56,9 +59,9 @@ export default function Header() {
           <ModalFormPost closeModal={() => setModalPost(false)} />,
           document.body
         )}
-      {modalSignUp &&
+      {modalConnection &&
         createPortal(
-          <ModalSignUp closeModal={() => setModalSignUp(false)} />,
+          <ModalConnection closeModal={() => setModalConnection(false)} />,
           document.body
         )}
     </div>

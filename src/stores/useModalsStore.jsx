@@ -5,11 +5,11 @@ export const useModalsStore = create((set) => ({
     modalPost: false,
     setModalPost: (value) => set({ modalPost: value }),
 
-    modalSignIn: false,
-    setModalSignIn: (value) => set({ modalSignIn: value }),
+    modalConnection: false,
+    setModalConnection: (value) => set({ modalConnection: value }),
 
-    modalSignUp: false,
-    setModalSignUp: (value) => set({ modalSignUp: value }),
+    modalRegister: false,
+    setModalRegister: (value) => set({ modalRegister: value }),
 
 
 

@@ -2,31 +2,40 @@ import { useRef, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useModalsStore } from "../stores/useModalsStore";
-import ModalSignIn from "./ModalSignIn";
 import { createPortal } from "react-dom";
+import ModalRegister from "./ModalRegister";
 
-export default function ModalSignUp({ closeModal }) {
-  const { modalSignUp, setModalSignUp } = useModalsStore();
-  const { modalSignIn, setModalSignIn } = useModalsStore();
+export default function ModalConnection({ closeModal }) {
+  const {
+    modalRegister,
+    setModalRegister,
+    modalConnection,
+    setModalConnection,
+  } = useModalsStore();
 
-  const [signUpHidden, setSignUpHidden] = useState(false);
+  const [modalConnectionHidden, setModalConnectionHidden] = useState(false);
 
   const login = useRef("");
   const email = useRef("");
   const password = useRef("");
 
   function switchModals() {
-    setSignUpHidden(true);
-    setModalSignIn(true);
+    setModalConnection(true);
+    setModalRegister(true);
+    setModalConnectionHidden(true);
   }
 
   return (
     <div
-      className={`fixed inset-0 pt-12 z-20 bg-neutral-800/70 midFlex text-neutral-50 ${signUpHidden && "hidden" }`}
+      className={`fixed inset-0 pt-12 z-20 bg-neutral-800/70 midFlex text-neutral-50
+      ${
+        modalConnectionHidden && "hidden"
+      }
+      `}
       onClick={closeModal}
     >
       <div
-         className="relative w-11/12  max-w-[600px] px-4 md:px-10 py-8 mx-auto border-2 rounded-md  bg-neutral-900 border-neutral-500 "
+        className="relative w-11/12  max-w-[600px] px-4 md:px-10 py-8 mx-auto border-2 rounded-md  bg-neutral-900 border-neutral-500 "
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -35,7 +44,9 @@ export default function ModalSignUp({ closeModal }) {
         >
           X
         </button>
-        <h2 className="mb-6 text-3xl font-semibold text-center">Connectez-vous !</h2>
+        <h2 className="mb-6 text-3xl font-semibold text-center">
+          Connectez-vous !
+        </h2>
         <form>
           <input
             type="text"
@@ -45,7 +56,7 @@ export default function ModalSignUp({ closeModal }) {
             name="login"
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
-          
+
           <input
             type="password"
             placeholder="Votre mot de passe"
@@ -67,12 +78,12 @@ export default function ModalSignUp({ closeModal }) {
         >
           Je n'ai pas de compte, je m'inscris !
         </button>
-        </div>
-        {modalSignIn &&
-          createPortal(
-            <ModalSignIn closeModal={() => setModalSignIn(false)} />,
-            document.body
-          )}
+      </div>
+      {modalRegister &&
+        createPortal(
+          <ModalRegister closeModal={() => setModalRegister(false)} />,
+          document.body
+        )}
     </div>
   );
 }

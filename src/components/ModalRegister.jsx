@@ -7,8 +7,8 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase-config";
 
-export default function ModalSignIn({ closeModal }) {
-  // const { modalSignUp, setModalSignUp, modalSignIn, setModalSignIn } = useModalsStore();
+export default function ModalRegister({ closeModal }) {
+  // const { modalRegister, setModalRegister, modalConnection, setModalConnection} = useModalsStore();
   const [validation, setValidation] = useState("");
 
   const login = useRef("");
@@ -49,7 +49,7 @@ export default function ModalSignIn({ closeModal }) {
     setValidation("");
   }
 
-  function handleFormSignIn(e) {
+  function handleFormRegister(e) {
     e.preventDefault();
     validationFormDatas();
   }
@@ -73,7 +73,7 @@ export default function ModalSignIn({ closeModal }) {
         <h2 className="mb-6 text-3xl font-semibold text-center">
           Inscrivez-vous !
         </h2>
-        <form onSubmit={handleFormSignIn}>
+        <form onSubmit={handleFormRegister}>
           <input
             type="text"
             placeholder="Votre pseudo"
@@ -111,7 +111,7 @@ export default function ModalSignIn({ closeModal }) {
             {validation && validation }
           </p>
           <button
-            onClick={handleFormSignIn}
+            onClick={handleFormRegister}
             className="px-4 py-2 mx-auto mt-6 text-xl font-bold bg-blue-500 rounded-full w-fit flexMid hover:bg-blue-600 "
           >
             Je m'inscris.
