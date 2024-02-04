@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
+  onAuthStateChanged,signOut
 } from "firebase/auth";
 import { auth } from "../firebase-config";
 
@@ -10,17 +10,31 @@ export const UserContext = createContext();
 
 export function UserContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
-  const [loadingPerso, setLoadingPerso] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setCurrentUser(currentUser);
+      setLoading(false);
+      
+    });
+  }, []);
+
+  function logOut() {
+    setLoading(true);
+    auth.signOut(auth);
+  }
+
+ 
 
   return (
     <UserContext.Provider
       value={{
         currentUser,
         setCurrentUser,
-        loadingPerso,
-        setLoadingPerso,
+        loading,
+        setLoading,
+        logOut
       }}
     >
       {children}

@@ -2,16 +2,19 @@ import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { FaSpinner } from "react-icons/fa";
 import Twit from "../components/Twit";
+import { FIREBASE_URL } from "../firebase-config";
 
 export default function Home() {
   const [twits, setTweets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  console.log(FIREBASE_URL+"posts.json");
+
   function fetchTwits() {
     setLoading(true);
     fetch(
-      "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/posts.json"
+      FIREBASE_URL+"posts.json"
     )
       .then((response) => {
         // console.log(response);

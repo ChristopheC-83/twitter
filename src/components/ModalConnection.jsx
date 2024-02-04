@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useModalsStore } from "../stores/useModalsStore";
 import { createPortal } from "react-dom";
 import ModalRegister from "./ModalRegister";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase-config";
 
 export default function ModalConnection({ closeModal }) {
   const {
@@ -13,6 +15,7 @@ export default function ModalConnection({ closeModal }) {
     setModalConnection,
   } = useModalsStore();
 
+  const [validation, setValidation] = useState("");
   const [modalConnectionHidden, setModalConnectionHidden] = useState(false);
 
   const login = useRef("");
@@ -25,12 +28,35 @@ export default function ModalConnection({ closeModal }) {
     setModalConnectionHidden(true);
   }
 
+  function loginUser(e) {
+    e.preventDefault();
+    signInWithEmailAndPassword(
+      auth,
+      email.current.value,
+      password.current.value
+    )
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        closeModal();
+      })
+      .catch((error) => {
+        if (error.code === "auth/invalid-credential") {
+          setValidation(
+            "Connexion impossible :vérifiez votre email et votre mot de passe"
+          );
+          toast.error(validation);
+        } else {
+          toast.error("Une erreur est survenue !");
+          toast.error(error.message);
+        }
+      });
+  }
+
   return (
     <div
       className={`fixed inset-0 pt-12 z-20 bg-neutral-800/70 midFlex text-neutral-50
-      ${
-        modalConnectionHidden && "hidden"
-      }
+      ${modalConnectionHidden && "hidden"}
       `}
       onClick={closeModal}
     >
@@ -49,24 +75,20 @@ export default function ModalConnection({ closeModal }) {
         </h2>
         <form>
           <input
-            type="text"
-            placeholder="Votre pseudo"
-            id="login"
-            ref={login}
-            name="login"
+            type="mail"
+            placeholder="Votre email"
+            ref={email}
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
 
           <input
             type="password"
             placeholder="Votre mot de passe"
-            name="password"
             ref={password}
-            id="password"
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
           <button
-            // onClick={onBeforeSubmitHandler}
+            onClick={loginUser}
             className="px-4 py-2 mx-auto my-10 text-xl font-bold bg-blue-500 rounded-full w-fit flexMid hover:bg-blue-600 "
           >
             Je me connecte

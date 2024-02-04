@@ -23,6 +23,8 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_API_ID
 };
 
+export const FIREBASE_URL = "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/"
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

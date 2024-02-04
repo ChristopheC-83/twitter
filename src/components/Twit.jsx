@@ -29,13 +29,13 @@ export default function Twit({ twit }) {
         <div className="flex items-center justify-between w-full">
           <div>
             <span className="font-bold">
-              <Link to={`/${twit.author}`}>{twit.author}</Link>
+              <Link to={`/user/${twit.author}`}>{twit.author}</Link>
             </span>
           </div>
           <span className="text-sm text-gray-500">{dateModif}</span>
         </div>
       </div>
-      <NavLink to={`/${twit.id}`}>
+      <NavLink to={`/post/${twit.id}`}>
         <div className="mb-8">{twit.text}</div>
         {twit.img && (
           <img className="mx-auto w-8/10" src={twit.img} alt={twit.author} />

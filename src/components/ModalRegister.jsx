@@ -142,15 +142,15 @@ export default function ModalRegister({ closeModal }) {
         setModalRegister(false);
         toast.success("Inscription réussie ! Vous êtes connecté.");
       } catch (error) {
-        console.dir(error);
         if (error.code === "auth/email-already-in-use") {
           setValidation(
             "Cet email est déjà utilisé. Veuillez en choisir un autre."
           );
         }
-        if(error.code === "auth/invalid-email"){
-          setValidation("Cet email n'est pas valide.")
+        if (error.code === "auth/invalid-email") {
+          setValidation("Veuillez renseigner un email valide.");
         }
+        console.dir(error);
       }
     }
   };
