@@ -1,8 +1,8 @@
 // barre de menu à gauche de la page
 // complete si largeur écran > 1280px
 // seulement icones si largeur 640px < écran < 1280px
-//  sous les 640px, menu en pied de page avec le composant Footer
-import { useState, useContext } from "react";
+// sous les 640px, menu en pied de page avec le composant Footer
+
 import { GoHeart } from "react-icons/go";
 import { LuHome } from "react-icons/lu";
 import { FaHashtag } from "react-icons/fa";
@@ -10,7 +10,9 @@ import { FaRegUser } from "react-icons/fa6";
 import { SlLogin } from "react-icons/sl";
 import { SlLogout } from "react-icons/sl";
 import { FaFeather } from "react-icons/fa";
+
 import { createPortal } from "react-dom";
+import { useState, useContext } from "react";
 import NavlinkHeader from "../toolsComponents/NavlinkHeader";
 import { useModalsStore } from "../../stores/useModalsStore";
 import ModalFormPost from "../modals/ModalFormPost";
