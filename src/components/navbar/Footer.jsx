@@ -1,3 +1,5 @@
+//  barre de menu si écran < 640px de large
+
 import { GoHeart } from "react-icons/go";
 import { LuHome } from "react-icons/lu";
 import { FaHashtag } from "react-icons/fa";
@@ -5,11 +7,11 @@ import { FaRegUser } from "react-icons/fa6";
 import { SlLogin } from "react-icons/sl";
 import { FaFeather } from "react-icons/fa";
 import { createPortal } from "react-dom";
-import NavlinkFooter from "./toolsComponents/NavLinkFooter";
-import { useModalsStore } from "../stores/useModalsStore";
-import ModalFormPost from "./ModalFormPost";
-import ModalConnection from "./ModalConnection";
-import ModalRegister from "./ModalRegister";
+import NavlinkFooter from "../toolsComponents/NavLinkFooter";
+import { useModalsStore } from "../../stores/useModalsStore";
+import ModalFormPost from "../modals/ModalFormPost";
+import ModalConnection from "../modals/ModalConnection";
+import ModalRegister from "../modals/ModalRegister";
 
 //  menu en pied de page pour les écran < 640px de large
 

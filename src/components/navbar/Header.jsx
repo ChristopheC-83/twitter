@@ -11,13 +11,13 @@ import { SlLogin } from "react-icons/sl";
 import { SlLogout } from "react-icons/sl";
 import { FaFeather } from "react-icons/fa";
 import { createPortal } from "react-dom";
-import NavlinkHeader from "./toolsComponents/NavlinkHeader";
-import { useModalsStore } from "../stores/useModalsStore";
-import ModalFormPost from "./ModalFormPost";
-import ModalConnection from "./ModalConnection";
-import ModalRegister from "./ModalRegister";
-import { auth } from "../firebase-config";
-import { UserContext } from "../context/userContext";
+import NavlinkHeader from "../toolsComponents/NavlinkHeader";
+import { useModalsStore } from "../../stores/useModalsStore";
+import ModalFormPost from "../modals/ModalFormPost";
+import ModalConnection from "../modals/ModalConnection";
+import ModalRegister from "../modals/ModalRegister";
+import { auth } from "../../firebase-config";
+import { UserContext } from "../../context/userContext";
 
 export default function Header() {
   const { currentUser, loading , setLoading,  logOut} = useContext(UserContext);

@@ -1,11 +1,13 @@
+//  pour la connexion, propose l'enregistrement su ce n'est pas déjà fait
+
 import { useRef, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { useModalsStore } from "../stores/useModalsStore";
+import { useModalsStore } from "../../stores/useModalsStore";
 import { createPortal } from "react-dom";
 import ModalRegister from "./ModalRegister";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { auth } from "../../firebase-config";
 
 export default function ModalConnection({ closeModal }) {
   const {

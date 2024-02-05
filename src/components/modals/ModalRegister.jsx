@@ -1,3 +1,5 @@
+//  propose l'enregistrment d'un utilisateur sur le site
+
 // import { useModalsStore } from "../stores/useModalsStore";
 import { useRef, useState, useContext, useEffect } from "react";
 import {
@@ -5,9 +7,9 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth } from "../firebase-config";
-import { UserContext } from "../context/userContext";
-import { useModalsStore } from "../stores/useModalsStore";
+import { auth } from "../../firebase-config";
+import { UserContext } from "../../context/userContext";
+import { useModalsStore } from "../../stores/useModalsStore";
 import { toast } from "sonner";
 
 export default function ModalRegister({ closeModal }) {

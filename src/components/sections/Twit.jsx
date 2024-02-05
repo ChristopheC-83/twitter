@@ -1,3 +1,5 @@
+// Colonne centrale avec tous les twits dans l'ordre antéchronologique
+
 import { useState } from "react";
 import { ImBubble2 } from "react-icons/im";
 import { FaRetweet } from "react-icons/fa6";

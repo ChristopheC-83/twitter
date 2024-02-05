@@ -1,8 +1,10 @@
+//  page d'accueil de l'utilisateur connecté ou pas
+
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 import { FaSpinner } from "react-icons/fa";
-import Twit from "../components/Twit";
-import { FIREBASE_URL } from "../firebase-config";
+import Twit from "../../components/sections/Twit";
+import { FIREBASE_URL } from "../../firebase-config";
 
 export default function Home() {
   const [twits, setTweets] = useState([]);

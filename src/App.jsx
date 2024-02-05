@@ -1,34 +1,31 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState, useContext } from "react";
-import Error from "./pages/Error";
-import Hashtags from "./pages/Hashtags";
-import Favoris from "./pages/Favoris";
-import Profil from "./pages/Profil";
-import { lazy, Suspense, useEffect } from "react";
+
+import { lazy, Suspense } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { UserContext } from "./context/userContext";
 
-const Home = lazy(() => import("./pages/Home"));
-const TimeLine = lazy(() => import("./pages/TimeLine"));
-const OneTwit = lazy(() => import("./pages/OneTwit"));
+const Home = lazy(() => import("./pages/public/Home"));
+const TimeLine = lazy(() => import("./pages/public/TimeLine"));
+const OneTwit = lazy(() => import("./pages/public/OneTwit"));
 const Main = lazy(() => import("./layout/Main"));
-
+const Error = lazy(() => import("./pages/public/Error"));
+const Hashtags = lazy(() => import("./pages/public/Hashtags"));
+const Favoris = lazy(() => import("./pages/private/Favoris"));
+const Profil = lazy(() => import("./pages/private/Profil"));
 
 export default function App() {
-  
   const { currentUser, loading } = useContext(UserContext);
 
   return (
     <div>
-      <Suspense>
-        <RouterProvider router={
-        
-        createBrowserRouter([
+      <RouterProvider
+        router={createBrowserRouter([
           {
             path: "/",
             element: <Main />,
-            // errorElement: <Error />,
+            errorElement: <Error />,
             children: [
               {
                 index: true,
@@ -40,15 +37,23 @@ export default function App() {
               },
               {
                 path: "/hashtags",
-                element: <Hashtags />,
+                element: (
+                  <Suspense>
+                    <Hashtags />
+                  </Suspense>
+                ),
               },
               {
                 path: "/favoris",
-                element: <Favoris />,
+                element: (
+                  <Suspense>{currentUser ? <Favoris /> : <Error />}</Suspense>
+                ),
               },
               {
                 path: "/profil",
-                element: <Profil />,
+                element: (
+                  <Suspense>{currentUser ? <Profil /> : <Error />}</Suspense>
+                ),
               },
               {
                 path: "/connexion",
@@ -57,9 +62,7 @@ export default function App() {
               {
                 path: "/user/:idUser",
                 element: (
-                  <Suspense>
-                    <TimeLine />
-                  </Suspense>
+                  <Suspense>{currentUser ? <TimeLine /> : <Error />}</Suspense>
                 ),
               },
               {
@@ -80,16 +83,16 @@ export default function App() {
               // },
               {
                 path: "/*",
-                element: <Error />,
+                element: (
+                  <Suspense>
+                    <Error />
+                  </Suspense>
+                ),
               },
             ],
           },
-        ])
-        
-        
-        
-        } />
-      </Suspense>
+        ])}
+      />
     </div>
   );
 }

@@ -1,3 +1,6 @@
+// Formulaire d'inscription ( à récupérer depuis le composant ModalRegister)
+
+
 import { useEffect } from "react";
 import { toast } from "sonner";
 

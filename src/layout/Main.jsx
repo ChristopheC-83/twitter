@@ -1,6 +1,6 @@
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import Blog from "../components/Blog";
+import Footer from "../components/navbar/Footer";
+import Header from "../components/navbar/Header";
+import Blog from "../components/sections/Blog";
 import { Toaster } from "sonner";
 import { Outlet, useNavigation } from "react-router-dom";
 import { useContext } from "react";
