@@ -11,18 +11,4 @@ export const useModalsStore = create((set) => ({
     modalRegister: false,
     setModalRegister: (value) => set({ modalRegister: value }),
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }))

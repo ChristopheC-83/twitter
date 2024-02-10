@@ -7,7 +7,6 @@ import { FaRetweet } from "react-icons/fa6";
 import { GoHeart } from "react-icons/go";
 // import { FaBookmark } from "react-icons/fa6"; <FaBookmark />
 import { FaRegBookmark } from "react-icons/fa6";
-
 import { NavLink, Link } from "react-router-dom";
 
 export default function Twit({ twit }) {

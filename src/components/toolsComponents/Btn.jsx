@@ -1,17 +1,9 @@
 
 
-
- export default function Btn({children}) {
-
-
-
-return (
-    <div className="bg-blue-500 py-4 px-8 border-white rounded-full text-3xl font-bold flexMid hover:bg-blue-600">
-
-{children}
-
+export default function Btn({color, children }) {
+  return (
+    <div className={`px-8 py-4 text-3xl font-bold bg-${color}-500 border-white rounded-full flexMid hover:bg-${color}-600`}>
+      {children}
     </div>
-
   );
-
 }

@@ -36,14 +36,6 @@ export default function App() {
                 ),
               },
               {
-                path: "/hashtags",
-                element: (
-                  <Suspense>
-                    <Hashtags />
-                  </Suspense>
-                ),
-              },
-              {
                 path: "/favoris",
                 element: (
                   <Suspense>{currentUser ? <Favoris /> : <Error />}</Suspense>
@@ -56,13 +48,9 @@ export default function App() {
                 ),
               },
               {
-                path: "/connexion",
-                element: <Hashtags />,
-              },
-              {
                 path: "/user/:idUser",
                 element: (
-                  <Suspense>{currentUser ? <TimeLine /> : <Error />}</Suspense>
+                  <Suspense><TimeLine /></Suspense>
                 ),
               },
               {
@@ -73,14 +61,6 @@ export default function App() {
                   </Suspense>
                 ),
               },
-              // {
-              //   path: "/:idTwit",
-              //   element: (
-              //     <Suspense>
-              //       <TimeLine />
-              //     </Suspense>
-              //   ),
-              // },
               {
                 path: "/*",
                 element: (

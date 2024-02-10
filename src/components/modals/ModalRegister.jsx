@@ -64,10 +64,14 @@ export default function ModalRegister({ closeModal }) {
   }, []);
   // le formulaire est il rempli avec des données cohérentes ?
   function validationFormDatas() {
-    console.log(loginsList);
+    //  regex
+    const regexLogin = /^[a-zA-Z0-9._-]{4,16}$/;
+    const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+
     setValidation("");
-    if (login.current.value === "") {
-      setValidation("Veuillez renseigner un pseudo.");
+    if (!regexLogin.test(login.current.value)) {
+      setValidation("login => 4 à 16 caractères alphanumériques.");
       return false;
     }
     if (loginsList.includes(login.current.value)) {
@@ -76,12 +80,14 @@ export default function ModalRegister({ closeModal }) {
       );
       return false;
     }
-    if (email.current.value === "") {
-      setValidation("Veuillez renseigner un email.");
+    if (!regexEmail.test(email.current.value)) {
+      setValidation("Email invalide.");
       return false;
     }
-    if (password.current.value.length < 6) {
-      setValidation("Le mot de passe doit contenir au moins 6 caractères.");
+    if (!regexPassword.test(password.current.value)) {
+      setValidation(
+        "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre."
+      );
       return false;
     }
     if (password.current.value !== passwordVerification.current.value) {
@@ -98,10 +104,10 @@ export default function ModalRegister({ closeModal }) {
       email: email.current.value,
       avatarURL:
         "https://mycloud.barpat.fun/public/assets/Images/bureautique/avatar_neutre.png",
-      bio: "",
+      biography: "",
       personnalPage: "https://www.google.fr/",
-      idSavedTwits: [""],
-      idCaractersFollowed: [""],
+      register_since:  Date.now(),
+      users_followed: [""],
     };
 
     console.log(newUser);
@@ -172,7 +178,6 @@ export default function ModalRegister({ closeModal }) {
         >
           X
         </button>
-
         <h2 className="mb-6 text-3xl font-semibold text-center">
           Inscrivez-vous !
         </h2>
@@ -180,34 +185,25 @@ export default function ModalRegister({ closeModal }) {
           <input
             type="text"
             placeholder="Votre pseudo"
-            // id="login"
             ref={login}
-            // name="login"
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
-
           <input
             type="email"
             placeholder="Votre email"
-            // name="email"
             ref={email}
-            // id="email".current.value
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
           <input
             type="password"
-            placeholder="Votre mot de passe (6 caractères minimum)"
-            // name="password"
+            placeholder="Mot de passe (1 minuscule, 1 majuscule, 1 chiffre & 8 car. min.)"
             ref={password}
-            // id="password"
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
           <input
             type="password"
             placeholder="Validez votre mot de passe"
-            // name="passwordVerification"
             ref={passwordVerification}
-            // id="passwordVerification"
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />
           <p className="text-red-600 font-semithin text-md">
