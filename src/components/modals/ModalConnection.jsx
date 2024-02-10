@@ -10,30 +10,45 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config";
 
 export default function ModalConnection({ closeModal }) {
-  const {
-    modalRegister,
-    setModalRegister,
-    modalConnection,
-    setModalConnection,
-  } = useModalsStore();
-
-  const [validation, setValidation] = useState("");
-  const [modalConnectionHidden, setModalConnectionHidden] = useState(false);
-
-  const login = useRef("");
-  const email = useRef("");
-  const password = useRef("");
-
+  // gestion des modales
+  const { modalRegister, setModalRegister, setModalConnection } =
+    useModalsStore();
   function switchModals() {
     setModalConnection(true);
     setModalRegister(true);
     setModalConnectionHidden(true);
   }
+  const [modalConnectionHidden, setModalConnectionHidden] = useState(false);
 
+  // gestion messages d'ezrreurs pour formulaire
+  const [validation, setValidation] = useState("");
+
+  // ref pour formulaire
+  const login = useRef("");
+  const email = useRef("");
+  const password = useRef("");
+
+  // pour retrouver un user en fonction de son mail
+  async function getUserByEmail(email) {
+    try {
+      const snapshot = await firebase.database().ref('users').orderByChild('email').equalTo(email).once('value');
+      const userData = snapshot.val();
+      if (userData) {
+        const userId = Object.keys(userData)[0]; // Si vous vous attendez à un seul utilisateur avec cet email
+        return { ...userData[userId], id: userId };
+      }
+      return null;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des données de l\'utilisateur:', error);
+      return null;
+    }
+  }
+
+  // connection utilisateur
   function loginUser(e) {
     e.preventDefault();
     setValidation("");
-    if(email.current.value === "" || password.current.value === ""){
+    if (email.current.value === "" || password.current.value === "") {
       setValidation("Veuillez remplir tous les champs !");
       toast.error(validation);
       return;
@@ -59,7 +74,7 @@ export default function ModalConnection({ closeModal }) {
         }
         toast.error(validation);
       });
-      setValidation("");
+    setValidation("");
   }
 
   return (
