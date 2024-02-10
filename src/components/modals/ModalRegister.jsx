@@ -15,9 +15,7 @@ import { toast } from "sonner";
 export default function ModalRegister({ closeModal }) {
   const { signUp } = useContext(UserContext);
   const {
-    modalRegister,
     setModalRegister,
-    modalConnection,
     setModalConnection,
   } = useModalsStore();
 
@@ -96,7 +94,8 @@ export default function ModalRegister({ closeModal }) {
     }
     return true;
   }
-  // insertion dans DB détaillées du user
+  
+  // insertion dans DB détails du user fraichement enregistré
   async function RegisterUserJson(userID) {
     const newUser = {
       id: userID,
@@ -110,7 +109,7 @@ export default function ModalRegister({ closeModal }) {
       users_followed: [""],
     };
 
-    console.log(newUser);
+    // console.log(newUser);
 
     // Add to firebase realtime
     const response = await fetch(
@@ -148,6 +147,7 @@ export default function ModalRegister({ closeModal }) {
         formRegister.current.reset();
         setValidation("");
         setModalRegister(false);
+        setModalConnection(false);
         toast.success("Inscription réussie ! Vous êtes connecté.");
       } catch (error) {
         if (error.code === "auth/email-already-in-use") {
@@ -213,7 +213,7 @@ export default function ModalRegister({ closeModal }) {
             onClick={handleFormRegister}
             className="px-4 py-2 mx-auto mt-6 text-xl font-bold bg-blue-500 rounded-full w-fit flexMid hover:bg-blue-600 "
           >
-            Je m'inscris.
+            Je m'inscris
           </button>
         </form>
       </div>

@@ -29,20 +29,17 @@ export default function Footer() {
     setModalConnection,
   } = useModalsStore();
 
-  console.log(currentUser);
+  // console.log(currentUser);
 
   return (
     <footer>
       <div className="flex items-center h-24 justify-evenly">
         <NavlinkFooter to="/" icon={<LuHome />} text={"Accueil"} />
-        <NavlinkFooter to="/hashtags" icon={<FaHashtag />} text={"Hashtags"} />
-        {currentUser && (
-          <NavlinkFooter to="/favoris" icon={<GoHeart />} text={"Favoris"} />
-        )}
-        {currentUser && (
-          <NavlinkFooter to="/profil" icon={<FaRegUser />} text={"Profil"} />
-        )}
+        
         {currentUser ? (
+        <>  
+        <NavlinkFooter to="/favoris" icon={<GoHeart />} text={"Favoris"} />
+        <NavlinkFooter to="/profil" icon={<FaRegUser />} text={"Profil"} />
           <button
             className={`flex text-4xl items-center justify-center xl:justify-start xl:text-3xl gap-x-8 font-semibold`}
             onClick={() => logOut()}
@@ -51,6 +48,7 @@ export default function Footer() {
               <SlLogout className="rotate-180" />
             </div>
           </button>
+          </>
         ) : (
           <button
             className={`flex text-4xl items-center justify-center xl:justify-start xl:text-3xl gap-x-8 font-semibold`}
@@ -62,6 +60,8 @@ export default function Footer() {
           </button>
         )}
       </div>
+
+      {currentUser &&(
       <button
         onClick={() => setModalPost(!modalPost)}
         className="absolute p-4 text-3xl font-bold bg-blue-500  rounded-full top-[-80px] right-[10px] flexMid hover:bg-blue-600 xl:mx-auto"
@@ -69,7 +69,7 @@ export default function Footer() {
         <span className="text-4xl">
           <FaFeather />
         </span>
-      </button>
+      </button>)}
 
       {modalPost &&
         createPortal(

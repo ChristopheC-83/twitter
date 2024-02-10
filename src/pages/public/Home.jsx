@@ -11,7 +11,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log(FIREBASE_URL+"posts.json");
+  // console.log(FIREBASE_URL+"posts.json");
 
   function fetchTwits() {
     setLoading(true);

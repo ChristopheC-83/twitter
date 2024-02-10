@@ -32,6 +32,12 @@ export default function ModalConnection({ closeModal }) {
 
   function loginUser(e) {
     e.preventDefault();
+    setValidation("");
+    if(email.current.value === "" || password.current.value === ""){
+      setValidation("Veuillez remplir tous les champs !");
+      toast.error(validation);
+      return;
+    }
     signInWithEmailAndPassword(
       auth,
       email.current.value,
@@ -47,12 +53,13 @@ export default function ModalConnection({ closeModal }) {
           setValidation(
             "Connexion impossible :vérifiez votre email et votre mot de passe"
           );
-          toast.error(validation);
+          return;
         } else {
-          toast.error("Une erreur est survenue !");
-          toast.error(error.message);
+          setValidation("Une erreur est survenue !");
         }
+        toast.error(validation);
       });
+      setValidation("");
   }
 
   return (

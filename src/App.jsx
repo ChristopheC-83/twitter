@@ -11,12 +11,11 @@ const TimeLine = lazy(() => import("./pages/public/TimeLine"));
 const OneTwit = lazy(() => import("./pages/public/OneTwit"));
 const Main = lazy(() => import("./layout/Main"));
 const Error = lazy(() => import("./pages/public/Error"));
-const Hashtags = lazy(() => import("./pages/public/Hashtags"));
-const Favoris = lazy(() => import("./pages/private/Favoris"));
+const Favoris = lazy(() => import("./pages/private/FavoritesPage"));
 const Profil = lazy(() => import("./pages/private/Profil"));
 
 export default function App() {
-  const { currentUser, loading } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
 
   return (
     <div>
