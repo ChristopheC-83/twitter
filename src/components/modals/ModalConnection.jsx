@@ -1,6 +1,6 @@
 //  pour la connexion, propose l'enregistrement su ce n'est pas déjà fait
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useModalsStore } from "../../stores/useModalsStore";
@@ -8,8 +8,13 @@ import { createPortal } from "react-dom";
 import ModalRegister from "./ModalRegister";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config";
+import { UserContext } from "../../context/userContext";
 
 export default function ModalConnection({ closeModal }) {
+// gestion currentUser du context
+
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  
   // gestion des modales
   const { modalRegister, setModalRegister, setModalConnection } =
     useModalsStore();
@@ -31,51 +36,69 @@ export default function ModalConnection({ closeModal }) {
   // pour retrouver un user en fonction de son mail
   async function getUserByEmail(email) {
     try {
-      const snapshot = await firebase.database().ref('users').orderByChild('email').equalTo(email).once('value');
+      const snapshot = await firebase
+        .database()
+        .ref("users")
+        .orderByChild("email")
+        .equalTo(email)
+        .once("value");
       const userData = snapshot.val();
+      console.log("userData",userData);
       if (userData) {
         const userId = Object.keys(userData)[0]; // Si vous vous attendez à un seul utilisateur avec cet email
         return { ...userData[userId], id: userId };
       }
       return null;
     } catch (error) {
-      console.error('Erreur lors de la récupération des données de l\'utilisateur:', error);
+      console.error(
+        "Erreur lors de la récupération des données de l'utilisateur:",
+        error
+      );
       return null;
     }
+    console.log("user", user);
   }
 
   // connection utilisateur
-  function loginUser(e) {
+  async function loginUser(e) {
     e.preventDefault();
     setValidation("");
+
     if (email.current.value === "" || password.current.value === "") {
       setValidation("Veuillez remplir tous les champs !");
       toast.error(validation);
       return;
     }
-    signInWithEmailAndPassword(
-      auth,
-      email.current.value,
-      password.current.value
-    )
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        closeModal();
-      })
-      .catch((error) => {
-        if (error.code === "auth/invalid-credential") {
-          setValidation(
-            "Connexion impossible :vérifiez votre email et votre mot de passe"
-          );
-          return;
-        } else {
-          setValidation("Une erreur est survenue !");
-        }
-        toast.error(validation);
-      });
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      );
+      const user = userCredential.user;
+      console.log(user);
+      closeModal();
+      // Attendre que getUserByEmail soit résolu et mettre à jour currentUser
+      const userData = await getUserByEmail(email.current.value);
+      setCurrentUser(userData);
+    } catch (error) {
+      if (error.code === "auth/invalid-credential") {
+        setValidation(
+          "Connexion impossible : vérifiez votre email et votre mot de passe"
+        );
+      } else {
+        setValidation("Une erreur est survenue !");
+      }
+
+      toast.error(validation);
+    }
     setValidation("");
   }
+
+  // useEffect pour surveiller les changements de currentUser
+  useEffect(() => {
+    console.log(currentUser);
+  }, [currentUser]);
 
   return (
     <div
