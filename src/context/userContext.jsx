@@ -2,9 +2,11 @@ import { createContext, useEffect, useState } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  onAuthStateChanged,signOut
+  onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../firebase-config";
+import { toast } from "sonner";
 
 export const UserContext = createContext();
 
@@ -16,16 +18,16 @@ export function UserContextProvider({ children }) {
     onAuthStateChanged(auth, (currentUser) => {
       setCurrentUser(currentUser);
       setLoading(false);
-      
+      console.log("From provider :" + currentUser);
     });
-  }, []);
+  }, [currentUser]);
 
   function logOut() {
-    setLoading(true);
+    toast.success("Vous êtes déconnecté");
+    // setLoading(true);
     auth.signOut(auth);
+    setCurrentUser(null);
   }
-
- 
 
   return (
     <UserContext.Provider
@@ -34,7 +36,7 @@ export function UserContextProvider({ children }) {
         setCurrentUser,
         loading,
         setLoading,
-        logOut
+        logOut,
       }}
     >
       {children}

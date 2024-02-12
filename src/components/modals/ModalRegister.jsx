@@ -14,10 +14,7 @@ import { toast } from "sonner";
 
 export default function ModalRegister({ closeModal }) {
   const { signUp } = useContext(UserContext);
-  const {
-    setModalRegister,
-    setModalConnection,
-  } = useModalsStore();
+  const { setModalRegister, setModalConnection } = useModalsStore();
 
   //  les States
 
@@ -60,56 +57,53 @@ export default function ModalRegister({ closeModal }) {
   useEffect(() => {
     getAllLogins();
   }, []);
+
   // le formulaire est il rempli avec des données cohérentes ?
   function validationFormDatas() {
-    //  regex
-    const regexLogin = /^[a-zA-Z0-9._-]{4,16}$/;
-    const regexEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    const regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
-
     setValidation("");
-    if (!regexLogin.test(login.current.value)) {
-      setValidation("login => 4 à 16 caractères alphanumériques.");
+    //  login vide ?
+    if (login.current.value.trim() === "") {
+      setValidation("Veuillez renseigner un pseudo.");
       return false;
     }
+    // récupérer tous les logins utilisés pour pas de doublon  ######################### TODO
     if (loginsList.includes(login.current.value)) {
       setValidation(
         "Ce pseudo est déjà utilisé. Veuillez en choisir un autre."
       );
       return false;
     }
-    if (!regexEmail.test(email.current.value)) {
-      setValidation("Email invalide.");
+    // email vide ?
+    if (email.current.value.trim() === "") {
+      setValidation("Veuillez renseigner un email.");
       return false;
     }
-    if (!regexPassword.test(password.current.value)) {
-      setValidation(
-        "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule et un chiffre."
-      );
+    // Pas de gros regex pour les tests, voir pour ce projet.
+    if (password.current.value.length < 6) {
+      setValidation("Le mot de passe doit contenir au moins 6 caractères.");
       return false;
     }
+    // verification mot de passe
     if (password.current.value !== passwordVerification.current.value) {
       setValidation("Les mots de passe ne correspondent pas.");
       return false;
     }
     return true;
   }
-  
+
   // insertion dans DB détails du user fraichement enregistré
   async function RegisterUserJson(userID) {
     const newUser = {
-      id: userID,
+      uid: userID,
       login: login.current.value,
       email: email.current.value,
-      avatarURL:
+      avatar_url:
         "https://mycloud.barpat.fun/public/assets/Images/bureautique/avatar_neutre.png",
       biography: "",
-      personnalPage: "https://www.google.fr/",
-      register_since:  Date.now(),
+      web_page: "https://www.google.fr/",
+      register_since: Date.now(),
       users_followed: [""],
     };
-
-    // console.log(newUser);
 
     // Add to firebase realtime
     const response = await fetch(
@@ -122,7 +116,6 @@ export default function ModalRegister({ closeModal }) {
         body: JSON.stringify(newUser),
       }
     );
-
     // Error
     if (!response.ok) {
       toast.error("Une erreur est intervenue dans la bdd");
@@ -144,6 +137,8 @@ export default function ModalRegister({ closeModal }) {
 
         // enregistrement dans db du user
         RegisterUserJson(userID);
+        console.log("userID", userID);
+        // reset des éléments de la page
         formRegister.current.reset();
         setValidation("");
         setModalRegister(false);
@@ -151,12 +146,12 @@ export default function ModalRegister({ closeModal }) {
         toast.success("Inscription réussie ! Vous êtes connecté.");
       } catch (error) {
         if (error.code === "auth/email-already-in-use") {
-          setValidation(
+          toast.error(
             "Cet email est déjà utilisé. Veuillez en choisir un autre."
           );
         }
         if (error.code === "auth/invalid-email") {
-          setValidation("Veuillez renseigner un email valide.");
+          toast.error("Veuillez renseigner un email valide.");
         }
         console.dir(error);
       }

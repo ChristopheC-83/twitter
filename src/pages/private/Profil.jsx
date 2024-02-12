@@ -11,6 +11,7 @@ import { Navigate } from "react-router-dom";
 export default function Profil() {
   // const navigate=useNavigate();
   const { currentUser, loading } = useContext(UserContext);
+  console.log(currentUser)
 
   if(!currentUser){
     return <Navigate to="/"/>

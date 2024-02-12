@@ -1,7 +1,7 @@
 //  pour la connexion, propose l'enregistrement su ce n'est pas déjà fait
 
 import { useRef, useState } from "react";
-import { Toaster, toast } from "sonner";
+import {  toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useModalsStore } from "../../stores/useModalsStore";
 import { createPortal } from "react-dom";
@@ -61,7 +61,9 @@ export default function ModalConnection({ closeModal }) {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+        console.log(user.uid);
         closeModal();
+        toast.success("Vous êtes connecté !");
       })
       .catch((error) => {
         if (error.code === "auth/invalid-credential") {
