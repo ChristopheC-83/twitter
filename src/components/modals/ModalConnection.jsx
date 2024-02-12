@@ -33,31 +33,7 @@ export default function ModalConnection({ closeModal }) {
   const email = useRef("");
   const password = useRef("");
 
-  // pour retrouver un user en fonction de son mail
-  async function getUserByEmail(email) {
-    try {
-      const snapshot = await firebase
-        .database()
-        .ref("users")
-        .orderByChild("email")
-        .equalTo(email)
-        .once("value");
-      const userData = snapshot.val();
-      console.log("userData",userData);
-      if (userData) {
-        const userId = Object.keys(userData)[0]; // Si vous vous attendez à un seul utilisateur avec cet email
-        return { ...userData[userId], id: userId };
-      }
-      return null;
-    } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des données de l'utilisateur:",
-        error
-      );
-      return null;
-    }
-    console.log("user", user);
-  }
+  
 
   // connection utilisateur
   async function loginUser(e) {
@@ -66,7 +42,7 @@ export default function ModalConnection({ closeModal }) {
 
     if (email.current.value === "" || password.current.value === "") {
       setValidation("Veuillez remplir tous les champs !");
-      toast.error(validation);
+      toast.error("Veuillez remplir tous les champs !");
       return;
     }
     signInWithEmailAndPassword(
@@ -86,11 +62,12 @@ export default function ModalConnection({ closeModal }) {
           setValidation(
             "Connexion impossible :vérifiez votre email et votre mot de passe"
           );
+          toast.error("Connexion impossible : vérifiez votre email et votre mot de passe");
           return;
         } else {
           setValidation("Une erreur est survenue !");
+          toast.error("Une erreur est survenue !");
         }
-        toast.error(validation);
       });
     setValidation("");
   }
