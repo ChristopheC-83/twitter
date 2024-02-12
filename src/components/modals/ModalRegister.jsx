@@ -92,7 +92,6 @@ export default function ModalRegister({ closeModal }) {
     return true;
   }
 
-
   // insertion dans DB détails du user fraichement enregistré
   async function RegisterUserJson(userID) {
     const newUser = {
@@ -107,9 +106,9 @@ export default function ModalRegister({ closeModal }) {
       users_followed: [""],
     };
 
-    // Add to firebase realtime
+    // Add to firebase realtime with email as the key
     const response = await fetch(
-      "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users.json",
+      `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${newUser.uid}.json`,
       {
         method: "POST",
         headers: {
@@ -118,12 +117,16 @@ export default function ModalRegister({ closeModal }) {
         body: JSON.stringify(newUser),
       }
     );
+
     // Error
     if (!response.ok) {
       toast.error("Une erreur est intervenue dans la bdd");
       return;
     }
+    // const data = await response.json();
+    // console.log(data); //=> id de la table user
   }
+
   // inscription après validation des données
   const handleFormRegister = async (e) => {
     e.preventDefault();
@@ -139,7 +142,7 @@ export default function ModalRegister({ closeModal }) {
 
         // enregistrement dans db du user
         RegisterUserJson(userID);
-        console.log("userID", userID);
+        // console.log("userID", userID);
         // reset des éléments de la page
         formRegister.current.reset();
         setValidation("");

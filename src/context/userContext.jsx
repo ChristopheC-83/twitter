@@ -12,15 +12,20 @@ export const UserContext = createContext();
 
 export function UserContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [userId, setUserId] = useState();
   const [loading, setLoading] = useState(true);
+  const [allUsers, setAllUsers] = useState();
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setCurrentUser(currentUser);
       setLoading(false);
-      console.log(currentUser);
+      console.log("currentUser", currentUser.uid);
     });
   }, [currentUser]);
+
+  
+
 
   function logOut() {
     toast.success("Vous êtes déconnecté");
