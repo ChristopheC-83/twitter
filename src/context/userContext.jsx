@@ -18,7 +18,7 @@ export function UserContextProvider({ children }) {
     onAuthStateChanged(auth, (currentUser) => {
       setCurrentUser(currentUser);
       setLoading(false);
-      console.log("From provider :" + currentUser);
+      console.log(currentUser);
     });
   }, [currentUser]);
 

@@ -52,8 +52,8 @@ export default function ModalConnection({ closeModal }) {
     )
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
-        console.log(user.uid);
+        // console.log(user);
+        // console.log(user.uid);
         closeModal();
         toast.success("Vous êtes connecté !");
       })
