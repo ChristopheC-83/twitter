@@ -1,35 +1,37 @@
 import { createContext, useEffect, useState } from "react";
 import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
 import { auth } from "../firebase-config";
-import { toast } from "sonner";
 
 export const UserContext = createContext();
 
 export function UserContextProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
-  const [currentUserDatas, setCurrentUserDatas] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUserDatas, setCurrentUserDatas] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      setCurrentUser(currentUser);
+    const storedUserDatas = sessionStorage.getItem("currentUserDatas");
+    if (storedUserDatas) {
+      setCurrentUserDatas(JSON.parse(storedUserDatas));
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
       setLoading(false);
     });
-  }, [currentUser]);
 
-  function logOut() {
-    toast.success("Vous êtes déconnecté");
-    // setLoading(true);
-    auth.signOut(auth);
-    setCurrentUser(null);
-  }
+    return () => unsubscribe();
+  }, []);
 
-  // recup des données d'un user en fonction de son id
+  useEffect(() => {
+    if (currentUser && !currentUserDatas) {
+      getCurrentUserDatas(currentUser.uid);
+    }
+  }, [currentUser, currentUserDatas]);
+
   async function getCurrentUserDatas(uid) {
     try {
       setLoading(true);
@@ -41,7 +43,7 @@ export function UserContextProvider({ children }) {
       }
       const data = await response.json();
       setCurrentUserDatas(data);
-      console.log("currentUserDatas : ",data);
+      sessionStorage.setItem("currentUserDatas", JSON.stringify(data));
     } catch (error) {
       console.error("Une erreur est survenue :", error);
     } finally {
@@ -49,15 +51,20 @@ export function UserContextProvider({ children }) {
     }
   }
 
+  function logOut() {
+    sessionStorage.removeItem("currentUserDatas");
+    signOut(auth);
+    setCurrentUser(null);
+    setCurrentUserDatas(null);
+  }
+
   return (
     <UserContext.Provider
       value={{
         currentUser,
-        setCurrentUser,
         currentUserDatas,
-        setCurrentUserDatas,
         loading,
-        setLoading,getCurrentUserDatas,
+        getCurrentUserDatas,
         logOut,
       }}
     >

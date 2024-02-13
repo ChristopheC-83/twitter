@@ -17,20 +17,29 @@ import { FaRegTrashAlt } from "react-icons/fa";
 
 export default function Profil() {
   const navigate = useNavigate();
-  const { currentUser, currentUserDatas, loading } = useContext(UserContext);
+  const { currentUser, currentUserDatas, loading, getCurrentUserDatas } =
+    useContext(UserContext);
+
+  console.log("currentUser : ", currentUser);
+  console.log("currentUserDatas : ", currentUserDatas);
 
   //  affichage lisible de la date d'inscription
- 
-    const [dateResgiter, setDateRegister] = useState(
-      new Date(
+
+  const [dateResgiter, setDateRegister] = useState("");
+
+  useEffect(() => {
+    if (currentUserDatas && currentUserDatas.register_since) {
+      const formattedDate = new Date(
         parseInt(currentUserDatas.register_since, 10)
       ).toLocaleDateString("fr-FR", {
         year: "numeric",
         month: "long",
         day: "numeric",
-      })
-    );
-  
+      });
+      setDateRegister(formattedDate);
+    }
+  }, [currentUserDatas]);
+
   // ref pour formulaire
   //  le formaulaire bi
   const avatar_url = useRef("");
@@ -42,8 +51,19 @@ export default function Profil() {
 
   //   Fonctions
 
-  function handleFormAvatar(e) {
-    e.preventDefault();
+  // charger l'utilisateur
+  async function loadUser() {
+    loading(true);
+    await getCurrentUserDatas(currentUser.uid);
+    loading(false);
+  }
+
+  if (!currentUserDatas) {
+    loadUser();
+  }
+
+  async function handleFormAvatar(userID, newAvatarUrl) {
+    // e.preventDefault();
 
     // Vérification si l'URL est vide
     if (avatar_url.current.value.trim() === "") {
@@ -52,10 +72,9 @@ export default function Profil() {
       );
       setTimeout(() => {
         setErrorFormAvatar("");
-      }, 3000); // Augmentation de la durée à 5 secondes
+      }, 3000);
       return;
     }
-
     // Vérification de l'URL pour une images avec un regex
     const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*\.(jpg|jpeg|png|gif)$/;
     if (!urlRegex.test(avatar_url.current.value)) {
@@ -64,6 +83,28 @@ export default function Profil() {
         setErrorFormAvatar("");
       }, 3000);
       return;
+    }
+
+    try {
+      // Mettre à jour uniquement l'URL de l'avatar dans la base de données Firebase
+      const updateResponse = await fetch(
+        `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${userID}.json`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ avatar_url: newAvatarUrl }),
+        }
+      );
+
+      if (!updateResponse.ok) {
+        throw new Error("Failed to update user avatar URL");
+      }
+
+      console.log("Avatar URL updated successfully");
+    } catch (error) {
+      console.error("An error occurred:", error);
     }
 
     // Mise à jour de l'avatar de l'utilisateur
@@ -107,11 +148,6 @@ export default function Profil() {
     }
   }
 
-  // sécurité
-  if (!currentUser) {
-    navigate("/");
-  }
-
   if (loading) {
     return <div>Chargement...</div>;
   }
@@ -139,7 +175,9 @@ export default function Profil() {
             className="w-4/5 p-2 text-white rounded-md bg-neutral-800"
           />
           <button
-            onClick={handleFormAvatar}
+            onClick={() =>
+              handleFormAvatar(currentUserDatas.id, avatar_url.current.value)
+            }
             className="w-1/5 p-2 mx-auto text-xs font-bold bg-blue-500 rounded-full sm:text-md flexMid hover:bg-blue-600 "
           >
             Modifier l'avatar
