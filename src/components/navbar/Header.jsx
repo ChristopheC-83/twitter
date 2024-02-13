@@ -20,8 +20,10 @@ import ModalConnection from "../modals/ModalConnection";
 import ModalRegister from "../modals/ModalRegister";
 import { auth } from "../../firebase-config";
 import { UserContext } from "../../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
   const { currentUser, loading, setLoading, logOut } = useContext(UserContext);
 
   const { modalPost, setModalPost } = useModalsStore();
@@ -31,6 +33,12 @@ export default function Header() {
     modalConnection,
     setModalConnection,
   } = useModalsStore();
+
+  function logOutFunc() {
+    logOut();
+    navigate("/");
+    
+  }
 
   return (
     <div
@@ -46,7 +54,7 @@ export default function Header() {
           <NavlinkHeader to="/profil" icon={<FaRegUser />} text={"Profil"} />
           <button
             className={`flex text-4xl items-start justify-center xl:justify-start xl:text-2xl gap-x-8 font-semibold`}
-            onClick={() => logOut()}
+            onClick={() => logOutFunc()}
           >
             <div className="w-9 h-9 flexMid">
               <SlLogout className="rotate-180" />
