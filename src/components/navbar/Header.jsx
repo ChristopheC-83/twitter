@@ -35,8 +35,8 @@ export default function Header() {
   } = useModalsStore();
 
   function logOutFunc() {
-    logOut();
     navigate("/");
+    logOut();
     
   }
 

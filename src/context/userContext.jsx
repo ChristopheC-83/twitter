@@ -38,7 +38,6 @@ export function UserContextProvider({ children }) {
         setCurrentUserDatas,
         loading,
         setLoading,
-
         logOut,
       }}
     >
