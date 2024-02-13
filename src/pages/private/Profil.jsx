@@ -3,7 +3,7 @@
 // A effacer ?
 
 import { auth } from "../../firebase-config";
-import { useContext, useEffect, useRef , useState} from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 
@@ -15,13 +15,9 @@ import { GoHeart } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-
 export default function Profil() {
   const navigate = useNavigate();
-  const {
-    currentUser,
-    loading,
-  } = useContext(UserContext);
+  const { currentUser, currentUserDatas, loading } = useContext(UserContext);
 
   // ref pour formulaire
   //  le formaulaire bi
@@ -49,9 +45,7 @@ export default function Profil() {
     }
   }
 
-  useEffect(() => {
-    console.log(currentUser);
-  }, []);
+ 
 
   function deleteAccount() {
     const deleteConfirmed = confirm(
@@ -76,6 +70,8 @@ export default function Profil() {
   return (
     <div className="flex flex-col w-full p-4 border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">
       {currentUser.uid}
+      <br />
+      {currentUserDatas.uid}
     </div>
   );
 }

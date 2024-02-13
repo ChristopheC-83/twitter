@@ -24,28 +24,22 @@ export function UserContextProvider({ children }) {
     });
   }, [currentUser]);
 
-  useEffect(() => {
-    if (currentUser) {
-      getcurrentUserDatas(currentUser.uid);
+  async function getCurrentUserDatas(uid) {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`
+      );
+      if (!response.ok) {
+        throw new Error("Erreur : mauvaise ressource.");
+      }
+      const data = await response.json();
+      setCurrentUserDatas(data);
+    } catch (error) {
+      console.error("Une erreur est survenue :", error);
+    } finally {
+      setLoading(false);
     }
-  }, [currentUser]);
-
-  function getcurrentUserDatas(uid) {
-    setLoading(true);
-    fetch(
-      `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`
-    )
-      .then((response) => {
-        // console.log(response);
-        if (!response.ok) {
-          throw new Error("Erreur : mauvaise ressource.");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setCurrentUserDatas(data);
-        setLoading(false);
-      });
   }
 
   function logOut() {
@@ -64,7 +58,7 @@ export function UserContextProvider({ children }) {
         setCurrentUserDatas,
         loading,
         setLoading,
-        getcurrentUserDatas,
+        getCurrentUserDatas,
         logOut,
       }}
     >

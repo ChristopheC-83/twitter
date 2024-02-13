@@ -11,10 +11,15 @@ import { auth } from "../../firebase-config";
 import { UserContext } from "../../context/userContext";
 
 export default function ModalConnection({ closeModal }) {
-// gestion currentUser du context
+  // gestion currentUser du context
 
-  const { currentUser, setCurrentUser } = useContext(UserContext);
-  
+  const {
+    currentUser,
+    setCurrentUser,
+    getCurrentUserDatas,
+    setCurrentUserDatas,
+  } = useContext(UserContext);
+
   // gestion des modales
   const { modalRegister, setModalRegister, setModalConnection } =
     useModalsStore();
@@ -33,42 +38,49 @@ export default function ModalConnection({ closeModal }) {
   const email = useRef("");
   const password = useRef("");
 
-  
-
-  // connection utilisateur
+  // connection utilisateur utilisée 
   async function loginUser(e) {
     e.preventDefault();
     setValidation("");
-
+  
     if (email.current.value === "" || password.current.value === "") {
       setValidation("Veuillez remplir tous les champs !");
       toast.error("Veuillez remplir tous les champs !");
       return;
     }
-    signInWithEmailAndPassword(
-      auth,
-      email.current.value,
-      password.current.value
-    )
-      .then((userCredential) => {
-        const user = userCredential.user;
-        closeModal();
-        toast.success("Vous êtes connecté !");
-      })
-      .catch((error) => {
-        if (error.code === "auth/invalid-credential") {
-          setValidation(
-            "Connexion impossible :vérifiez votre email et votre mot de passe"
-          );
-          toast.error("Connexion impossible : vérifiez votre email et votre mot de passe");
-          return;
-        } else {
-          setValidation("Une erreur est survenue !");
-          toast.error("Une erreur est survenue !");
-        }
-      });
-    setValidation("");
+  
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      );
+      const user = userCredential.user;
+      
+      // Appeler getCurrentUserDatas avec l'UID de l'utilisateur
+      await getCurrentUserDatas(user.uid);
+     
+  
+      closeModal();
+      toast.success("Vous êtes connecté !");
+    } catch (error) {
+      if (error.code === "auth/invalid-credential") {
+        setValidation(
+          "Connexion impossible : vérifiez votre email et votre mot de passe"
+        );
+        toast.error(
+          "Connexion impossible : vérifiez votre email et votre mot de passe"
+        );
+      } else {
+        setValidation("Une erreur est survenue !");
+        toast.error("Une erreur est survenue !");
+      }
+    }
   }
+  
+
+ 
+  
 
   // useEffect pour surveiller les changements de currentUser
   useEffect(() => {

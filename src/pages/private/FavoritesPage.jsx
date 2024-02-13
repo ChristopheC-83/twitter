@@ -9,20 +9,21 @@ import { UserContext } from "../../context/userContext";
 import { NavLink } from "react-router-dom";
 
 export default function FavoritesPage() {
-  const { user } = useContext(UserContext);
-  const { tweets } = useAllTweetsStore();
+  const { currentUserDatas } = useContext(UserContext);
+  // const { tweets } = useAllTweetsStore();
 
   // Filtrer les tweets des utilisateurs suivis par l'utilisateur connecté
-  const filteredTweets = tweets.filter((tweet) =>
-    user.followed.includes(tweet.author)
-  );
+  // const filteredTweets = tweets.filter((tweet) =>
+  //   user.followed.includes(tweet.author)
+  // );
 
   // Inverser l'ordre des tweets
-  const reversedTweets = filteredTweets.slice().reverse();
+  // const reversedTweets = filteredTweets.slice().reverse();
 
   return (
     <div>
-      {user.followed.length !== 0 ? (
+      {currentUserDatas.login}
+      {/* {user.followed.length !== 0 ? (
         reversedTweets.map((tweet, index) => (
           <Tweet key={index} tweet={tweet} />
           // <Tweet key={tweet.tweet_id} tweet={tweet} />
@@ -48,7 +49,7 @@ export default function FavoritesPage() {
             Retour à l'accueil
           </NavLink>
         </div></>
-      )}
+      )} */}
     </div>
   );
 }

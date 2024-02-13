@@ -47,8 +47,6 @@ export default function Home() {
 
   useEffect(() => {
     fetchTwits();
-    console.log(currentUser);
-    console.log(currentUserDatas);
   }, []);
 
   return (
