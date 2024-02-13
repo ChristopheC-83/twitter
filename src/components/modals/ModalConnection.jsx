@@ -13,12 +13,8 @@ import { UserContext } from "../../context/userContext";
 export default function ModalConnection({ closeModal }) {
   // gestion currentUser du context
 
-  const {
-    currentUser,
-    setCurrentUser,
-    getCurrentUserDatas,
-    setCurrentUserDatas,
-  } = useContext(UserContext);
+  const { currentUser, setCurrentUser,setLoading, setCurrentUserDatas } =
+    useContext(UserContext);
 
   // gestion des modales
   const { modalRegister, setModalRegister, setModalConnection } =
@@ -38,17 +34,37 @@ export default function ModalConnection({ closeModal }) {
   const email = useRef("");
   const password = useRef("");
 
-  // connection utilisateur utilisée 
+  // recup des données d'un user en fonction de son id
+  async function getCurrentUserDatas(uid) {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`
+      );
+      if (!response.ok) {
+        throw new Error("Erreur : mauvaise ressource.");
+      }
+      const data = await response.json();
+      setCurrentUserDatas(data);
+      console.log("currentUserDatas : ",data);
+    } catch (error) {
+      console.error("Une erreur est survenue :", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // connection utilisateur utilisée
   async function loginUser(e) {
     e.preventDefault();
     setValidation("");
-  
+
     if (email.current.value === "" || password.current.value === "") {
       setValidation("Veuillez remplir tous les champs !");
       toast.error("Veuillez remplir tous les champs !");
       return;
     }
-  
+
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -56,11 +72,12 @@ export default function ModalConnection({ closeModal }) {
         password.current.value
       );
       const user = userCredential.user;
-      
+      console.log("currentUser : ",user);
+
       // Appeler getCurrentUserDatas avec l'UID de l'utilisateur
-      await getCurrentUserDatas(user.uid);
-     
-  
+      const userData = await getCurrentUserDatas(user.uid);
+      
+
       closeModal();
       toast.success("Vous êtes connecté !");
     } catch (error) {
@@ -77,15 +94,8 @@ export default function ModalConnection({ closeModal }) {
       }
     }
   }
-  
 
- 
-  
 
-  // useEffect pour surveiller les changements de currentUser
-  useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
 
   return (
     <div
