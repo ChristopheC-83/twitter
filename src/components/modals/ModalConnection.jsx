@@ -57,6 +57,7 @@ export default function ModalConnection({ closeModal }) {
       // Appeler getCurrentUserDatas avec l'UID de l'utilisateur
       const userData = await getCurrentUserDatas(user.uid);
       sessionStorage.setItem('currentUserDatas', JSON.stringify(userData));
+      setCurrentUserDatas(userData);
       
       closeModal();
       toast.success("Vous êtes connecté !");

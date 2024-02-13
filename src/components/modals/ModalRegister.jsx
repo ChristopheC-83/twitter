@@ -11,9 +11,11 @@ import { auth } from "../../firebase-config";
 import { UserContext } from "../../context/userContext";
 import { useModalsStore } from "../../stores/useModalsStore";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function ModalRegister({ closeModal }) {
-  const { signUp } = useContext(UserContext);
+  const navigate = useNavigate();
+  const { setCurrentUserDatas } = useContext(UserContext);
   const { setModalRegister, setModalConnection } = useModalsStore();
 
   //  les States
@@ -117,14 +119,13 @@ export default function ModalRegister({ closeModal }) {
         body: JSON.stringify(newUser),
       }
     );
-
     // Error
     if (!response.ok) {
       toast.error("Une erreur est intervenue dans la bdd");
       return;
     }
-    // const data = await response.json();
-    // console.log(data); //=> id de la table user
+    sessionStorage.setItem("currentUserDatas", JSON.stringify(newUser));
+    setCurrentUserDatas(newUser);
   }
 
   // inscription après validation des données
@@ -142,13 +143,16 @@ export default function ModalRegister({ closeModal }) {
 
         // enregistrement dans db du user
         RegisterUserJson(userID);
+
         // console.log("userID", userID);
         // reset des éléments de la page
         formRegister.current.reset();
+        toast.success("Inscription réussie ! Vous êtes connecté.");
         setValidation("");
         setModalRegister(false);
         setModalConnection(false);
-        toast.success("Inscription réussie ! Vous êtes connecté.");
+        navigate("/");
+        
       } catch (error) {
         if (error.code === "auth/email-already-in-use") {
           toast.error(

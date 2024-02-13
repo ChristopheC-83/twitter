@@ -223,7 +223,7 @@ export default function Profil() {
   return (
     <div className="flex flex-col w-full p-4 border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">
       <div className="flex flex-col">
-        <div className="w-12 h-12 p-2 ml-auto text-2xl text-white bg-red-800 border-2 border-white rounded-full cursor-pointer flexMid">
+        <div className="w-12 h-12 p-2 ml-auto text-2xl text-white bg-red-700 border-2 border-white rounded-full cursor-pointer flexMid">
           <FaRegTrashAlt onClick={deleteAccount} />
         </div>
         <img
