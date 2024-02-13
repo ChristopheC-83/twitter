@@ -29,6 +29,26 @@ export function UserContextProvider({ children }) {
     setCurrentUser(null);
   }
 
+  // recup des données d'un user en fonction de son id
+  async function getCurrentUserDatas(uid) {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`
+      );
+      if (!response.ok) {
+        throw new Error("Erreur : mauvaise ressource.");
+      }
+      const data = await response.json();
+      setCurrentUserDatas(data);
+      console.log("currentUserDatas : ",data);
+    } catch (error) {
+      console.error("Une erreur est survenue :", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -37,7 +57,7 @@ export function UserContextProvider({ children }) {
         currentUserDatas,
         setCurrentUserDatas,
         loading,
-        setLoading,
+        setLoading,getCurrentUserDatas,
         logOut,
       }}
     >

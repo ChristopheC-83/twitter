@@ -20,17 +20,17 @@ export default function Profil() {
   const { currentUser, currentUserDatas, loading } = useContext(UserContext);
 
   //  affichage lisible de la date d'inscription
-  const [dateRegiter, setDateRegister] = useState(
-    new Date(parseInt(currentUserDatas.register_since, 10)).toLocaleDateString(
-      "fr-FR",
-      {
+ 
+    const [dateResgiter, setDateRegister] = useState(
+      new Date(
+        parseInt(currentUserDatas.register_since, 10)
+      ).toLocaleDateString("fr-FR", {
         year: "numeric",
         month: "long",
         day: "numeric",
-      }
-    )
-  );
-
+      })
+    );
+  
   // ref pour formulaire
   //  le formaulaire bi
   const avatar_url = useRef("");
@@ -152,7 +152,7 @@ export default function Profil() {
         </div>
         <div className="flex items-center my-2 gap-x-3">
           <LuCalendarDays className="mr-1 " /> <p>Inscription </p> :{" "}
-          <p>{dateRegiter}</p>
+          <p>{dateResgiter}</p>
         </div>
         {/* formulaire de modification de la biographie */}
         {/* en 2 ways binding pour la modifier si elle existe */}
