@@ -62,8 +62,8 @@ export function UserContextProvider({ children }) {
     <UserContext.Provider
       value={{
         currentUser,
-        currentUserDatas,
-        loading,
+        currentUserDatas,setCurrentUserDatas,
+        loading,setLoading,
         getCurrentUserDatas,
         logOut,
       }}
