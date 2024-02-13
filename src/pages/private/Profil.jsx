@@ -3,60 +3,79 @@
 // A effacer ?
 
 import { auth } from "../../firebase-config";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef , useState} from "react";
 import { UserContext } from "../../context/userContext";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { toast } from "sonner";
 
+import { LuMail } from "react-icons/lu";
+import { LuCalendarDays } from "react-icons/lu";
+import { GoHeart } from "react-icons/go";
+import { NavLink } from "react-router-dom";
+import { FaRegTrashAlt } from "react-icons/fa";
+
+
 export default function Profil() {
-  // const navigate=useNavigate();
-  const { currentUser, loading } = useContext(UserContext);
-  console.log(currentUser);
+  const navigate = useNavigate();
+  const {
+    currentUser,
+    loading,
+  } = useContext(UserContext);
 
-  async function getAllUsersFromDatabase() {
-    try {
-      const response = await fetch(
-        "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users.json"
+  // ref pour formulaire
+  //  le formaulaire bi
+  const avatar_url = useRef("");
+
+  //   messages d'erreur
+
+  const [errorFormAvatar, setErrorFormAvatar] = useState("");
+  const [errorFormBiography, setErrorFormBiography] = useState("");
+
+  //   Fonctions
+
+  function handleFormAvatar(e) {
+    e.preventDefault();
+
+    // Vérification si l'URL est vide
+    if (avatar_url.current.value.trim() === "") {
+      setErrorFormAvatar(
+        "Vous devez renseigner une URL si vous souhaitez modifier votre avatar !"
       );
-
-      const data = await response.json();
-      console.log(data);
-      setAllUsers(data); // Mettre à jour le state avec les utilisateurs récupérés
-    } catch (error) {
-      toast.error("Failed to fetch users");
+      setTimeout(() => {
+        setErrorFormAvatar("");
+      }, 3000); // Augmentation de la durée à 5 secondes
+      return;
     }
-  }
-
-  function findUserIdByMail(email) {
-    const allUsers = getAllUsersFromDatabase();
-    for (const userId in allUsers) {
-      if (allUsers[userId].email === email) {
-        console.log(userId);
-        return userId;
-      }
-    }
-    return null; // Retourne null si aucun utilisateur n'a été trouvé avec l'email spécifié
   }
 
   useEffect(() => {
-    if (currentUser) {
-      console.log(findUserIdByMail(currentUser.email));
+    console.log(currentUser);
+  }, []);
+
+  function deleteAccount() {
+    const deleteConfirmed = confirm(
+      "Etes-vous sûr de vouloir supprimer votre compte ?"
+    );
+    if (deleteConfirmed) {
+      console.log("Suppression du compte");
+      logOut();
+      navigate("/");
     }
-  }, [allUsers]);
+  }
 
   // sécurité
   if (!currentUser) {
-    return <Navigate to="/" />;
+    navigate("/");
+  }
+
+  if (loading) {
+    return <div>Chargement...</div>;
   }
 
   return (
-    <>
-      {!auth.currentUser ? (
-        <div>connectez-vous</div>
-      ) : (
-        <div>Page de profil</div>
-      )}
-    </>
+    <div className="flex flex-col w-full p-4 border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">
+      {currentUser.uid}
+    </div>
   );
 }

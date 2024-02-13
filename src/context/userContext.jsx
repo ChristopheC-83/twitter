@@ -12,6 +12,7 @@ export const UserContext = createContext();
 
 export function UserContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [currentUserDatas, setCurrentUserDatas] = useState();
   const [userId, setUserId] = useState();
   const [loading, setLoading] = useState(true);
   const [allUsers, setAllUsers] = useState();
@@ -20,12 +21,32 @@ export function UserContextProvider({ children }) {
     onAuthStateChanged(auth, (currentUser) => {
       setCurrentUser(currentUser);
       setLoading(false);
-      console.log("currentUser", currentUser.uid);
     });
   }, [currentUser]);
 
-  
+  useEffect(() => {
+    if (currentUser) {
+      getcurrentUserDatas(currentUser.uid);
+    }
+  }, [currentUser]);
 
+  function getcurrentUserDatas(uid) {
+    setLoading(true);
+    fetch(
+      `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`
+    )
+      .then((response) => {
+        // console.log(response);
+        if (!response.ok) {
+          throw new Error("Erreur : mauvaise ressource.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setCurrentUserDatas(data);
+        setLoading(false);
+      });
+  }
 
   function logOut() {
     toast.success("Vous êtes déconnecté");
@@ -39,8 +60,11 @@ export function UserContextProvider({ children }) {
       value={{
         currentUser,
         setCurrentUser,
+        currentUserDatas,
+        setCurrentUserDatas,
         loading,
         setLoading,
+        getcurrentUserDatas,
         logOut,
       }}
     >

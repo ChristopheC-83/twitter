@@ -110,7 +110,7 @@ export default function ModalRegister({ closeModal }) {
     const response = await fetch(
       `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${newUser.uid}.json`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },

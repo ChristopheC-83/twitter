@@ -45,7 +45,7 @@ export default function App() {
                 element: (
                   <Suspense>{currentUser ? <Profil /> : <Error />}</Suspense>
                 ),
-              },
+              }, 
               {
                 path: "/user/:idUser",
                 element: (

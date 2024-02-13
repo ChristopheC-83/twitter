@@ -2,13 +2,14 @@
 // Il faut être connecté pour y avoir accés
 
 import { useEffect, useState, useRef, useContext } from "react";
+import { UserContext } from "../../context/userContext";
 // import { AuthContext } from "../../../context/AuthProvider";
 // import { useAllTweetsStore } from "../../../stores/AllTweetsStore";
 // import Tweet from "../../components/utilitiesComponents/Tweet";
 import { NavLink } from "react-router-dom";
 
 export default function FavoritesPage() {
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
   const { tweets } = useAllTweetsStore();
 
   // Filtrer les tweets des utilisateurs suivis par l'utilisateur connecté
