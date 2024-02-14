@@ -1,5 +1,5 @@
-import Footer from "../components/navbar/Footer";
-import Header from "../components/navbar/Header";
+import Footer from "./navbar/Footer";
+import Header from "./navbar/Header";
 import { Toaster } from "sonner";
 import { Outlet, useNavigation } from "react-router-dom";
 import { useContext } from "react";

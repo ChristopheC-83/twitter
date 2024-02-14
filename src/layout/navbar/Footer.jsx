@@ -2,7 +2,6 @@
 
 import { GoHeart } from "react-icons/go";
 import { LuHome } from "react-icons/lu";
-import { FaHashtag } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
 import { SlLogin } from "react-icons/sl";
 import { SlLogout } from "react-icons/sl";
@@ -10,11 +9,11 @@ import { FaFeather } from "react-icons/fa";
 
 import { createPortal } from "react-dom";
 import { useState, useContext } from "react";
-import NavlinkFooter from "../toolsComponents/NavLinkFooter";
+import NavlinkFooter from "./linksComponents/NavLinkFooter";
 import { useModalsStore } from "../../stores/useModalsStore";
-import ModalFormPost from "../modals/ModalFormPost";
-import ModalConnection from "../modals/ModalConnection";
-import ModalRegister from "../modals/ModalRegister";
+import ModalFormPost from "../../pages/commonsComponents/modals/ModalFormPost";
+import ModalConnection from "../../pages/commonsComponents/modals/ModalConnection";
+import ModalRegister from "../../pages/commonsComponents/modals/ModalRegister";
 import { auth } from "../../firebase-config";
 import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";

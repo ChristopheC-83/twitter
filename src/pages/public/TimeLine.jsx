@@ -2,8 +2,8 @@
 //  si connecté et que c'est sa page, logo de modification de profil disponible => modal
 
 
-import HeaderUser from "../../components/timeLineComponents/HeaderUser";
-import OwnTwitList from "../../components/timeLineComponents/OwnTwitList";
+import HeaderUser from "./allTwitsOfOneUser/components/HeaderUser";
+import OwnTwitList from "./allTwitsOfOneUser/components/OwnTwitList";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function TimeLine() {

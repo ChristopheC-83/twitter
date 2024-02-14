@@ -6,7 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { UserContext } from "./context/userContext";
 
-const Home = lazy(() => import("./pages/public/Home"));
+const Home = lazy(() => import("./pages/public/homePage/Home"));
 const TimeLine = lazy(() => import("./pages/public/TimeLine"));
 const OneTwit = lazy(() => import("./pages/public/OneTwit"));
 const Main = lazy(() => import("./layout/Main"));

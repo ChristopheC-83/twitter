@@ -1,7 +1,7 @@
 // La liste des twits de l'utilisateur
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Twit from "../sections/Twit";
+import Twit from "../../../../components/sections/Twit";
 import { FaSpinner } from "react-icons/fa";
 
 export default function OwnTwitList() {

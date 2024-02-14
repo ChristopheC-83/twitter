@@ -1,11 +1,11 @@
 //  page d'accueil de l'utilisateur connecté ou pas
 
 import { useEffect, useState, useContext } from "react";
-import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../../context/userContext";
 import { Toaster, toast } from "sonner";
 import { FaSpinner } from "react-icons/fa";
-import Twit from "../../components/sections/Twit";
-import { FIREBASE_URL } from "../../firebase-config";
+import Twit from "../../commonsComponents/Twit";
+import { FIREBASE_URL } from "../../../firebase-config";
 
 export default function Home() {
   

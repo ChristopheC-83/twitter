@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { Toaster, toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { useModalsStore } from "../../stores/useModalsStore";
+import { useModalsStore } from "../../../stores/useModalsStore";
 import { createPortal } from "react-dom";
 import ModalRegister from "./ModalRegister";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase-config";
-import { UserContext } from "../../context/userContext";
+import { auth } from "../../../firebase-config";
+import { UserContext } from "../../../context/userContext";
 
 export default function ModalConnection({ closeModal }) {
   // gestion currentUser du context
