@@ -6,12 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/userContext";
 // import { useModalsStore } from "../stores/useModalsStore";
 import { FIREBASE_URL } from "../../../firebase-config";
+import { useTwitsStore } from "../../../stores/useTwitsStore";
 
 export default function ModalFormPost({ closeModal }) {
   const { currentUser, currentUserDatas } = useContext(UserContext);
-  // console.log(currentUser, currentUserDatas);
   const navigate = useNavigate();
-  // const { modalPost, setModalPost } = useModalsStore();
+  const { twits, setTwits, addTwit } = useTwitsStore();
 
   const [validation, setValidation] = useState("");
 
@@ -33,10 +33,17 @@ export default function ModalFormPost({ closeModal }) {
       setValidation("Un post vide ? Vraiment ?");
       return false;
     }
+    if (text.current.value.length > 250) {
+      setValidation(
+        `Ton post est trop long ! 250 caractères maximum ! Pas ${text.current.value.length} !`
+      );
+      return false;
+    }
 
     setValidation("");
     return true;
   }
+
   const createPost = async (e) => {
     e.preventDefault();
     // longueur mdp, cohérence des2 mdp...
@@ -52,27 +59,32 @@ export default function ModalFormPost({ closeModal }) {
           comments: ["Sois le premier à commenter ce post !"],
         };
 
-        const response = await fetch(
-          FIREBASE_URL,"posts.json",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newPost),
-          }
-        );
+        const response = await fetch(FIREBASE_URL + "posts.json", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newPost),
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            "Une erreur est survenue lors de l'enregistrement du twit."
+          );
+        }
+
+        // Ajoutez le nouveau twit localement dans le store Zustand
+        addTwit(newPost);
+
+        // Fermez le modal et naviguez vers la page d'accueil
         closeModal();
         navigate(`/`);
       } catch (error) {
-        //if Error
-        if (!response.ok) {
-          toast.error("Un erreur est survenue !");
-          return;
-        }
+        toast.error(error.message);
       }
     }
   };
+
   return (
     <div
       className="fixed inset-0 z-20 pt-12 bg-neutral-800/70 midFlex text-neutral-50"
@@ -94,7 +106,7 @@ export default function ModalFormPost({ closeModal }) {
           </p>
           <textarea
             className="w-full p-2 text-base resize-none md:text-lg sm:text-md h-72 font-semi-bold bg-neutral-900"
-            placeholder="Dis nous tout !"
+            placeholder="Dis nous tout ! (mais en 250 caractères maximum !)"
             ref={text}
             name="text"
           ></textarea>
