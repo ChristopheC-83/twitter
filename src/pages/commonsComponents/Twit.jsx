@@ -1,16 +1,21 @@
 // Encart d'un twit dans une liste
 // homePage ou allTwitsOfOneUser
 
-import { useState } from "react";
-import { ImBubble2 } from "react-icons/im";
-import { FaRetweet } from "react-icons/fa6";
-// import { GoHeartFill } from "react-icons/go"; <GoHeartFill />
-import { GoHeart } from "react-icons/go";
-// import { FaBookmark } from "react-icons/fa6"; <FaBookmark />
-import { FaRegBookmark } from "react-icons/fa6";
+import { useState, useContext } from "react";
+import { UserContext } from "../../context/userContext";
 import { NavLink, Link } from "react-router-dom";
 
+import { useTwitsStore } from "../../stores/useTwitsStore";
+import { ImBubble2 } from "react-icons/im";
+import { FaRetweet } from "react-icons/fa6";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { toast } from "sonner";
+import { FIREBASE_URL } from "../../firebase-config";
+
 export default function Twit({ twit }) {
+  const { currentUser, currentUserDatas } = useContext(UserContext);
+  const { twits, deleteTwit } = useTwitsStore();
+
   // Utilise useState directement pour initialiser la date
   const [dateModif, setDateModif] = useState(
     new Date(parseInt(twit.date, 10)).toLocaleDateString("fr-FR", {
@@ -22,9 +27,28 @@ export default function Twit({ twit }) {
       minute: "numeric",
     })
   );
-  //
+  //Fonctions
+  function deleteTwitFunction(id_twit) {
+    console.log("Suppression du twit :", id_twit);
+    try {
+      deleteTwit(id_twit);
+      // Supprimer le twit de la base de données en temps réel
+      fetch(`${FIREBASE_URL}posts/${id_twit}.json`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      toast.success("Twit supprimé avec succès !")
+      console.log("Twit supprimé avec succès :", id_twit);
+    } catch (error) {
+      console.error(
+        "Une erreur est survenue lors de la suppression du twit :",
+        error
+      );
+    }
+  }
 
-  //
   return (
     <div className="flex flex-col w-full p-4 border-t border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">
       <div className="flex items-center justify-between w-full mb-4">
@@ -43,17 +67,8 @@ export default function Twit({ twit }) {
           <img className="mx-auto w-8/10" src={twit.img} alt={twit.author} />
         )}
       </NavLink>
-      ????
-      {twit.hashtags > 0 && (
-        <div className="flex flex-wrap">
-          {twit.hashtags.map((hashtag) => (
-            <span key={twit.date} className="mr-2 text-blue-500 cursor-pointer">
-              #{hashtag}
-            </span>
-          ))}
-        </div>
-      )}
-      <div className="flex justify-between mt-4">
+
+      <div className="flex mt-4 justify-evenly">
         <div className="flex items-center gap-2 text-neutral-500">
           <ImBubble2 />
           <span>{twit.comments.length}</span>
@@ -63,20 +78,12 @@ export default function Twit({ twit }) {
           {/* ajouter le nombre de retweets */}
           <span>0</span>
         </div>
-        <div className="flex items-center gap-2 text-neutral-500">
-          <GoHeart />
-          {/* pour les likes il faudrait plus un tableau contenant ceux qui aiment le twit */}
-          {/* ainsi si user connecté et que son nom est dans le tableau, le coeur est plein */}
-          {/*  */}
-          <span className="mb-0.5">{twit.likes}</span>
-        </div>
-        <div className="flex items-center gap-2 text-neutral-500">
-          <FaRegBookmark />
-          {/* pour les enregistrés il faudrait plus un tableau contenant ceux qui ont enregistré */}
-          {/* ainsi si user connecté et que son nom est dans le tableau, le bookmark est plein */}
-          {/*  */}
-          <span className="mb-0.5">{twit.likes}</span>
-        </div>
+        {currentUserDatas && twit.author === currentUserDatas.login && (
+          <FaRegTrashAlt
+            onClick={() => deleteTwitFunction(twit.id)}
+            className="cursor-pointer"
+          />
+        )}
       </div>
     </div>
   );

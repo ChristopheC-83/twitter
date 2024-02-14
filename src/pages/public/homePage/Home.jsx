@@ -33,6 +33,7 @@ export default function Home() {
         id,
         ...twit,
       }));
+      // console.log(tweetsArray);
 
       setTwits(tweetsArray);
     } catch (error) {
@@ -43,9 +44,8 @@ export default function Home() {
   }
 
   useEffect(() => {
-    console.log("twit");
     fetchTwits();
-  }, []);
+  }, [twits]);
 
   return (
     <div className="flex flex-col-reverse flex-grow text-xl">
