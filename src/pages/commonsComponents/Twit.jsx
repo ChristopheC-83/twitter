@@ -31,7 +31,6 @@ export default function Twit({ twit }) {
   function deleteTwitFunction(id_twit) {
     console.log("Suppression du twit :", id_twit);
     try {
-      deleteTwit(id_twit);
       // Supprimer le twit de la base de données en temps réel
       fetch(`${FIREBASE_URL}posts/${id_twit}.json`, {
         method: "DELETE",
@@ -39,7 +38,7 @@ export default function Twit({ twit }) {
           "Content-Type": "application/json",
         },
       });
-      toast.success("Twit supprimé avec succès !")
+      toast.success("Twit supprimé avec succès !");
       console.log("Twit supprimé avec succès :", id_twit);
     } catch (error) {
       console.error(
@@ -69,20 +68,20 @@ export default function Twit({ twit }) {
       </NavLink>
 
       <div className="flex mt-4 justify-evenly">
-        <div className="flex items-center gap-2 text-neutral-500">
+        <div className="flex items-center gap-2 text-neutral-500 hover:text-neutral-50 hover:cursor-pointer">
           <ImBubble2 />
           <span>{twit.comments.length}</span>
         </div>
-        <div className="flex items-center gap-2 text-neutral-500">
+        <div className="flex items-center gap-2 text-neutral-500 hover:text-neutral-50 hover:cursor-pointer">
           <FaRetweet />
-          {/* ajouter le nombre de retweets */}
-          <span>0</span>
         </div>
         {currentUserDatas && twit.author === currentUserDatas.login && (
-          <FaRegTrashAlt
-            onClick={() => deleteTwitFunction(twit.id)}
-            className="cursor-pointer"
-          />
+          <div className="flex items-center gap-2 text-neutral-500 hover:text-neutral-50 hover:cursor-pointer">
+            <FaRegTrashAlt
+              onClick={() => deleteTwitFunction(twit.id)}
+              className="cursor-pointer"
+            />
+          </div>
         )}
       </div>
     </div>
