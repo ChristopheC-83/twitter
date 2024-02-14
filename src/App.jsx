@@ -7,7 +7,7 @@ import { auth } from "./firebase-config";
 import { UserContext } from "./context/userContext";
 
 const Home = lazy(() => import("./pages/public/homePage/Home"));
-const TimeLine = lazy(() => import("./pages/public/TimeLine"));
+const AllTwitsOfOneUser = lazy(() => import("./pages/public/allTwitsOfOneUser/AllTwitsOfOneUser"));
 const OneTwit = lazy(() => import("./pages/public/OneTwit"));
 const Main = lazy(() => import("./layout/Main"));
 const Error = lazy(() => import("./pages/public/Error"));
@@ -47,9 +47,9 @@ export default function App() {
                 ),
               }, 
               {
-                path: "/user/:idUser",
+                path: "/user/:user_id",
                 element: (
-                  <Suspense><TimeLine /></Suspense>
+                  <Suspense><AllTwitsOfOneUser /></Suspense>
                 ),
               },
               {

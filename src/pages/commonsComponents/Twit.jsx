@@ -48,7 +48,7 @@ export default function Twit({ twit }) {
         <div className="flex items-center justify-between w-full">
           <div>
             <span className="font-bold">
-              <Link to={`/user/${twit.author}`}>{twit.author}</Link>
+              <Link to={`/user/${twit.id_author}`}>{twit.author}</Link>
             </span>
           </div>
           <span className="text-sm text-gray-500">{dateModif}</span>

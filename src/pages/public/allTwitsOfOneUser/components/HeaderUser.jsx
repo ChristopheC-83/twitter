@@ -2,15 +2,14 @@
 
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function HeaderUser() {
-  const { idUser } = useParams();
-  console.log(idUser);
+export default function HeaderUser({user_id}) {
+  console.log("hederUser : ", user_id);
 
  
 
   return (
     <div>
-      <div>Profil de {idUser}</div>
+      {/* <div>Profil de {user_id}</div> */}
     </div>
   );
 }
