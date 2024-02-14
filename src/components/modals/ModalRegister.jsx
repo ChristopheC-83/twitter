@@ -155,12 +155,12 @@ export default function ModalRegister({ closeModal }) {
         
       } catch (error) {
         if (error.code === "auth/email-already-in-use") {
-          toast.error(
+          setValidation(
             "Cet email est déjà utilisé. Veuillez en choisir un autre."
           );
         }
         if (error.code === "auth/invalid-email") {
-          toast.error("Veuillez renseigner un email valide.");
+          setValidation("Veuillez renseigner un email valide.");
         }
         console.dir(error);
       }

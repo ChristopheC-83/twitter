@@ -80,7 +80,7 @@ export default function Profil() {
       );
 
       if (!updateResponse.ok) {
-        throw new Error("Failed to update user avatar URL");
+        throw new Error("Echec de la modification de votre avatar.");
       }
 
       setCurrentUserDatas((prevData) => ({
@@ -97,7 +97,7 @@ export default function Profil() {
         JSON.stringify(currentUserDataCopy)
       );
 
-      toast.success("Avatar URL updated successfully");
+      toast.success("Nouvel avatar enregistré avec succès !");
     } catch (error) {
       console.error("An error occurred:", error);
       toast.error("Echec du changement d'avatar");
@@ -165,7 +165,7 @@ export default function Profil() {
       toast.error("Une erreur s'est produite :", error);
     }
   }
-  
+  // supression du compte
   async function deleteAccount() {
     const deleteConfirmed = window.confirm(
       "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
