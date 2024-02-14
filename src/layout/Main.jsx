@@ -1,10 +1,10 @@
 import Footer from "../components/navbar/Footer";
 import Header from "../components/navbar/Header";
-import Blog from "../components/sections/Blog";
 import { Toaster } from "sonner";
 import { Outlet, useNavigation } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../context/userContext";
+import BlogPart from "./rightPage/BlogPart";
 
 export default function Main() {
   const { currentUser, loading } = useContext(UserContext);
@@ -30,7 +30,7 @@ export default function Main() {
 
         {/* colonne lien blog à droite de l'écran pc/tablette */}
         <div className="relative hidden border-l-2 w-72 lg:block lg:min-w-80 border-neutral-500">
-          <Blog />
+          <BlogPart />
         </div>
       </div>
     );
