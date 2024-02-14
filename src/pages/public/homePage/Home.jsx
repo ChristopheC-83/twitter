@@ -54,7 +54,7 @@ export default function Home() {
       {loading && <LoadingComponent />}
 
       {/* Erreur */}
-      {error && <div>Une erreur est survenue !</div>}
+      {error && <div className="pt-24 text-center">Une erreur est survenue !</div>}
 
       {/* Affichage des Twitts */}
       {!loading && !error &&
