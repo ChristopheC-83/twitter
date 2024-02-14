@@ -105,7 +105,7 @@ export default function ModalRegister({ closeModal }) {
       biography: "",
       web_page: "https://www.google.fr/",
       register_since: Date.now(),
-      users_followed: [""],
+      users_followed: [],
     };
 
     // Add to firebase realtime with email as the key

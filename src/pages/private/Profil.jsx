@@ -281,12 +281,12 @@ export default function Profil() {
           </button>
         </form>
         <p className={`mt-2 text-red-500 text-md`}>{errorFormBiography}</p>
-        {currentUserDatas.users_followed.length <= 1 && (
+        {!currentUserDatas.users_followed  && (
           <p className="mt-4 text-center text-md">
             Vous n'avez pas encore de favoris
           </p>
         )}
-        {currentUserDatas.users_followed.length > 1 && (
+        {currentUserDatas.users_followed && (
           <div className="flex flex-col">
             <div className="flex items-center my-2 gap-x-3">
               <GoHeart className="mr-1" />
