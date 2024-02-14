@@ -6,65 +6,58 @@ import { Toaster, toast } from "sonner";
 import { FaSpinner } from "react-icons/fa";
 import Twit from "../../commonsComponents/Twit";
 import { FIREBASE_URL } from "../../../firebase-config";
+import { useTwitsStore } from "../../../stores/useTwitsStore";
+import LoadingComponent from "../../commonsComponents/toolsComponents/LoadingComponent";
 
 export default function Home() {
-  
-  const {currentUser, currentUserDatas} = useContext(UserContext);
-
-  const [twits, setTweets] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { currentUser, currentUserDatas } = useContext(UserContext);
+  const { twits, setTwits } = useTwitsStore();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // console.log(FIREBASE_URL+"posts.json");
+  async function fetchTwits() {
+    try {
+      const response = await fetch(
+        "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/posts.json"
+      );
 
-  function fetchTwits() {
-    setLoading(true);
-    fetch(
-      FIREBASE_URL+"posts.json"
-    )
-      .then((response) => {
-        // console.log(response);
-        if (!response.ok) {
-          toast.error("Un erreur est survenue !");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // console.log(data);
-        setLoading(false);
-        const tweetsArray = Object.entries(data).map(([id, twit]) => ({
-          id,
-          ...twit,
-        }));
-        setTweets(tweetsArray);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-        toast.error(error);
-      });
+      if (!response.ok) {
+        throw new Error("Une erreur est survenue !");
+      }
+
+      const data = await response.json();
+      setLoading(false);
+
+      const tweetsArray = Object.entries(data).map(([id, twit]) => ({
+        id,
+        ...twit,
+      }));
+
+      setTwits(tweetsArray);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+      toast.error(error.message);
+    }
   }
 
   useEffect(() => {
+    console.log("twit");
     fetchTwits();
   }, []);
 
   return (
     <div className="flex flex-col-reverse flex-grow text-xl">
-      {/* <Toaster position="top-center" richColors expand={true} /> */}
-      {/* Loader */}
-      {loading && (
-        <div className="flexMid">
-          <FaSpinner className="animate-spin" />
-          <span className="ml-4">Chargement...</span>
-        </div>
-      )}
+      <Toaster position="top-center" richColors expand={true} />
+
+      {loading && <LoadingComponent />}
 
       {/* Erreur */}
       {error && <div>Une erreur est survenue !</div>}
 
       {/* Affichage des Twitts */}
-      {!loading & !error &&
+      {!loading && !error &&
         twits.map((twit) => <Twit key={twit.date} twit={twit} />)}
     </div>
   );

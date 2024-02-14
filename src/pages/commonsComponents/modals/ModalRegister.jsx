@@ -152,7 +152,6 @@ export default function ModalRegister({ closeModal }) {
         setModalRegister(false);
         setModalConnection(false);
         navigate("/");
-        
       } catch (error) {
         if (error.code === "auth/email-already-in-use") {
           setValidation(

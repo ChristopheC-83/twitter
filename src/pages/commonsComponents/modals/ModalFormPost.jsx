@@ -1,98 +1,78 @@
 // Propose la créationd d'un twit
 
-import { useRef } from "react";
-import {  toast } from "sonner";
+import { useRef, useContext, useState } from "react";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../context/userContext";
 // import { useModalsStore } from "../stores/useModalsStore";
+import { FIREBASE_URL } from "../../../firebase-config";
 
 export default function ModalFormPost({ closeModal }) {
+  const { currentUser, currentUserDatas } = useContext(UserContext);
+  // console.log(currentUser, currentUserDatas);
   const navigate = useNavigate();
   // const { modalPost, setModalPost } = useModalsStore();
+
+  const [validation, setValidation] = useState("");
 
   // refs
   const text = useRef("");
   const img = useRef("");
   const author = useRef("");
   const date = useRef("");
-  const comments = useRef([]);
-  const likes = useRef(0);
-  const hashtags = useRef([]);
 
   // functions
 
-  const onBeforeSubmitHandler = (e) => {
+  function validationFormDatas() {
+    setValidation("");
+    // email vide ?
+    if (
+      (text.current.value.trim() === "") &
+      (img.current.value.trim() === "")
+    ) {
+      setValidation("Un post vide ? Vraiment ?");
+      return false;
+    }
+
+    setValidation("");
+    return true;
+  }
+  const createPost = async (e) => {
     e.preventDefault();
-    // let isValid = true;
-    if (!text.current.value) {
-      toast.error("Le texte est obligatoire");
-      // isValid = false;
-    }
+    // longueur mdp, cohérence des2 mdp...
+    if (validationFormDatas()) {
+      try {
+        const newPost = {
+          text: text.current.value,
+          img: img.current.value,
+          author: currentUserDatas.login,
+          original_author: currentUserDatas.login,
+          date: Date.now(),
+          original_date: Date.now(),
+          comments: ["Sois le premier à commenter ce post !"],
+        };
 
-    createPost();
-  };
-
-  const createPost = async () => {
-    const newPost = {
-      id:null,
-      text: text.current.value,
-      img: img.current.value,
-      author: author.current.value,
-      date: date.current.value,
-      comments: ["Sois le premier à commenter ce post !"],
-      likes: 0,
-      hashtags: [""],
-    };
-
-    const response = await fetch(
-      "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/posts.json",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newPost),
+        const response = await fetch(
+          FIREBASE_URL,"posts.json",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newPost),
+          }
+        );
+        closeModal();
+        navigate(`/`);
+      } catch (error) {
+        //if Error
+        if (!response.ok) {
+          toast.error("Un erreur est survenue !");
+          return;
+        }
       }
-    );
-
-    //if Error
-    if (!response.ok) {
-      toast.error("Un erreur est survenue !");
-      return;
     }
-    // get id
-    const {name : idTwit} = await response.json();
-
-    // const updatedPost = {
-    //   ...newPost,
-    //   id: idTwit, // Update the id field with the received ID
-    // };
-  
-    // Perform a PATCH request to update the tweet with the new ID
-    const updateResponse = await fetch(
-      `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/posts/${idTwit}.json`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: idTwit }), // You can update other fields if needed
-      }
-    );
-  
-    // If there is an error in the update
-    if (!updateResponse.ok) {
-      toast.error("Un erreur est survenue lors de la mise à jour !");
-      return;
-    }
-  
-    // Continue with your logic after successful creation and update
-    // setModalPost(false);
-    closeModal()
-    navigate(`/`);
-    window.location.reload()
-  
   };
-
   return (
     <div
       className="fixed inset-0 z-20 pt-12 bg-neutral-800/70 midFlex text-neutral-50"
@@ -110,7 +90,7 @@ export default function ModalFormPost({ closeModal }) {
         </button>
         <form>
           <p className="mb-4 text-2xl text-center">
-            Salut <i>Utilisateur</i>
+            Salut <i>{currentUserDatas.login}</i>
           </p>
           <textarea
             className="w-full p-2 text-base resize-none md:text-lg sm:text-md h-72 font-semi-bold bg-neutral-900"
@@ -126,7 +106,7 @@ export default function ModalFormPost({ closeModal }) {
             name="img"
             className="w-full p-4 rounded-lg bg-neutral-900 "
           />
-          <input
+          {/* <input
             type="hidden"
             name="author"
             ref={author}
@@ -139,9 +119,12 @@ export default function ModalFormPost({ closeModal }) {
             ref={date}
             id="date"
             value={Date.now()}
-          />
+          /> */}
+          <p className="text-red-600 font-semithin text-md">
+            {validation && validation}
+          </p>
           <button
-            onClick={onBeforeSubmitHandler}
+            onClick={createPost}
             className="px-4 py-2 ml-auto text-xl font-bold bg-blue-500 rounded-full w-fit flexMid hover:bg-blue-600 "
           >
             Post
