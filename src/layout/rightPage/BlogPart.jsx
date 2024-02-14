@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { ImSpinner9 } from "react-icons/im";
 import he from "he";
-import { NavLink } from "react-router-dom";
+import LoadingComponent from "../../pages/commonsComponents/toolsComponents/LoadingComponent";
 
 export default function BlogPart() {
   const [blogState, setBlogState] = useState({
@@ -39,7 +38,7 @@ export default function BlogPart() {
   let content;
   if (blogState.loading) {
     content = (
-      <ImSpinner9 className="mx-auto mt-12 text-blue-500 text-8xl animate-spin" />
+      <LoadingComponent/>
     );
   } else if (blogState.error) {
     content = (
