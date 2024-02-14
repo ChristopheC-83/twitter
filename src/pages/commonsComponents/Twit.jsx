@@ -11,22 +11,16 @@ import { FaRetweet } from "react-icons/fa6";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { toast } from "sonner";
 import { FIREBASE_URL } from "../../firebase-config";
+import { dateReadableLong } from "../../utils/readDate";
 
 export default function Twit({ twit }) {
   const { currentUser, currentUserDatas } = useContext(UserContext);
   const { twits, deleteTwit } = useTwitsStore();
 
   // Utilise useState directement pour initialiser la date
-  const [dateModif, setDateModif] = useState(
-    new Date(parseInt(twit.date, 10)).toLocaleDateString("fr-FR", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-    })
-  );
+  const dateModif = dateReadableLong(twit.date);
+
+  
   //Fonctions
   function deleteTwitFunction(id_twit) {
     console.log("Suppression du twit :", id_twit);

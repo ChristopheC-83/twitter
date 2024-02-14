@@ -1,6 +1,6 @@
 // pour rendre les dates lisibles
 
-function dateReadableLong(date) {
+export function dateReadableLong(date) {
   const options = {
     weekday: "long",
       year: "numeric",
@@ -11,7 +11,7 @@ function dateReadableLong(date) {
   };
   return new Date(date).toLocaleDateString("fr-FR", options);
 }
-function dateReadableShort(date) {
+export function dateReadableShort(date) {
   const options = {
     year: "numeric",
     month: "long",
