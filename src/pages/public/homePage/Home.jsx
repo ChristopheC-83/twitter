@@ -8,6 +8,7 @@ import Twit from "../../commonsComponents/Twit";
 import { FIREBASE_URL } from "../../../firebase-config";
 import { useTwitsStore } from "../../../stores/useTwitsStore";
 import LoadingComponent from "../../commonsComponents/toolsComponents/LoadingComponent";
+import ReTwit from "../../commonsComponents/ReTwit";
 
 export default function Home() {
   const { currentUser, currentUserDatas } = useContext(UserContext);
@@ -59,7 +60,7 @@ export default function Home() {
 
       {/* Affichage des Twitts */}
       {!loading && !error &&
-        twits.map((twit) => <Twit key={twit.date} twit={twit} />)}
+        twits.map((twit, index) => <ReTwit key={index} twit={twit} />)}
     </div>
   );
 }
