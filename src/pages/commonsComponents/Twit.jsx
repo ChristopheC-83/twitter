@@ -4,6 +4,7 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../context/userContext";
 import { NavLink, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useTwitsStore } from "../../stores/useTwitsStore";
 import { ImBubble2 } from "react-icons/im";
@@ -15,6 +16,7 @@ import { dateReadableLong } from "../../utils/readDate";
 import scrollToTop from "../../utils/scrollToTop";
 
 export default function Twit({ twit }) {
+  const navigate = useNavigate();
   const { currentUser, currentUserDatas } = useContext(UserContext);
   const { twits, deleteTwit, addTwit } = useTwitsStore();
 
@@ -80,6 +82,8 @@ export default function Twit({ twit }) {
 
       // Ajoutez le nouveau twit localement dans le store Zustand
       addTwit(newPost);
+      navigate(`/`);
+      scrollToTop();
 
     } catch (error) {
       toast.error(error.message);

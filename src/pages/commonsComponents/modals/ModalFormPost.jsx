@@ -7,6 +7,7 @@ import { UserContext } from "../../../context/userContext";
 // import { useModalsStore } from "../stores/useModalsStore";
 import { FIREBASE_URL } from "../../../firebase-config";
 import { useTwitsStore } from "../../../stores/useTwitsStore";
+import scrollToTop from "../../../utils/scrollToTop";
 
 export default function ModalFormPost({ closeModal }) {
   const { currentUser, currentUserDatas } = useContext(UserContext);
@@ -81,6 +82,7 @@ export default function ModalFormPost({ closeModal }) {
         // Fermez le modal et naviguez vers la page d'accueil
         closeModal();
         navigate(`/`);
+        scrollToTop();
       } catch (error) {
         toast.error(error.message);
       }

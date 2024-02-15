@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { ImBubble2 } from "react-icons/im";
 import { FaRetweet } from "react-icons/fa6";
@@ -12,8 +13,9 @@ import { useTwitsStore } from "../../stores/useTwitsStore";
 import { FIREBASE_URL } from "../../firebase-config";
 
 export default function ReTwit({ twit }) {
+  const navigate = useNavigate();
   const { currentUser, currentUserDatas } = useContext(UserContext);
-  
+
   const { twits, deleteTwit, addTwit } = useTwitsStore();
 
   // affichage de la date de manière plus lisible
@@ -76,17 +78,37 @@ export default function ReTwit({ twit }) {
     }
   }
 
+  function deleteTwitFunction(id_twit) {
+    console.log("Suppression du twit :", id_twit);
+    try {
+      // Supprimer le twit de la base de données en temps réel
+      fetch(`${FIREBASE_URL}posts/${id_twit}.json`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      toast.success("Twit supprimé avec succès !");
+      console.log("Twit supprimé avec succès :", id_twit);
+    } catch (error) {
+      console.error(
+        "Une erreur est survenue lors de la suppression du twit :",
+        error
+      );
+    }
+  }
+
   useEffect(() => {
-    console.log(twit)
-  },[])
+    console.log(twit);
+  }, []);
 
   return (
-    <div className="flex flex-col w-full p-4 rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">
+    <div className="flex flex-col w-full p-4 border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">
       <div className="flex items-center justify-between w-full mb-4">
         <div className="flex items-center justify-between w-full">
           <div>
             <span className="font-bold">
-              <Link to={`/user/${twit.author}`} onClick={scrollToTop}>
+              <Link to={`/user/${twit.id_author}`} onClick={scrollToTop}>
                 {twit.author}
               </Link>
             </span>
@@ -98,8 +120,9 @@ export default function ReTwit({ twit }) {
       <div className="relative p-4 mt-4 border border-neutral-500">
         <div className="absolute top-[-16px] bg-neutral-900 px-2">
           <span className="font-semibold">
-            <Link to={`/user/${twit.original_author}`} onClick={scrollToTop}>
-              <span className="font-normal text-neutral-500">🔁from</span> {twit.original_author}
+            <Link to={`/user/${twit.id_original_author}`} onClick={scrollToTop}>
+              <span className="font-normal text-neutral-500">🔁from</span>{" "}
+              {twit.original_author}
             </Link>
           </span>
         </div>

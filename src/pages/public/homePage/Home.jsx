@@ -19,9 +19,7 @@ export default function Home() {
   // console.log(FIREBASE_URL+"posts.json");
   async function fetchTwits() {
     try {
-      const response = await fetch(
-        FIREBASE_URL+"posts.json"
-      );
+      const response = await fetch(FIREBASE_URL + "posts.json");
 
       if (!response.ok) {
         throw new Error("Une erreur est survenue !");
@@ -37,7 +35,6 @@ export default function Home() {
       // console.log(tweetsArray);
 
       setTwits(tweetsArray);
-      
     } catch (error) {
       setError(error);
       setLoading(false);
@@ -56,11 +53,20 @@ export default function Home() {
       {loading && <LoadingComponent />}
 
       {/* Erreur */}
-      {error && <div className="pt-24 text-center">Une erreur est survenue !</div>}
+      {error && (
+        <div className="pt-24 text-center">Une erreur est survenue !</div>
+      )}
 
       {/* Affichage des Twitts */}
-      {!loading && !error &&
-        twits.map((twit, index) => <ReTwit key={index} twit={twit} />)}
+      {!loading &&
+        !error &&
+        twits.map((twit, index) =>
+          twit.date === twit.original_date ? (
+            <Twit key={index} twit={twit} />
+          ) : (
+            <ReTwit key={index} twit={twit} />
+          )
+        )}
     </div>
   );
 }
