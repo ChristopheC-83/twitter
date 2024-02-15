@@ -12,6 +12,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { toast } from "sonner";
 import { FIREBASE_URL } from "../../firebase-config";
 import { dateReadableLong } from "../../utils/readDate";
+import scrollToTop from "../../utils/scrollToTop";
 
 export default function Twit({ twit }) {
   const { currentUser, currentUserDatas } = useContext(UserContext);
@@ -48,7 +49,7 @@ export default function Twit({ twit }) {
         <div className="flex items-center justify-between w-full">
           <div>
             <span className="font-bold">
-              <Link to={`/user/${twit.id_author}`}>{twit.author}</Link>
+              <Link to={`/user/${twit.id_author}`} onClick={scrollToTop}>{twit.author}</Link>
             </span>
           </div>
           <span className="text-sm text-gray-500">{dateModif}</span>
