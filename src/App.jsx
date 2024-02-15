@@ -11,7 +11,7 @@ const AllTwitsOfOneUser = lazy(() => import("./pages/public/allTwitsOfOneUser/Al
 const OneTwit = lazy(() => import("./pages/public/OneTwit"));
 const Main = lazy(() => import("./layout/Main"));
 const Error = lazy(() => import("./pages/public/Error"));
-const Favoris = lazy(() => import("./pages/private/FavoritesPage"));
+const Favoris = lazy(() => import("./pages/private/favoritePage/FavoritesPage"));
 const Profil = lazy(() => import("./pages/private/Profil"));
 
 export default function App() {
