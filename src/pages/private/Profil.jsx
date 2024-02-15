@@ -2,7 +2,7 @@
 //  avec la page timeline de l'utilisateur connecté, ce composant ne me semble plus utile.
 // A effacer ?
 
-import { auth } from "../../firebase-config";
+import { FIREBASE_URL, auth } from "../../firebase-config";
 import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,6 @@ export default function Profil() {
     currentUser,
     currentUserDatas,
     setCurrentUserDatas,
-    loading,
     getCurrentUserDatas,
     logOut,
   } = useContext(UserContext);
@@ -30,6 +29,8 @@ export default function Profil() {
   const avatarUrlRef = useRef("");
   const [errorFormAvatar, setErrorFormAvatar] = useState("");
   const [errorFormBiography, setErrorFormBiography] = useState("");
+  const [loading, setLoading] = useState();
+  const [loginFollowedUsers, setLoginFollowedUsers] = useState([]);
 
   // fonction dans un useEffect pour formater la date d'inscription et eviter une erreur
   useEffect(() => {
@@ -104,10 +105,10 @@ export default function Profil() {
       toast.error("Echec du changement d'avatar");
     }
   }
-   //Pour modifier la biographie de l'utilisateur
+  //Pour modifier la biographie de l'utilisateur
   async function handleFormBiography(e) {
     e.preventDefault();
-  
+
     if (currentUserDatas.biography.trim() === "") {
       setErrorFormBiography(
         "Ne soyez pas timide ! Racontez-nous qui vous êtes en quelques mots !"
@@ -117,7 +118,7 @@ export default function Profil() {
       }, 5000);
       return;
     }
-  
+
     if (currentUserDatas.biography.length > 200) {
       setErrorFormBiography(
         `200 caractères max, pas ${currentUserDatas.biography.length} ! On ne raconte pas TOUTE sa vie !!!`
@@ -127,7 +128,7 @@ export default function Profil() {
       }, 5000);
       return;
     }
-  
+
     try {
       // Mettre à jour la biographie dans la base de données Firebase
       const updateResponse = await fetch(
@@ -140,17 +141,17 @@ export default function Profil() {
           body: JSON.stringify({ biography: currentUserDatas.biography }),
         }
       );
-  
+
       if (!updateResponse.ok) {
         throw new Error("Failed to update user biography");
       }
-  
+
       // Mettre à jour la biographie dans currentUserDatas
       setCurrentUserDatas((prevData) => ({
         ...prevData,
         biography: currentUserDatas.biography,
       }));
-  
+
       // Mettre à jour la biographie dans le sessionStorage
       const currentUserDataCopy = JSON.parse(
         sessionStorage.getItem("currentUserDatas")
@@ -160,7 +161,7 @@ export default function Profil() {
         "currentUserDatas",
         JSON.stringify(currentUserDataCopy)
       );
-  
+
       toast.success("Biographie mise à jour avec succès");
     } catch (error) {
       toast.error("Une erreur s'est produite :", error);
@@ -171,12 +172,12 @@ export default function Profil() {
     const deleteConfirmed = window.confirm(
       "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
     );
-    
+
     if (deleteConfirmed) {
       try {
         // Récupérer l'ID de l'utilisateur actuellement connecté
         const userId = auth.currentUser.uid;
-        
+
         // Supprimer l'utilisateur de Firebase Realtime Database en utilisant Fetch
         const response = await fetch(
           `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}.json`,
@@ -187,38 +188,83 @@ export default function Profil() {
             },
           }
         );
-  
+
         if (!response.ok) {
           throw new Error("Failed to delete user data from Realtime Database");
         }
-        
+
         // Supprimer le compte utilisateur actuellement connecté
         await auth.currentUser.delete();
-        
+
         // Déconnexion de l'utilisateur
         logOut();
-        
+
         // Vider le sessionStorage
         sessionStorage.removeItem("currentUserDatas");
-        
+
         // Rediriger l'utilisateur vers une page d'accueil ou une autre page appropriée
         navigate("/");
-        
+
         // Afficher un message de succès ou effectuer d'autres actions nécessaires
         toast.success("Votre compte a été supprimé avec succès.");
       } catch (error) {
         // En cas d'erreur, afficher un message d'erreur ou effectuer d'autres actions nécessaires
-        toast.error("Une erreur s'est produite lors de la suppression de votre compte :", error.message);
+        toast.error(
+          "Une erreur s'est produite lors de la suppression de votre compte :",
+          error.message
+        );
       }
     }
   }
-  
 
-  
-  
+  // // récupérer le login d'un userFollowed avec son id
+  const fetchUserLogin = async (userId) => {
+    try {
+      const response = await fetch(FIREBASE_URL + `users/${userId}.json`);
+
+      if (!response.ok) {
+        throw new Error(
+          "Erreur lors de la récupération des données de l'utilisateur"
+        );
+      }
+
+      const userData = await response.json();
+      return userData.login;
+    } catch (error) {
+      console.error(
+        "Une erreur est survenue lors de la récupération du login de l'utilisateur :",
+        error
+      );
+      return null; // Retourner null en cas d'erreur
+    }
+  };
+
+  useEffect(() => {
+    const getUsersFollowedLogin = async () => {
+      try {
+        const logins = [];
+        for (const userId of currentUserDatas.users_followed) {
+          const login = await fetchUserLogin(userId);
+          logins.push(login);
+        }
+        setLoginFollowedUsers(logins);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des logins des utilisateurs suivis :",
+          error
+        );
+      }
+    };
+
+    getUsersFollowedLogin();
+  }, [currentUserDatas.users_followed]);
+
+  useEffect(() => {
+    console.log("currentUserDatas", currentUserDatas);
+  }, []);
 
   if (loading) {
-    return <LoadingComponent />
+    return <LoadingComponent />;
   }
 
   return (
@@ -282,7 +328,7 @@ export default function Profil() {
           </button>
         </form>
         <p className={`mt-2 text-red-500 text-md`}>{errorFormBiography}</p>
-        {!currentUserDatas.users_followed  && (
+        {!currentUserDatas.users_followed && (
           <p className="mt-4 text-center text-md">
             Vous n'avez pas encore de favoris
           </p>
@@ -294,10 +340,12 @@ export default function Profil() {
               Mes Favoris :
             </div>
             <ul className="flex flex-col ml-8 gap-y-2">
-              {currentUserDatas.users_followed.map((followed, index) => (
-                <NavLink key={index} to={`/user/${followed}`}>
-                  {" "}
-                  - {followed}{" "}
+              {loginFollowedUsers.map((login, index) => (
+                <NavLink
+                  key={currentUserDatas.users_followed[index]}
+                  to={`/user/${currentUserDatas.users_followed[index]}`}
+                >
+                  {login}
                 </NavLink>
               ))}
             </ul>

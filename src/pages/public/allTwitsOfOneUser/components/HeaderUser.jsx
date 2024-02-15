@@ -39,7 +39,7 @@ export default function HeaderUser({ user_id }) {
         throw new Error("Utilisateur actuel non disponible.");
       }
 
-      // users_followed itiliasé comme un tableau ?
+      // users_followed initiliasé comme un tableau ?
       const usersFollowed = currentUserDatas.users_followed || [];
 
       // Vérifiez si l'utilisateur est déjà suivi
