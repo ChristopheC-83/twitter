@@ -8,7 +8,7 @@ import { UserContext } from "./context/userContext";
 
 const Home = lazy(() => import("./pages/public/homePage/Home"));
 const AllTwitsOfOneUser = lazy(() => import("./pages/public/allTwitsOfOneUser/AllTwitsOfOneUser"));
-const OneTwit = lazy(() => import("./pages/public/OneTwit"));
+const OneTwit = lazy(() => import("./pages/public/oneTwit/OneTwit"));
 const Main = lazy(() => import("./layout/Main"));
 const Error = lazy(() => import("./pages/public/Error"));
 const Favoris = lazy(() => import("./pages/private/favoritePage/FavoritesPage"));
@@ -53,7 +53,7 @@ export default function App() {
                 ),
               },
               {
-                path: "/post/:idPost",
+                path: "/post/:id_twit",
                 element: (
                   <Suspense>
                     <OneTwit />

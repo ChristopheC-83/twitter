@@ -59,7 +59,14 @@ export default function ModalFormPost({ closeModal }) {
           id_original_author: currentUserDatas.uid,
           date: Date.now(),
           original_date: Date.now(),
-          comments: ["Sois le premier à commenter ce post !"],
+          comments: [
+            {
+              author_comment: currentUserDatas.login,
+              author_id_comment: currentUserDatas.uid,
+              date: Date.now(),
+              text_comment: "Sois le premier à commenter ce post !",
+            },
+          ],
         };
 
         const response = await fetch(FIREBASE_URL + "posts.json", {
