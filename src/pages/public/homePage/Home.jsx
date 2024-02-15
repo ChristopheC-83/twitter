@@ -19,7 +19,7 @@ export default function Home() {
   async function fetchTwits() {
     try {
       const response = await fetch(
-        "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/posts.json"
+        FIREBASE_URL+"posts.json"
       );
 
       if (!response.ok) {
@@ -36,6 +36,7 @@ export default function Home() {
       // console.log(tweetsArray);
 
       setTwits(tweetsArray);
+      
     } catch (error) {
       setError(error);
       setLoading(false);

@@ -14,6 +14,7 @@ import { LuCalendarDays } from "react-icons/lu";
 import { GoHeart } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 import { FaRegTrashAlt } from "react-icons/fa";
+import LoadingComponent from "../commonsComponents/toolsComponents/LoadingComponent";
 
 export default function Profil() {
   const navigate = useNavigate();
@@ -217,7 +218,7 @@ export default function Profil() {
   
 
   if (loading) {
-    return <div>Chargement...</div>;
+    return <LoadingComponent />
   }
 
   return (
