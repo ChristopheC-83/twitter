@@ -77,6 +77,10 @@ export default function HeaderUser({ user_id }) {
       // Mettre à jour currentUserDatas dans le contexte utilisateur
       setCurrentUserDatas(updatedCurrentUserDatas);
 
+      
+       // Mettre à jour sessionStorage avec les données mises à jour
+    sessionStorage.setItem('currentUserDatas', JSON.stringify(updatedCurrentUserDatas));
+
       // Afficher un message de succès
       toast.success("Utilisateur suivi avec succès.");
     } catch (error) {
@@ -131,6 +135,9 @@ export default function HeaderUser({ user_id }) {
 
       // Mettre à jour currentUserDatas dans le contexte utilisateur
       setCurrentUserDatas(updatedCurrentUserDatas);
+
+       // Mettre à jour sessionStorage avec les données mises à jour
+    sessionStorage.setItem('currentUserDatas', JSON.stringify(updatedCurrentUserDatas));
 
       // Afficher un message de succès
       toast.success("Désabonnement réussi.");

@@ -229,7 +229,7 @@ export default function Profil() {
       }
 
       const userData = await response.json();
-      return userData.login;
+      return { login: userData.login, avatarUrl: userData.avatar_url }; //
     } catch (error) {
       console.error(
         "Une erreur est survenue lors de la récupération du login de l'utilisateur :",
@@ -240,23 +240,25 @@ export default function Profil() {
   };
 
   useEffect(() => {
-    const getUsersFollowedLogin = async () => {
-      try {
-        const logins = [];
-        for (const userId of currentUserDatas.users_followed) {
-          const login = await fetchUserLogin(userId);
-          logins.push(login);
+    if (currentUserDatas.users_followed) {
+      const getUsersFollowedLogin = async () => {
+        try {
+          const usersData = [];
+          for (const userId of currentUserDatas.users_followed) {
+            const userData = await fetchUserLogin(userId); // Utilise fetchUserLogin au lieu de fetchUserData
+            usersData.push(userData);
+          }
+          setLoginFollowedUsers(usersData);
+        } catch (error) {
+          console.error(
+            "Erreur lors de la récupération des données des utilisateurs suivis :",
+            error
+          );
         }
-        setLoginFollowedUsers(logins);
-      } catch (error) {
-        console.error(
-          "Erreur lors de la récupération des logins des utilisateurs suivis :",
-          error
-        );
-      }
-    };
+      };
 
-    getUsersFollowedLogin();
+      getUsersFollowedLogin();
+    }
   }, [currentUserDatas.users_followed]);
 
   useEffect(() => {
@@ -328,29 +330,37 @@ export default function Profil() {
           </button>
         </form>
         <p className={`mt-2 text-red-500 text-md`}>{errorFormBiography}</p>
-        {!currentUserDatas.users_followed && (
+        {(!currentUserDatas.users_followed ||
+          currentUserDatas.users_followed.length === 0) && (
           <p className="mt-4 text-center text-md">
             Vous n'avez pas encore de favoris
           </p>
         )}
-        {currentUserDatas.users_followed && (
-          <div className="flex flex-col">
-            <div className="flex items-center my-2 gap-x-3">
-              <GoHeart className="mr-1" />
-              Mes Favoris :
+        {currentUserDatas.users_followed &&
+          currentUserDatas.users_followed.length >= 1 && (
+            <div className="flex flex-col">
+              <div className="flex items-center my-2 text-3xl gap-x-3">
+                <GoHeart className="mr-1" />
+                Mes Favoris :
+              </div>
+              <ul className="flex flex-col ml-8 gap-y-2">
+                {loginFollowedUsers.map((userData, index) => (
+                  <NavLink
+                    key={currentUserDatas.users_followed[index]}
+                    to={`/user/${currentUserDatas.users_followed[index]}`}
+                    className={`flex justify-start items-center gap-x-8`}
+                  >
+                    <img
+                      src={userData.avatarUrl}
+                      alt={`Avatar de ${userData.login}`}
+                      className="w-24 h-24 rounded-full"
+                    />
+                    <p className="text-3xl font-semibold">{userData.login}</p>
+                  </NavLink>
+                ))}
+              </ul>
             </div>
-            <ul className="flex flex-col ml-8 gap-y-2">
-              {loginFollowedUsers.map((login, index) => (
-                <NavLink
-                  key={currentUserDatas.users_followed[index]}
-                  to={`/user/${currentUserDatas.users_followed[index]}`}
-                >
-                  {login}
-                </NavLink>
-              ))}
-            </ul>
-          </div>
-        )}
+          )}
       </div>
     </div>
   );
