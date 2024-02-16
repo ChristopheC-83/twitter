@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+// he ou html entities est une bibliothèque qui encode et décode les caractères HTML
+// utilisée pour les données provenant de mon API
 import he from "he";
 import LoadingComponent from "../../pages/commonsComponents/toolsComponents/LoadingComponent";
 
@@ -13,15 +15,14 @@ export default function BlogPart() {
     setBlogState({ ...blogState, loading: true });
     fetch("https://myapis.barpat.fun/api_blog_articles")
       .then((response) => {
-        // console.log(response);
         if (!response.ok) {
           throw new Error("Erreur : mauvaise ressource.");
         }
         return response.json();
       })
       .then((data) => {
-        // console.log(data);
-        const randomArticles = getRandomArticles(data, 4); // Sélectionner 4 articles aléatoires
+        // Sélectionner 4 articles aléatoires
+        const randomArticles = getRandomArticles(data, 4);
         setBlogState({ ...blogState, loading: false, data: randomArticles });
       })
       .catch((error) => {
@@ -35,18 +36,33 @@ export default function BlogPart() {
     return shuffled.slice(0, n);
   };
 
+  // contenu contidionnel dans content
   let content;
+  
   if (blogState.loading) {
-    content = (
-      <LoadingComponent/>
-    );
-  } else if (blogState.error) {
+    content = <LoadingComponent />;
+    return;
+  }
+  
+  if (blogState.error) {
     content = (
       <div className="mt-12 text-xl font-semibold text-center text-red-500">
         <p>Une erreur est survenue.</p>
       </div>
     );
-  } else if (blogState.data?.length > 0) {
+    return;
+  }
+  
+  if (blogState.data === 0) {
+    content = (
+      <div className="text-xl font-semibold text-green-500">
+        <p>La requête ne correspond à aucune donnée.</p>
+      </div>
+    );
+    return;
+  }
+
+  if (blogState.data?.length > 0) {
     // ? = optional chaining => non null et no undefined
     content = (
       <>
@@ -83,14 +99,6 @@ export default function BlogPart() {
         </ul>
       </>
     );
-  } else if (blogState.data === 0) {
-    content = (
-      <div className="text-xl font-semibold text-green-500">
-        <p>La requête ne correspond à aucune donnée.</p>
-      </div>
-    );
-  } else {
-    content = "un probleme ?";
   }
 
   return <div>{content}</div>;
