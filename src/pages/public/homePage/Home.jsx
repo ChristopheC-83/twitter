@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import { useTwitsStore } from "../../../stores/useTwitsStore";
 
 import { toast } from "sonner";
-import Twit from "../../commonsComponents/Twit";
 import { FIREBASE_URL } from "../../../firebase-config";
 import LoadingComponent from "../../commonsComponents/toolsComponents/LoadingComponent";
-import ReTwit from "../../commonsComponents/ReTwit";
+import MainTwit from "../../commonsComponents/MainTwit";
 
 export default function Home() {
   const { twits, setTwits } = useTwitsStore();
@@ -64,11 +63,7 @@ export default function Home() {
   }
   if (!loading && !error && twits.length != 0) {
     content = twits.map((twit, index) =>
-      twit.date === twit.original_date ? (
-        <Twit key={index} twit={twit} />
-      ) : (
-        <ReTwit key={index} twit={twit} />
-      )
+      <MainTwit key={index} twit={twit} />
     );
   }
 

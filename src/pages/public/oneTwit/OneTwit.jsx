@@ -4,10 +4,9 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { FIREBASE_URL } from "../../../firebase-config";
-import Twit from "../../commonsComponents/Twit";
-import ReTwit from "../../commonsComponents/ReTwit";
 import LoadingComponent from "../../commonsComponents/toolsComponents/LoadingComponent";
 import Comments from "./components/Comments";
+import MainTwit from "../../commonsComponents/MainTwit";
 
 export default function OneTwit() {
   const { id_twit } = useParams();
@@ -57,13 +56,7 @@ export default function OneTwit() {
   if (!loading && !error) {
     return (
       <>
-      {/* un retwit possede une date différente de celle du twit original, on les différencie ainsi */}
-      {/* pour leur donner des visuels (et info) différents */}
-        {twit.date == twit.original_date ? (
-          <Twit twit={twit} />
-        ) : (
-          <ReTwit twit={twit} />
-        )}
+        <MainTwit twit={twit} />
         <Comments twit={twit} />
       </>
     );

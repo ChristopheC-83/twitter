@@ -5,8 +5,7 @@ import { useState, useEffect } from "react";
 import { FIREBASE_URL } from "../../../../firebase-config";
 import { toast } from "sonner";
 import LoadingComponent from "../../../commonsComponents/toolsComponents/LoadingComponent";
-import Twit from "../../../commonsComponents/Twit";
-import ReTwit from "../../../commonsComponents/ReTwit";
+import MainTwit from "../../../commonsComponents/MainTwit";
 
 export default function TwitsListOfUser({ user_id }) {
   const [twitsOfUser, setTwitsOfUser] = useState([]);
@@ -44,7 +43,7 @@ export default function TwitsListOfUser({ user_id }) {
 
   useEffect(() => {
     fetchUserTweets();
-  }, [user_id]);
+  }, [twitsOfUser]);
 
   //  rendu conditionnel
 
@@ -56,11 +55,7 @@ export default function TwitsListOfUser({ user_id }) {
       .slice()
       .reverse()
       .map((twit) =>
-        twit.date === twit.original_date ? (
-          <Twit key={twit.date} twit={twit} />
-        ) : (
-          <ReTwit key={twit.date} twit={twit} />
-        )
+      <MainTwit key={twit.date} twit={twit} />
       );
   }
 }
