@@ -1,7 +1,7 @@
 //  pour la connexion, propose l'enregistrement su ce n'est pas déjà fait
 
-import { useEffect, useRef, useState, useContext } from "react";
-import { Toaster, toast } from "sonner";
+import {  useRef, useState, useContext } from "react";
+import {  toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useModalsStore } from "../../../stores/useModalsStore";
 import { createPortal } from "react-dom";
@@ -15,8 +15,13 @@ export default function ModalConnection({ closeModal }) {
   const navigate = useNavigate();
   // gestion currentUser du context
 
-  const { currentUser, setCurrentUser,setLoading, setCurrentUserDatas, getCurrentUserDatas } =
-    useContext(UserContext);
+  const {
+    currentUser,
+    setCurrentUser,
+    setLoading,
+    setCurrentUserDatas,
+    getCurrentUserDatas,
+  } = useContext(UserContext);
 
   // gestion des modales
   const { modalRegister, setModalRegister, setModalConnection } =
@@ -36,7 +41,7 @@ export default function ModalConnection({ closeModal }) {
   const email = useRef("");
   const password = useRef("");
 
-   // connection utilisateur utilisée
+  // connection utilisateur utilisée
   async function loginUser(e) {
     e.preventDefault();
     setValidation("");
@@ -54,16 +59,17 @@ export default function ModalConnection({ closeModal }) {
         password.current.value
       );
       const user = userCredential.user;
-      console.log("currentUser : ",user);
+      console.log("currentUser : ", user);
 
       // Appeler getCurrentUserDatas avec l'UID de l'utilisateur
       const userData = await getCurrentUserDatas(user.uid);
-      sessionStorage.setItem('currentUserDatas', JSON.stringify(userData));
+      sessionStorage.setItem("currentUserDatas", JSON.stringify(userData));
       setCurrentUserDatas(userData);
-      navigate("/")
+      navigate("/");
       scrollToTop();
       closeModal();
       toast.success("Vous êtes connecté !");
+      console.log("Vous êtes connecté !");
     } catch (error) {
       if (error.code === "auth/invalid-credential") {
         setValidation(
@@ -78,8 +84,6 @@ export default function ModalConnection({ closeModal }) {
       }
     }
   }
-
-
 
   return (
     <div

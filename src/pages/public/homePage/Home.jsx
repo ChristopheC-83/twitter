@@ -1,24 +1,23 @@
 //  page d'accueil de l'utilisateur connecté ou pas
 
-import { useEffect, useState, useContext } from "react";
-import { UserContext } from "../../../context/userContext";
-import { Toaster, toast } from "sonner";
-import { FaSpinner } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { useTwitsStore } from "../../../stores/useTwitsStore";
+
+import { toast } from "sonner";
 import Twit from "../../commonsComponents/Twit";
 import { FIREBASE_URL } from "../../../firebase-config";
-import { useTwitsStore } from "../../../stores/useTwitsStore";
 import LoadingComponent from "../../commonsComponents/toolsComponents/LoadingComponent";
 import ReTwit from "../../commonsComponents/ReTwit";
 
 export default function Home() {
-  const { currentUser, currentUserDatas } = useContext(UserContext);
   const { twits, setTwits } = useTwitsStore();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // console.log(FIREBASE_URL+"posts.json");
+  // récupération de tous les twits
   async function fetchTwits() {
     try {
+      // FIREBASE_URL stockée dans un fichier .env.local
       const response = await fetch(FIREBASE_URL + "posts.json");
 
       if (!response.ok) {
@@ -32,8 +31,6 @@ export default function Home() {
         id,
         ...twit,
       }));
-      // console.log(tweetsArray);
-
       setTwits(tweetsArray);
     } catch (error) {
       setError(error);
@@ -46,27 +43,38 @@ export default function Home() {
     fetchTwits();
   }, [twits]);
 
+  // contenu contidionnel dans content
+  let content;
+
+  if (loading) {
+    content = <LoadingComponent />;
+    return;
+  }
+  if (error) {
+    content = (
+      <div className="pt-24 text-center">Une erreur est survenue !</div>
+    );
+    return;
+  }
+  if (!loading && !error && twits.length === 0) {
+    content = (
+      <div className="pt-24 text-center">Aucun twit pour le moment.</div>
+    );
+    return;
+  }
+  if (!loading && !error && twits.length != 0) {
+    content = twits.map((twit, index) =>
+      twit.date === twit.original_date ? (
+        <Twit key={index} twit={twit} />
+      ) : (
+        <ReTwit key={index} twit={twit} />
+      )
+    );
+  }
+
   return (
     <div className="flex flex-col-reverse flex-grow text-xl">
-      <Toaster position="top-center" richColors expand={true} />
-
-      {loading && <LoadingComponent />}
-
-      {/* Erreur */}
-      {error && (
-        <div className="pt-24 text-center">Une erreur est survenue !</div>
-      )}
-
-      {/* Affichage des Twitts */}
-      {!loading &&
-        !error &&
-        twits.map((twit, index) =>
-          twit.date === twit.original_date ? (
-            <Twit key={index} twit={twit} />
-          ) : (
-            <ReTwit key={index} twit={twit} />
-          )
-        )}
+      {content}
     </div>
   );
 }

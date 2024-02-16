@@ -4,6 +4,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../firebase-config";
+import { toast } from "sonner";
 
 export const UserContext = createContext();
 
@@ -56,6 +57,7 @@ export function UserContextProvider({ children }) {
     signOut(auth);
     setCurrentUser(null);
     setCurrentUserDatas(null);
+    toast.success("Vous êtes déconnecté !");
   }
 
   return (

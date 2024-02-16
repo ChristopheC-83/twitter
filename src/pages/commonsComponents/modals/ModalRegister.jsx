@@ -12,6 +12,7 @@ import { UserContext } from "../../../context/userContext";
 import { useModalsStore } from "../../../stores/useModalsStore";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import scrollToTop from "../../../utils/scrollToTop";
 
 export default function ModalRegister({ closeModal }) {
   const navigate = useNavigate();
@@ -152,6 +153,7 @@ export default function ModalRegister({ closeModal }) {
         setModalRegister(false);
         setModalConnection(false);
         navigate("/");
+        scrollToTop();
       } catch (error) {
         if (error.code === "auth/email-already-in-use") {
           setValidation(
