@@ -155,7 +155,7 @@ export default function Comments({ twit }) {
           </p>
         </div>
       )}
-      {/* les commentaires existants */}
+      {/* les commentaires existants sont affichés de manière antéchronologiques */}
       {currentComments
         .slice(sliceNumber)
         .reverse()
