@@ -1,19 +1,20 @@
-import { useState, useRef, useContext, useEffect } from "react";
+// Nous récupérons ici les commentaires
+// et gérons le formulaire pour en poster
+// les infos de ce twit sont passées par le parent en props
 
-import { useTwitsStore } from "../../../../stores/useTwitsStore";
+import { useState, useRef, useContext, useEffect } from "react";
+import { UserContext } from "../../../../context/userContext";
+
 import { toast } from "sonner";
 import { FIREBASE_URL } from "../../../../firebase-config";
-import { UserContext } from "../../../../context/userContext";
 import CommentTweet from "./CommentTweet";
 
 export default function Comments({ twit }) {
   const { currentUser, currentUserDatas } = useContext(UserContext);
-
-  const { twits, setTwits } = useTwitsStore();
   const [currentComments, setCurrentComments] = useState(twit.comments);
   //  Ref pour formulaire de commentaire
-  const text = useRef("");
   const formComment = useRef("");
+  const text = useRef("");
 
   // Gestion longueur du commentaire
   const maxLength = 250;
@@ -21,6 +22,7 @@ export default function Comments({ twit }) {
     color: "neutral",
     comment: `{Commentaire : ${maxLength} caractères maximum.}`,
   });
+
   // vérifie si le formulaire est n'est pas vide ou le texte trop long
   function validationFormDatas() {
     // setValidation("");
@@ -49,6 +51,8 @@ export default function Comments({ twit }) {
 
   // function
 
+  // après validation du formulaire, envoi du commentaire
+  // en DB ET en local pour MAJ instantanée
   async function handleFormComment(e) {
     e.preventDefault();
     //  Si la validation du formulaire échoue, on sort
@@ -67,12 +71,15 @@ export default function Comments({ twit }) {
     try {
       // Envoyer le nouveau commentaire à la base de données
       const response = await fetch(FIREBASE_URL + `posts/${twit.id}.json`, {
+        // Patch car on accède à une info spécifique
+        // Put demanderait le renvoi de TOUTES les infos du twit
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          comments: [...twit.comments, newComment], // Ajouter le nouveau commentaire à la liste des commentaires existants
+          // Ajouter en DB le nouveau commentaire à la liste des commentaires existants
+          comments: [...twit.comments, newComment], 
         }),
       });
 
@@ -81,18 +88,9 @@ export default function Comments({ twit }) {
           "Une erreur est survenue lors de l'enregistrement du commentaire."
         );
       }
+     
 
-      setTwits((prevTwits) => {
-        const updatedTwits = prevTwits.map((tw) => {
-          if (tw.id === twit.id) {
-            return { ...tw, comments: [...tw.comments, newComment] };
-          }
-          return tw;
-        });
-        return updatedTwits;
-      });
-
-      // Mettre à jour les commentaires locaux
+      // Mettre à jour les commentaires locaux pour accés en temps réel
       setCurrentComments((prevComments) => [...prevComments, newComment]);
 
       // Réinitialiser le formulaire
@@ -115,19 +113,23 @@ export default function Comments({ twit }) {
     }
   }
 
+  // Chaque Twit à un 1er commentaire générique
+  // on ne l'affiche que s'il n'y a pas d'autres commentaires
+
   let sliceNumber = null;
   if (currentComments.length > 1) {
     sliceNumber = 1;
   }
 
+  
+  // Mettre à jour les commentaires actuels lorsque twit.comments change
   useEffect(() => {
-    // Mettre à jour les commentaires actuels lorsque twit.comments change
     setCurrentComments(twit.comments);
   }, [twit.comments]);
 
   return (
     <div>
-      {/* formulaire pour commentaire si user connecté */}
+      {/* formulaire pour commentaire si user connecté/currentUser existe */}
       {currentUser && (
         <div className="w-full px-4 py-4 border-t border-b rounded shadow-md sm:px-6 md:px-8 border-neutral-500">
           <form
