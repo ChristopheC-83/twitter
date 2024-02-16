@@ -91,10 +91,10 @@ export default function Comments({ twit }) {
         });
         return updatedTwits;
       });
-  
+
       // Mettre à jour les commentaires locaux
       setCurrentComments((prevComments) => [...prevComments, newComment]);
-  
+
       // Réinitialiser le formulaire
       formComment.current.reset();
       setValidation({
@@ -113,6 +113,11 @@ export default function Comments({ twit }) {
         "Une erreur est survenue lors de l'enregistrement du commentaire."
       );
     }
+  }
+
+  let sliceNumber = null;
+  if (currentComments.length > 1) {
+    sliceNumber = 1;
   }
 
   useEffect(() => {
@@ -150,7 +155,7 @@ export default function Comments({ twit }) {
       )}
       {/* les commentaires existants */}
       {currentComments
-        .slice()
+        .slice(sliceNumber)
         .reverse()
         .map((comment, index) => (
           <CommentTweet key={index} comment={comment} />

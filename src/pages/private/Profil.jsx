@@ -270,7 +270,7 @@ export default function Profil() {
   }
 
   return (
-    <div className="flex flex-col w-full p-4 border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">
+    <div className="flex flex-col w-full p-4 rounded shadow-md mb-36 sm:p-6 md:p-8">
       <div className="flex flex-col">
         <div className="w-12 h-12 p-2 ml-auto text-2xl text-white bg-red-700 border-2 border-white rounded-full cursor-pointer flexMid">
           <FaRegTrashAlt onClick={deleteAccount} />
@@ -338,12 +338,12 @@ export default function Profil() {
         )}
         {currentUserDatas.users_followed &&
           currentUserDatas.users_followed.length >= 1 && (
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-10">
               <div className="flex items-center my-2 text-3xl gap-x-3">
                 <GoHeart className="mr-1" />
                 Mes Favoris :
               </div>
-              <ul className="flex flex-col ml-8 gap-y-2">
+              <ul className="flex flex-col ml-8 gap-y-4">
                 {loginFollowedUsers.map((userData, index) => (
                   <NavLink
                     key={currentUserDatas.users_followed[index]}
