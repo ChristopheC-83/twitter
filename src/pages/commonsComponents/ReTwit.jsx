@@ -1,49 +1,30 @@
-import { useState, useContext, useEffect } from "react";
+// Encart d'un retwit dans une liste
+// homePage ou allTwitsOfOneUser
+
+import { useContext } from "react";
+import { UserContext } from "../../context/userContext";
 import { NavLink, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
+import { useTwitsStore } from "../../stores/useTwitsStore";
+import { FIREBASE_URL } from "../../firebase-config";
+import { dateReadableShort, dateReadableLong } from "../../utils/readDate";
+import scrollToTop from "../../utils/scrollToTop";
+import { toast } from "sonner";
 
 import { ImBubble2 } from "react-icons/im";
 import { FaRetweet } from "react-icons/fa6";
 import { FaRegTrashAlt } from "react-icons/fa";
-import scrollToTop from "../../utils/scrollToTop";
-import { UserContext } from "../../context/userContext";
-import { toast } from "sonner";
-
-import { useTwitsStore } from "../../stores/useTwitsStore";
-import { FIREBASE_URL } from "../../firebase-config";
+import { deleteTwitFunction } from "../../utils/twitsFunctions";
 
 export default function ReTwit({ twit }) {
   const navigate = useNavigate();
-  const { currentUser, currentUserDatas } = useContext(UserContext);
-
-  const { twits, deleteTwit, addTwit } = useTwitsStore();
-
-  // affichage de la date de manière plus lisible
-  const [dateModif, setDateModif] = useState(
-    new Date(parseInt(twit.date, 10)).toLocaleDateString("fr-FR", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-    })
-  );
-  const [dateOriginalModif, setDateOriginalModif] = useState(
-    new Date(parseInt(twit.original_date, 10)).toLocaleDateString("fr-FR", {
-      //   weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    })
-  );
+  const { currentUserDatas } = useContext(UserContext);
+  const { addTwit } = useTwitsStore();
 
   //   functions
-  async function retwit(e) {
-    console.log("Retwit du twit :", twit.id);
 
-    console.log("currentUserDatas : ", currentUserDatas);
-    console.log("twit", twit);
+  async function retwit() {
     try {
       const newPost = {
         text: twit.text,
@@ -54,9 +35,15 @@ export default function ReTwit({ twit }) {
         id_original_author: twit.id_original_author,
         date: Date.now(),
         original_date: twit.original_date,
-        comments: ["Sois le premier à commenter ce post !"],
+        comments: [
+          {
+            author_comment: currentUserDatas.login,
+            author_id_comment: currentUserDatas.uid,
+            date: Date.now(),
+            text_comment: "Sois le premier à commenter ce post !",
+          },
+        ],
       };
-
       const response = await fetch(FIREBASE_URL + "posts.json", {
         method: "POST",
         headers: {
@@ -64,41 +51,19 @@ export default function ReTwit({ twit }) {
         },
         body: JSON.stringify(newPost),
       });
-
       if (!response.ok) {
         throw new Error(
           "Une erreur est survenue lors de l'enregistrement du twit."
         );
       }
-
       // Ajoutez le nouveau twit localement dans le store Zustand
       addTwit(newPost);
+      navigate(`/`);
+      scrollToTop();
     } catch (error) {
       toast.error(error.message);
     }
   }
-
-  function deleteTwitFunction(id_twit) {
-    console.log("Suppression du twit :", id_twit);
-    try {
-      // Supprimer le twit de la base de données en temps réel
-      fetch(`${FIREBASE_URL}posts/${id_twit}.json`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      toast.success("Twit supprimé avec succès !");
-      console.log("Twit supprimé avec succès :", id_twit);
-    } catch (error) {
-      console.error(
-        "Une erreur est survenue lors de la suppression du twit :",
-        error
-      );
-    }
-  }
-
-
 
   return (
     <div className="flex flex-col w-full p-4 border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">
@@ -111,7 +76,9 @@ export default function ReTwit({ twit }) {
               </Link>
             </span>
           </div>
-          <span className="text-sm text-gray-500">{dateModif}</span>
+          <span className="text-sm text-gray-500">
+            {dateReadableLong(twit.date)}
+          </span>
         </div>
       </div>
 
@@ -125,12 +92,16 @@ export default function ReTwit({ twit }) {
           </span>
         </div>
         <span className="absolute text-sm text-gray-500 top-[-13px] right-2 bg-neutral-900 px-2">
-          {dateOriginalModif}
+          {dateReadableShort(twit.original_date)}
         </span>
         <NavLink to={`/post/${twit.id}`}>
           <div className="mb-8">{twit.text}</div>
           {twit.img && (
-            <img className="mx-auto rounded w-8/10" src={twit.img} alt={twit.author} />
+            <img
+              className="mx-auto rounded w-8/10"
+              src={twit.img}
+              alt={twit.author}
+            />
           )}
         </NavLink>
       </div>

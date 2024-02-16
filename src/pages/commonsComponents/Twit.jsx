@@ -1,58 +1,30 @@
 // Encart d'un twit dans une liste
 // homePage ou allTwitsOfOneUser
 
-import { useState, useContext, useEffect } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
 import { NavLink, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import { useTwitsStore } from "../../stores/useTwitsStore";
-import { ImBubble2 } from "react-icons/im";
-import { FaRetweet } from "react-icons/fa6";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { toast } from "sonner";
 import { FIREBASE_URL } from "../../firebase-config";
 import { dateReadableLong } from "../../utils/readDate";
 import scrollToTop from "../../utils/scrollToTop";
+import { toast } from "sonner";
+
+import { ImBubble2 } from "react-icons/im";
+import { FaRetweet } from "react-icons/fa6";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { deleteTwitFunction } from "../../utils/twitsFunctions";
 
 export default function Twit({ twit }) {
   const navigate = useNavigate();
-  const { currentUser, currentUserDatas } = useContext(UserContext);
-  const { twits, deleteTwit, addTwit } = useTwitsStore();
-
-  // Utilise useState directement pour initialiser la date
-  const dateModif = dateReadableLong(twit.date);
+  const { currentUserDatas } = useContext(UserContext);
+  const { addTwit } = useTwitsStore();
 
   //Fonctions
-  function deleteTwitFunction(id_twit) {
-    console.log("Suppression du twit :", id_twit);
-    try {
-      // Supprimer le twit de la base de données en temps réel
-      fetch(`${FIREBASE_URL}posts/${id_twit}.json`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      toast.success("Twit supprimé avec succès !");
-      console.log("Twit supprimé avec succès :", id_twit);
-    } catch (error) {
-      console.error(
-        "Une erreur est survenue lors de la suppression du twit :",
-        error
-      );
-    }
-  }
-  // useEffect(() => {
-  //   console.log(currentUserDatas);
-  //   console.log(twit)
-  // }, []);
-
-  async function retwit(e) {
-    // console.log("Retwit du twit :", twit.id);
-    
-    // console.log("currentUserDatas : ",currentUserDatas);
-    // console.log("twit", twit)
+ 
+  async function retwit() {
     try {
       const newPost = {
         text: twit.text,
@@ -63,14 +35,15 @@ export default function Twit({ twit }) {
         id_original_author: twit.id_original_author,
         date: Date.now(),
         original_date: twit.original_date,
-        comments: [{
-          author_comment: currentUserDatas.login,
-          author_id_comment: currentUserDatas.uid,
-          date: Date.now(),
-          text_comment: "Sois le premier à commenter ce post !",
-        },],
+        comments: [
+          {
+            author_comment: currentUserDatas.login,
+            author_id_comment: currentUserDatas.uid,
+            date: Date.now(),
+            text_comment: "Sois le premier à commenter ce post !",
+          },
+        ],
       };
-
       const response = await fetch(FIREBASE_URL + "posts.json", {
         method: "POST",
         headers: {
@@ -78,18 +51,15 @@ export default function Twit({ twit }) {
         },
         body: JSON.stringify(newPost),
       });
-
       if (!response.ok) {
         throw new Error(
           "Une erreur est survenue lors de l'enregistrement du twit."
         );
       }
-
       // Ajoutez le nouveau twit localement dans le store Zustand
       addTwit(newPost);
       navigate(`/`);
       scrollToTop();
-
     } catch (error) {
       toast.error(error.message);
     }
@@ -106,13 +76,17 @@ export default function Twit({ twit }) {
               </Link>
             </span>
           </div>
-          <span className="text-sm text-gray-500">{dateModif}</span>
+          <span className="text-sm text-gray-500">{dateReadableLong(twit.date)}</span>
         </div>
       </div>
       <NavLink to={`/post/${twit.id}`}>
         <div className="mb-8">{twit.text}</div>
         {twit.img && (
-          <img className="mx-auto rounded w-8/10" src={twit.img} alt={twit.author} />
+          <img
+            className="mx-auto rounded w-8/10"
+            src={twit.img}
+            alt={twit.author}
+          />
         )}
       </NavLink>
 

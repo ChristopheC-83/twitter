@@ -2,7 +2,6 @@
 // affichage différent entre twit et retwit
 
 import { useState, useEffect } from "react";
-// import { useTwitsStore } from "../../../../stores/useTwitsStore";
 import { FIREBASE_URL } from "../../../../firebase-config";
 import { toast } from "sonner";
 import LoadingComponent from "../../../commonsComponents/toolsComponents/LoadingComponent";
