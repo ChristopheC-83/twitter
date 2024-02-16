@@ -32,7 +32,6 @@ export default function TwitsListOfUser({ user_id }) {
         .filter((twit) => twit.id_author === user_id);
 
       setTwitsOfUser(tweetsArray);
-      console.log(tweetsArray);
     } catch (error) {
       setError(error);
       setLoading(false);
@@ -43,6 +42,8 @@ export default function TwitsListOfUser({ user_id }) {
   useEffect(() => {
     fetchUserTweets(user_id);
   }, []);
+
+  //  rendu conditionnel
 
   if (loading) return <LoadingComponent />;
   if (error)

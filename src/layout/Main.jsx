@@ -1,14 +1,17 @@
+// fichier d'initialisation du layout
+//  tout le site utilise le même
+
 import Footer from "./navbar/Footer";
 import Header from "./navbar/Header";
 import { Toaster } from "sonner";
-import { Outlet, useNavigation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../context/userContext";
 import BlogPart from "./rightPage/BlogPart";
 import LoadingComponent from "../pages/commonsComponents/toolsComponents/LoadingComponent";
 
 export default function Main() {
-  const { currentUser, loading } = useContext(UserContext);
+  const { loading } = useContext(UserContext);
 
   if (loading) {
     return <LoadingComponent />;
@@ -31,7 +34,7 @@ export default function Main() {
         <Outlet />
       </div>
 
-      {/* colonne lien blog à droite de l'écran pc/tablette */}
+      {/* colonne lien blog à droite de l'écran pc/tablette, disparait ensuite */}
       <div className="relative hidden border-l-2 w-72 lg:block lg:min-w-80 border-neutral-500">
         <BlogPart />
       </div>

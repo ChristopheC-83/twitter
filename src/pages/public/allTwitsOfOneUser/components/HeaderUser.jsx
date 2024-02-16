@@ -11,7 +11,6 @@ import { FIREBASE_URL } from "../../../../firebase-config";
 import { toast } from "sonner";
 
 export default function HeaderUser({ user_id }) {
-  // console.log("hederUser : ", user_id);
   const { currentUserDatas, setCurrentUserDatas } = useContext(UserContext);
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
@@ -26,9 +25,9 @@ export default function HeaderUser({ user_id }) {
       const user = await response.json();
       setLoading(false);
       setUser(user);
-      console.log("user is", user);
     } catch (error) {
       console.log(error);
+      toast.error(error.message);
     }
   }
 
@@ -154,7 +153,6 @@ export default function HeaderUser({ user_id }) {
 
   useEffect(() => {
     getUser(user_id);
-    console.log("currentUserDatas", currentUserDatas);
   }, [user_id]);
 
   function renderFollowButton() {
