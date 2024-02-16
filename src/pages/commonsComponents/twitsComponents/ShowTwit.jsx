@@ -30,7 +30,7 @@ export default function ShowTwit({ twit, retwit }) {
         <div className="mb-8">{twit.text}</div>
         {twit.img && (
           <img
-            className="mx-auto rounded w-8/10"
+            className="min-w-full rounded"
             src={twit.img}
             alt={twit.author}
           />

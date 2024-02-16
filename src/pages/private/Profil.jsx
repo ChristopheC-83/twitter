@@ -278,7 +278,7 @@ export default function Profil() {
         <img
           src={currentUserDatas.avatar_url}
           alt="avatar"
-          className="rounded-full max-w-[300px] mx-auto mb-6"
+          className="object-cover mx-auto mb-6 rounded-full size-52"
         />
         <h2 className="mx-auto mb-4 text-2xl font-bold text-center sm:text-3xl">
           {currentUserDatas.login}

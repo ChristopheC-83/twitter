@@ -213,7 +213,7 @@ export default function HeaderUser({ user_id }) {
             <img
               src={user.avatar_url}
               alt="profil"
-              className="w-48 h-48 rounded-full"
+              className="object-cover w-48 h-48 rounded-full"
             />
           </div>
           <div className="w-full sm:px-6 md:px-8">

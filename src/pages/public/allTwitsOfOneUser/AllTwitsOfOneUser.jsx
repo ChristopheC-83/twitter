@@ -47,7 +47,7 @@ export default function AllTwitsOfOneUser() {
       ) : userExists ? (
         <HeaderUser user_id={user_id} />
       ) : (
-        <p className="p-4 text-xl text-center">Il n'est plus inscrit, mais nous avons toujours ses posts !</p>
+        <p className="p-4 text-xl text-center">Il n'est plus inscrit, mais nous avons toujours ses posts ! <br /> S'il en reste...</p>
       )}
       <TwitsListOfUser user_id={user_id} />
     </div>
