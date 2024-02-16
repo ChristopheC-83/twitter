@@ -1,3 +1,6 @@
+// Gestion de l'affichage des twits 
+// se fait en parallele de la gestion en base de données
+
 import {create} from "zustand";
 
 export const useTwitsStore = create((set) => ({
