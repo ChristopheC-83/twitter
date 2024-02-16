@@ -63,7 +63,12 @@ export default function Twit({ twit }) {
         id_original_author: twit.id_original_author,
         date: Date.now(),
         original_date: twit.original_date,
-        comments: ["Sois le premier à commenter ce post !"],
+        comments: [{
+          author_comment: currentUserDatas.login,
+          author_id_comment: currentUserDatas.uid,
+          date: Date.now(),
+          text_comment: "Sois le premier à commenter ce post !",
+        },],
       };
 
       const response = await fetch(FIREBASE_URL + "posts.json", {
