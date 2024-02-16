@@ -98,9 +98,7 @@ export default function ReTwit({ twit }) {
     }
   }
 
-  useEffect(() => {
-    console.log(twit);
-  }, []);
+
 
   return (
     <div className="flex flex-col w-full p-4 border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">

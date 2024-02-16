@@ -34,7 +34,6 @@ export default function OneTwit() {
         id: id_twit,
         ...data,
       };
-      console.log(twitData);
       setTwit(twitData);
     } catch (error) {
       setError(error);
@@ -45,7 +44,6 @@ export default function OneTwit() {
 
   useEffect(() => {
     fetchOneTwit();
-    console.log("twit :", twit);
   }, []);
 
   if (loading) {

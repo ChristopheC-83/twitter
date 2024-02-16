@@ -49,10 +49,10 @@ export default function Twit({ twit }) {
   // }, []);
 
   async function retwit(e) {
-    console.log("Retwit du twit :", twit.id);
+    // console.log("Retwit du twit :", twit.id);
     
-    console.log("currentUserDatas : ",currentUserDatas);
-    console.log("twit", twit)
+    // console.log("currentUserDatas : ",currentUserDatas);
+    // console.log("twit", twit)
     try {
       const newPost = {
         text: twit.text,

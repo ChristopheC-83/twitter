@@ -77,9 +77,11 @@ export default function HeaderUser({ user_id }) {
       // Mettre à jour currentUserDatas dans le contexte utilisateur
       setCurrentUserDatas(updatedCurrentUserDatas);
 
-      
-       // Mettre à jour sessionStorage avec les données mises à jour
-    sessionStorage.setItem('currentUserDatas', JSON.stringify(updatedCurrentUserDatas));
+      // Mettre à jour sessionStorage avec les données mises à jour
+      sessionStorage.setItem(
+        "currentUserDatas",
+        JSON.stringify(updatedCurrentUserDatas)
+      );
 
       // Afficher un message de succès
       toast.success("Utilisateur suivi avec succès.");
@@ -136,8 +138,11 @@ export default function HeaderUser({ user_id }) {
       // Mettre à jour currentUserDatas dans le contexte utilisateur
       setCurrentUserDatas(updatedCurrentUserDatas);
 
-       // Mettre à jour sessionStorage avec les données mises à jour
-    sessionStorage.setItem('currentUserDatas', JSON.stringify(updatedCurrentUserDatas));
+      // Mettre à jour sessionStorage avec les données mises à jour
+      sessionStorage.setItem(
+        "currentUserDatas",
+        JSON.stringify(updatedCurrentUserDatas)
+      );
 
       // Afficher un message de succès
       toast.success("Désabonnement réussi.");
@@ -217,9 +222,12 @@ export default function HeaderUser({ user_id }) {
                 {user.login}
               </h2>
             </div>
-            <div className="flex items-center justify-center mb-8">
-              {currentUserDatas.login !== user.login && renderFollowButton()}
-            </div>
+            {/* Bouton accessible ssi connecté */}
+            {currentUserDatas && (
+              <div className="flex items-center justify-center mb-8">
+                {currentUserDatas.login !== user.login && renderFollowButton()}
+              </div>
+            )}
             <div className="flex items-center gap-x-3">
               <LuCalendarDays className="mt-1 mr-1" /> :{" "}
               <p>{dateReadableShort(user.register_since)}</p>

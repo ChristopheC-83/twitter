@@ -15,6 +15,7 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_API_ID
 };
 
+// constante pour l'url de la base de données
 export const FIREBASE_URL = "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/"
 
 // Initialize Firebase

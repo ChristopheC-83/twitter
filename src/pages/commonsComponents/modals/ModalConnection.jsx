@@ -9,8 +9,10 @@ import ModalRegister from "./ModalRegister";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../firebase-config";
 import { UserContext } from "../../../context/userContext";
+import scrollToTop from "../../../utils/scrollToTop";
 
 export default function ModalConnection({ closeModal }) {
+  const navigate = useNavigate();
   // gestion currentUser du context
 
   const { currentUser, setCurrentUser,setLoading, setCurrentUserDatas, getCurrentUserDatas } =
@@ -58,7 +60,8 @@ export default function ModalConnection({ closeModal }) {
       const userData = await getCurrentUserDatas(user.uid);
       sessionStorage.setItem('currentUserDatas', JSON.stringify(userData));
       setCurrentUserDatas(userData);
-      
+      navigate("/")
+      scrollToTop();
       closeModal();
       toast.success("Vous êtes connecté !");
     } catch (error) {
