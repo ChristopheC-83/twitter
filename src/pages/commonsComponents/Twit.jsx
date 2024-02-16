@@ -112,7 +112,7 @@ export default function Twit({ twit }) {
       <NavLink to={`/post/${twit.id}`}>
         <div className="mb-8">{twit.text}</div>
         {twit.img && (
-          <img className="mx-auto w-8/10" src={twit.img} alt={twit.author} />
+          <img className="mx-auto rounded w-8/10" src={twit.img} alt={twit.author} />
         )}
       </NavLink>
 

@@ -1,6 +1,5 @@
 // L'encart de présentation de l'utilisateur
 
-import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { dateReadableShort } from "../../../../utils/readDate";
 import { UserContext } from "../../../../context/userContext";
@@ -30,7 +29,7 @@ export default function HeaderUser({ user_id }) {
       toast.error(error.message);
     }
   }
-
+  // pour s'y abboner
   async function handleFormFollowing() {
     try {
       //A t on bine un currentUser en cours ?
@@ -89,7 +88,7 @@ export default function HeaderUser({ user_id }) {
       toast.error(error.message);
     }
   }
-
+  // pour s'en désabonner
   async function handleFormUnFollowing() {
     try {
       // Vérifier si currentUserDatas est disponible
@@ -155,6 +154,8 @@ export default function HeaderUser({ user_id }) {
     getUser(user_id);
   }, [user_id]);
 
+  // boutton modulable en fonction de si on y est déjà abonné ou non
+  // s'abonner <=> se désabonner
   function renderFollowButton() {
     let buttonFollowing;
     if (
@@ -199,7 +200,8 @@ export default function HeaderUser({ user_id }) {
     }
     return buttonFollowing;
   }
-
+  
+  // rendu contidionnel
   if (loading) return <LoadingComponent />;
   if (error)
     return <div className="pt-24 text-center">Une erreur est survenue !</div>;

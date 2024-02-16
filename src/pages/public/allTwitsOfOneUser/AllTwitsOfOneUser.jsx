@@ -1,5 +1,5 @@
 //  Qd on clique sur le nom d'un user
-// on arrive sur sa page perso
+// on arrive sur sa page perso grace à son id en url
 // son profil puis ses twits
 
 import HeaderUser from "./components/HeaderUser";
