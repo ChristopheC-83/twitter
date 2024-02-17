@@ -7,7 +7,7 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth } from "../../../firebase-config";
+import { FIREBASE_URL, auth } from "../../../firebase-config";
 import { UserContext } from "../../../context/userContext";
 import { useModalsStore } from "../../../stores/useModalsStore";
 import { toast } from "sonner";
