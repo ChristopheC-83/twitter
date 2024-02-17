@@ -11,12 +11,12 @@ import { toast } from "sonner";
 
 import { GoHeart } from "react-icons/go";
 import { NavLink } from "react-router-dom";
-import { FaRegTrashAlt } from "react-icons/fa";
 import LoadingComponent from "../../commonsComponents/toolsComponents/LoadingComponent";
 import AvatarManager from "./components/AvatarManager";
 import InfosUSer from "./components/InfosUSer";
 import BiographyManager from "./components/BiographyManager";
 import DeleteAccount from "./components/DeleteAccount";
+import AvatarNameUser from "./components/AvatarNameUser";
 
 export default function Profil() {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function Profil() {
   const [loading, setLoading] = useState();
   const [loginFollowedUsers, setLoginFollowedUsers] = useState([]);
 
- // récupérer le login d'un userFollowed avec son id
+  // récupérer le login d'un userFollowed avec son id
   const fetchUserLogin = async (userId) => {
     try {
       const response = await fetch(FIREBASE_URL + `users/${userId}.json`);
@@ -86,18 +86,11 @@ export default function Profil() {
   return (
     <div className="flex flex-col w-full p-4 rounded shadow-md mb-36 sm:p-6 md:p-8">
       <div className="flex flex-col">
-        <DeleteAccount/>
-        <img
-          src={currentUserDatas.avatar_url}
-          alt="avatar"
-          className="object-cover mx-auto mb-6 rounded-full size-52"
-        />
-        <h2 className="mx-auto mb-4 text-2xl font-bold text-center sm:text-3xl">
-          {currentUserDatas.login}
-        </h2>
-        <AvatarManager/>
-        <InfosUSer/>
-       <BiographyManager/>
+        <DeleteAccount />
+        <AvatarNameUser />
+        <AvatarManager />
+        <InfosUSer />
+        <BiographyManager />
         {(!currentUserDatas.users_followed ||
           currentUserDatas.users_followed.length === 0) && (
           <p className="mt-4 text-center text-md">
