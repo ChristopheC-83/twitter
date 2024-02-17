@@ -16,7 +16,7 @@ const Error = lazy(() => import("./pages/public/Error"));
 const Favoris = lazy(() =>
   import("./pages/private/favoritePage/FavoritesPage")
 );
-const Profil = lazy(() => import("./pages/private/Profil"));
+const Profil = lazy(() => import("./pages/private/profilPage/Profil"));
 
 export default function App() {
   const { currentUser } = useContext(UserContext);

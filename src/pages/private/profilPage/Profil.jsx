@@ -2,20 +2,19 @@
 //  avec la page timeline de l'utilisateur connecté, ce composant ne me semble plus utile.
 // A effacer ?
 
-import { FIREBASE_URL, auth } from "../../firebase-config";
+import { FIREBASE_URL, auth } from "../../../firebase-config";
 import { useContext, useEffect, useRef, useState } from "react";
-import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../../context/userContext";
 import { useNavigate } from "react-router-dom";
 
 import { toast } from "sonner";
 
-import { LuMail } from "react-icons/lu";
-import { LuCalendarDays } from "react-icons/lu";
 import { GoHeart } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 import { FaRegTrashAlt } from "react-icons/fa";
-import LoadingComponent from "../commonsComponents/toolsComponents/LoadingComponent";
-import AvatarManager from "./profilPage/components/AvatarManager";
+import LoadingComponent from "../../commonsComponents/toolsComponents/LoadingComponent";
+import AvatarManager from "./components/AvatarManager";
+import InfosUSer from "./components/InfosUSer";
 
 export default function Profil() {
   const navigate = useNavigate();
@@ -31,19 +30,6 @@ export default function Profil() {
   const [loading, setLoading] = useState();
   const [loginFollowedUsers, setLoginFollowedUsers] = useState([]);
 
-  // fonction dans un useEffect pour formater la date d'inscription et eviter une erreur
-  useEffect(() => {
-    if (currentUserDatas && currentUserDatas.register_since) {
-      const formattedDate = new Date(
-        parseInt(currentUserDatas.register_since, 10)
-      ).toLocaleDateString("fr-FR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-      setDateRegister(formattedDate);
-    }
-  }, [currentUserDatas]);
 
  
   //Pour modifier la biographie de l'utilisateur
@@ -225,14 +211,8 @@ export default function Profil() {
           {currentUserDatas.login}
         </h2>
         <AvatarManager/>
-        <div className="flex items-center my-2 gap-x-3">
-          <LuMail className="mr-1 " /> <p>Mail </p> :{" "}
-          <p>{currentUserDatas.email}</p>
-        </div>
-        <div className="flex items-center my-2 gap-x-3">
-          <LuCalendarDays className="mr-1 " /> <p>Inscription </p> :{" "}
-          <p>{dateRegister}</p>
-        </div>
+        <InfosUSer/>
+       
         <form
           className="flex flex-col mt-4 gap-x-4"
           onSubmit={handleFormBiography}
