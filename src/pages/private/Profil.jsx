@@ -15,6 +15,7 @@ import { GoHeart } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 import { FaRegTrashAlt } from "react-icons/fa";
 import LoadingComponent from "../commonsComponents/toolsComponents/LoadingComponent";
+import AvatarManager from "./profilPage/components/AvatarManager";
 
 export default function Profil() {
   const navigate = useNavigate();
@@ -26,8 +27,6 @@ export default function Profil() {
     logOut,
   } = useContext(UserContext);
   const [dateRegister, setDateRegister] = useState("");
-  const avatarUrlRef = useRef("");
-  const [errorFormAvatar, setErrorFormAvatar] = useState("");
   const [errorFormBiography, setErrorFormBiography] = useState("");
   const [loading, setLoading] = useState();
   const [loginFollowedUsers, setLoginFollowedUsers] = useState([]);
@@ -46,65 +45,7 @@ export default function Profil() {
     }
   }, [currentUserDatas]);
 
-  // pour modifier un avatar utilisateur
-  async function handleFormAvatar(e) {
-    e.preventDefault();
-    // vérification de l'URL du nouvel avatar
-    const newAvatarUrl = avatarUrlRef.current.value.trim();
-    if (newAvatarUrl === "") {
-      setErrorFormAvatar(
-        "Vous devez renseigner une URL si vous souhaitez modifier votre avatar !"
-      );
-      setTimeout(() => {
-        setErrorFormAvatar("");
-      }, 3000);
-      return;
-    }
-    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*\.(jpg|jpeg|png|gif)$/;
-    if (!urlRegex.test(newAvatarUrl)) {
-      setErrorFormAvatar("L'URL que vous avez entrée n'est pas valide !");
-      setTimeout(() => {
-        setErrorFormAvatar("");
-      }, 3000);
-      return;
-    }
-    // MAJ avatar par PATCH dans Realtime Database
-    try {
-      const updateResponse = await fetch(
-        `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}.json`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ avatar_url: newAvatarUrl }),
-        }
-      );
-
-      if (!updateResponse.ok) {
-        throw new Error("Echec de la modification de votre avatar.");
-      }
-
-      setCurrentUserDatas((prevData) => ({
-        ...prevData,
-        avatar_url: newAvatarUrl,
-      }));
-      // MAJ dans le localstorage
-      const currentUserDataCopy = JSON.parse(
-        sessionStorage.getItem("currentUserDatas")
-      );
-      currentUserDataCopy.avatar_url = newAvatarUrl;
-      sessionStorage.setItem(
-        "currentUserDatas",
-        JSON.stringify(currentUserDataCopy)
-      );
-
-      toast.success("Nouvel avatar enregistré avec succès !");
-    } catch (error) {
-      console.error("An error occurred:", error);
-      toast.error("Echec du changement d'avatar");
-    }
-  }
+ 
   //Pour modifier la biographie de l'utilisateur
   async function handleFormBiography(e) {
     e.preventDefault();
@@ -283,21 +224,7 @@ export default function Profil() {
         <h2 className="mx-auto mb-4 text-2xl font-bold text-center sm:text-3xl">
           {currentUserDatas.login}
         </h2>
-        <form className="flex gap-x-4" onSubmit={handleFormAvatar}>
-          <input
-            type="text"
-            ref={avatarUrlRef}
-            placeholder="URL de votre nouvel avatar"
-            className="w-4/5 p-2 text-white rounded-md bg-neutral-800"
-          />
-          <button
-            type="submit"
-            className="w-1/5 p-2 mx-auto text-xs font-bold bg-blue-500 rounded-full sm:text-md flexMid hover:bg-blue-600"
-          >
-            Modifier l'avatar
-          </button>
-        </form>
-        <p className={`mt-2 text-red-500 text-md`}>{errorFormAvatar}</p>
+        <AvatarManager/>
         <div className="flex items-center my-2 gap-x-3">
           <LuMail className="mr-1 " /> <p>Mail </p> :{" "}
           <p>{currentUserDatas.email}</p>
