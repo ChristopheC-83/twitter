@@ -40,7 +40,6 @@ export default function Profil() {
           "Erreur lors de la récupération des données de l'utilisateur"
         );
       }
-
       const userData = await response.json();
       return { login: userData.login, avatarUrl: userData.avatar_url }; //
     } catch (error) {
@@ -52,15 +51,63 @@ export default function Profil() {
     }
   };
 
+  // Fonction pour supprimer l'utilisateur de la liste suivie dans Firebase
+  const removeUserFromFollowedList = async (userIdToRemove) => {
+    try {
+      const updatedFollowedList = currentUserDatas.users_followed.filter(
+        (userId) => userId !== userIdToRemove
+      );
+      await fetch(FIREBASE_URL + `users/${currentUser.uid}.json`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          users_followed: updatedFollowedList,
+        }),
+      });
+      console.log(
+        `L'utilisateur avec l'ID ${userIdToRemove} a été supprimé de la liste des utilisateurs suivis.`
+      );
+    } catch (error) {
+      console.error(
+        "Erreur lors de la suppression de l'utilisateur de la liste des utilisateurs suivis :",
+        error
+      );
+    }
+  };
+
   useEffect(() => {
     if (currentUserDatas.users_followed) {
       const getUsersFollowedLogin = async () => {
         try {
           const usersData = [];
+          const updatedUsersFollowed = []; // Pour stocker les IDs des utilisateurs suivis encore inscrits
           for (const userId of currentUserDatas.users_followed) {
-            const userData = await fetchUserLogin(userId); // Utilise fetchUserLogin au lieu de fetchUserData
-            usersData.push(userData);
+            const userData = await fetchUserLogin(userId);
+            if (userData) {
+              usersData.push(userData);
+              updatedUsersFollowed.push(userId); // Ajouter l'ID à la liste mise à jour
+            } else {
+              console.log(
+                `L'utilisateur avec l'ID ${userId} ne peut pas être trouvé.`
+              );
+              await removeUserFromFollowedList(userId);
+              shouldUpdate = true; // Indiquer qu'une mise à jour est nécessaire
+            }
           }
+          // Mettre à jour currentUserDatas uniquement si nécessaire
+          if (shouldUpdate) {
+            setCurrentUserDatas((prevData) => ({
+              ...prevData,
+              users_followed: updatedUsersFollowed,
+            }));
+          }
+          // Mettre à jour currentUserDatas avec les données et les IDs des utilisateurs suivis
+          setCurrentUserDatas((prevData) => ({
+            ...prevData,
+            users_followed: updatedUsersFollowed,
+          }));
           setLoginFollowedUsers(usersData);
         } catch (error) {
           console.error(
