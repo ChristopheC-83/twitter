@@ -17,9 +17,28 @@ import ShowReTwit from "./twitsComponents/ShowReTwit";
 export default function MainTwit({ twit }) {
   const navigate = useNavigate();
   const { currentUserDatas } = useContext(UserContext);
-  const { addTwit } = useTwitsStore();
+  const { addTwit, deleteTwit, setMaj } = useTwitsStore();
 
   //   functions
+  async function deleteTwitFunction(id_twit) {
+    try {
+      // Supprimer le twit de la base de données en temps réel
+      fetch(`${FIREBASE_URL}posts/${id_twit}.json`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      // Supprimer le twit localement dans le store Zustand
+      deleteTwit(id_twit);
+      toast.success("Twit supprimé avec succès !");
+    } catch (error) {
+      console.error(
+        "Une erreur est survenue lors de la suppression du twit :",
+        error
+      );
+    }
+  }
 
   async function retwit() {
     try {
@@ -63,9 +82,21 @@ export default function MainTwit({ twit }) {
   }
 
   if (twit.date === twit.original_date) {
-    return <ShowTwit twit={twit} retwit={retwit}/>;
+    return (
+      <ShowTwit
+        twit={twit}
+        retwit={retwit}
+        deleteTwitFunction={deleteTwitFunction}
+      />
+    );
   }
   if (twit.date != twit.original_date) {
-    return <ShowReTwit twit={twit} retwit={retwit}/>;
+    return (
+      <ShowReTwit
+        twit={twit}
+        retwit={retwit}
+        deleteTwitFunction={deleteTwitFunction}
+      />
+    );
   }
 }

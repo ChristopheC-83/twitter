@@ -12,7 +12,7 @@ import scrollToTop from "../../../utils/scrollToTop";
 export default function ModalFormPost({ closeModal }) {
   const { currentUser, currentUserDatas } = useContext(UserContext);
   const navigate = useNavigate();
-  const { twits, setTwits, addTwit } = useTwitsStore();
+  const { twits, setTwits, addTwit, setMaj } = useTwitsStore();
 
   const [validation, setValidation] = useState("");
 
@@ -85,7 +85,7 @@ export default function ModalFormPost({ closeModal }) {
 
         // Ajoutez le nouveau twit localement dans le store Zustand
         addTwit(newPost);
-
+        setMaj();
         // Fermez le modal et naviguez vers la page d'accueil
         closeModal();
         navigate(`/`);

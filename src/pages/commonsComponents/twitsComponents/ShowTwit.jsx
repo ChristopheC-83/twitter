@@ -2,13 +2,15 @@ import { NavLink, Link } from "react-router-dom";
 import { dateReadableLong } from "../../../utils/readDate";
 import { ImBubble2 } from "react-icons/im";
 import { FaRegTrashAlt, FaRetweet } from "react-icons/fa";
-import { deleteTwitFunction } from "../../../utils/twitsFunctions";
 import scrollToTop from "../../../utils/scrollToTop";
 import { UserContext } from "../../../context/userContext";
 import { useContext } from "react";
+import { useTwitsStore } from "../../../stores/useTwitsStore";
 
-export default function ShowTwit({ twit, retwit }) {
+export default function ShowTwit({ twit, retwit , deleteTwitFunction}) {
   const { currentUserDatas } = useContext(UserContext);
+
+
 
   return (
     <div className="flex flex-col w-full p-4 border-t border-b rounded shadow-md sm:p-6 md:p-8 border-neutral-500 bg-neutral-900">

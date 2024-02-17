@@ -10,7 +10,7 @@ import MainTwit from "../../commonsComponents/MainTwit";
 import { UserContext } from "../../../context/userContext";
 
 export default function Home() {
-  const { twits, setTwits } = useTwitsStore();
+  const { twits, setTwits, addTwit, deleteTwit, maj } = useTwitsStore();
 
   const { loading, setLoading } = useContext(UserContext);
   const [error, setError] = useState(null);
@@ -55,7 +55,8 @@ export default function Home() {
   useEffect(() => {
     fetchTwits();
     console.log("MAJ Home");
-  }, []);
+    console.log("maj : ", maj);
+  }, [maj]);
 
   // contenu contidionnel dans content
   let content;

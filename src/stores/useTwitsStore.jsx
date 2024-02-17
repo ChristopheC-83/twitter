@@ -4,6 +4,8 @@
 import {create} from "zustand";
 
 export const useTwitsStore = create((set) => ({
+  maj: 0,
+  setMaj: () => set((state) => ({ maj: state.maj + 1 })),
   twits: [],
   setTwits: (twits) => set({ twits }),
   addTwit: (newTwit) => set((state) => ({ twits: [...state.twits, newTwit] })),
