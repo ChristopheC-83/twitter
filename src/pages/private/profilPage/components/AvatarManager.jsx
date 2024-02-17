@@ -70,20 +70,22 @@ export default function AvatarManager() {
   }
 
   return (
+    <>
     <form className="flex mb-4 gap-x-4" onSubmit={handleFormAvatar}>
       <input
         type="text"
         ref={avatarUrlRef}
         placeholder="URL de votre nouvel avatar"
         className="w-4/5 p-2 text-white rounded-md bg-neutral-800"
-      />
+        />
       <button
         type="submit"
         className="w-1/5 p-2 mx-auto text-xs font-bold bg-blue-500 rounded-full sm:text-md flexMid hover:bg-blue-600"
-      >
+        >
         Modifier l'avatar
       </button>
-      <p className={`mt-2 text-red-500 text-md`}>{errorFormAvatar}</p>
     </form>
+      <p className={`my-2 text-red-500 text-md`}>{errorFormAvatar}</p>
+        </>
   );
 }
