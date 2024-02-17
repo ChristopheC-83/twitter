@@ -11,11 +11,10 @@ import AvatarNameUser from "./components/AvatarNameUser";
 import UsersFollowed from "./components/UsersFollowed";
 
 export default function Profil() {
-  const [loading, setLoading] = useState();
 
-  if (loading) {
-    return <LoadingComponent />;
-  }
+  // if (loading) {
+  //   return <LoadingComponent />;
+  // }
 
   return (
     <div className="flex flex-col w-full p-4 rounded shadow-md mb-36 sm:p-6 md:p-8">
@@ -25,7 +24,7 @@ export default function Profil() {
         <AvatarManager />
         <InfosUSer />
         <BiographyManager />
-        <UsersFollowed />
+        <UsersFollowed/>
       </div>
     </div>
   );

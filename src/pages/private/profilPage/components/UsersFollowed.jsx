@@ -10,8 +10,6 @@ export default function UsersFollowed() {
         currentUser,
         currentUserDatas,
         setCurrentUserDatas,
-        getCurrentUserDatas,
-        logOut,
       } = useContext(UserContext);
       const [loginFollowedUsers, setLoginFollowedUsers] = useState([]);
 
