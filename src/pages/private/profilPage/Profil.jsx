@@ -57,6 +57,19 @@ export default function Profil() {
       const updatedFollowedList = currentUserDatas.users_followed.filter(
         (userId) => userId !== userIdToRemove
       );
+
+        // Mettre à jour currentUserDatas
+    const updatedCurrentUserDatas = {
+      ...currentUserDatas,
+      users_followed: updatedFollowedList,
+    };
+
+    // Enregistrer les données mises à jour dans le sessionStorage
+    sessionStorage.setItem(
+      "currentUserDatas",
+      JSON.stringify(updatedCurrentUserDatas)
+    );
+     // Mettre à jour les données dans la base de données Firebase
       await fetch(FIREBASE_URL + `users/${currentUser.uid}.json`, {
         method: "PATCH",
         headers: {
@@ -77,53 +90,46 @@ export default function Profil() {
     }
   };
 
+  // Définir une fonction pour récupérer les utilisateurs suivis et mettre à jour l'état en conséquence
+  const fetchAndUpdateFollowedUsers = async () => {
+    try {
+      const usersData = [];
+      const updatedUsersFollowed = []; // Pour stocker les IDs des utilisateurs suivis encore inscrits
+      let shouldUpdate = false; // Variable pour suivre si une mise à jour est nécessaire
+      for (const userId of currentUserDatas.users_followed) {
+        const userData = await fetchUserLogin(userId);
+        if (userData) {
+          usersData.push(userData);
+          updatedUsersFollowed.push(userId); // Ajouter l'ID à la liste mise à jour
+        } else {
+          console.log(`L'utilisateur avec l'ID ${userId} ne peut pas être trouvé.`);
+          await removeUserFromFollowedList(userId);
+          shouldUpdate = true; // Indiquer qu'une mise à jour est nécessaire
+        }
+      }
+      // Mettre à jour currentUserDatas uniquement si nécessaire
+      if (shouldUpdate) {
+        setCurrentUserDatas(prevData => ({
+          ...prevData,
+          users_followed: updatedUsersFollowed
+        }));
+      }
+      setLoginFollowedUsers(usersData);
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des données des utilisateurs suivis :",
+        error
+      );
+    }
+  };
+
+  // Utiliser useEffect avec la fonction séparée
   useEffect(() => {
     if (currentUserDatas.users_followed) {
-      const getUsersFollowedLogin = async () => {
-        try {
-          const usersData = [];
-          const updatedUsersFollowed = []; // Pour stocker les IDs des utilisateurs suivis encore inscrits
-          for (const userId of currentUserDatas.users_followed) {
-            const userData = await fetchUserLogin(userId);
-            if (userData) {
-              usersData.push(userData);
-              updatedUsersFollowed.push(userId); // Ajouter l'ID à la liste mise à jour
-            } else {
-              console.log(
-                `L'utilisateur avec l'ID ${userId} ne peut pas être trouvé.`
-              );
-              await removeUserFromFollowedList(userId);
-              shouldUpdate = true; // Indiquer qu'une mise à jour est nécessaire
-            }
-          }
-          // Mettre à jour currentUserDatas uniquement si nécessaire
-          if (shouldUpdate) {
-            setCurrentUserDatas((prevData) => ({
-              ...prevData,
-              users_followed: updatedUsersFollowed,
-            }));
-          }
-          // Mettre à jour currentUserDatas avec les données et les IDs des utilisateurs suivis
-          setCurrentUserDatas((prevData) => ({
-            ...prevData,
-            users_followed: updatedUsersFollowed,
-          }));
-          setLoginFollowedUsers(usersData);
-        } catch (error) {
-          console.error(
-            "Erreur lors de la récupération des données des utilisateurs suivis :",
-            error
-          );
-        }
-      };
-
-      getUsersFollowedLogin();
+      fetchAndUpdateFollowedUsers();
+      console.log("currentUserDatas", currentUserDatas);
     }
   }, [currentUserDatas.users_followed]);
-
-  useEffect(() => {
-    console.log("currentUserDatas", currentUserDatas);
-  }, []);
 
   if (loading) {
     return <LoadingComponent />;
