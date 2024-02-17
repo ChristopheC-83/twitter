@@ -16,6 +16,7 @@ import LoadingComponent from "../../commonsComponents/toolsComponents/LoadingCom
 import AvatarManager from "./components/AvatarManager";
 import InfosUSer from "./components/InfosUSer";
 import BiographyManager from "./components/BiographyManager";
+import DeleteAccount from "./components/DeleteAccount";
 
 export default function Profil() {
   const navigate = useNavigate();
@@ -30,60 +31,7 @@ export default function Profil() {
   const [loading, setLoading] = useState();
   const [loginFollowedUsers, setLoginFollowedUsers] = useState([]);
 
-
- 
-
-  // supression du compte
-  async function deleteAccount() {
-    const deleteConfirmed = window.confirm(
-      "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible."
-    );
-
-    if (deleteConfirmed) {
-      try {
-        // Récupérer l'ID de l'utilisateur actuellement connecté
-        const userId = auth.currentUser.uid;
-
-        // Supprimer l'utilisateur de Firebase Realtime Database en utilisant Fetch
-        const response = await fetch(
-          `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}.json`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to delete user data from Realtime Database");
-        }
-
-        // Supprimer le compte utilisateur actuellement connecté
-        await auth.currentUser.delete();
-
-        // Déconnexion de l'utilisateur
-        logOut();
-
-        // Vider le sessionStorage
-        sessionStorage.removeItem("currentUserDatas");
-
-        // Rediriger l'utilisateur vers une page d'accueil ou une autre page appropriée
-        navigate("/");
-
-        // Afficher un message de succès ou effectuer d'autres actions nécessaires
-        toast.success("Votre compte a été supprimé avec succès.");
-      } catch (error) {
-        // En cas d'erreur, afficher un message d'erreur ou effectuer d'autres actions nécessaires
-        toast.error(
-          "Une erreur s'est produite lors de la suppression de votre compte :",
-          error.message
-        );
-      }
-    }
-  }
-
-  // // récupérer le login d'un userFollowed avec son id
+ // récupérer le login d'un userFollowed avec son id
   const fetchUserLogin = async (userId) => {
     try {
       const response = await fetch(FIREBASE_URL + `users/${userId}.json`);
@@ -138,9 +86,7 @@ export default function Profil() {
   return (
     <div className="flex flex-col w-full p-4 rounded shadow-md mb-36 sm:p-6 md:p-8">
       <div className="flex flex-col">
-        <div className="w-12 h-12 p-2 ml-auto text-2xl text-white bg-red-700 border-2 border-white rounded-full cursor-pointer flexMid">
-          <FaRegTrashAlt onClick={deleteAccount} />
-        </div>
+        <DeleteAccount/>
         <img
           src={currentUserDatas.avatar_url}
           alt="avatar"

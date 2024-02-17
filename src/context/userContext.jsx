@@ -1,8 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import {
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase-config";
 import { toast } from "sonner";
 
@@ -64,8 +61,10 @@ export function UserContextProvider({ children }) {
     <UserContext.Provider
       value={{
         currentUser,
-        currentUserDatas,setCurrentUserDatas,
-        loading,setLoading,
+        currentUserDatas,
+        setCurrentUserDatas,
+        loading,
+        setLoading,
         getCurrentUserDatas,
         logOut,
       }}
