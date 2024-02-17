@@ -27,7 +27,6 @@ export default function Profil() {
     getCurrentUserDatas,
     logOut,
   } = useContext(UserContext);
-  const [dateRegister, setDateRegister] = useState("");
   const [loading, setLoading] = useState();
   const [loginFollowedUsers, setLoginFollowedUsers] = useState([]);
 
@@ -114,7 +113,7 @@ export default function Profil() {
                     <img
                       src={userData.avatarUrl}
                       alt={`Avatar de ${userData.login}`}
-                      className="w-24 h-24 rounded-full"
+                      className="object-cover w-24 h-24 rounded-full"
                     />
                     <p className="text-3xl font-semibold">{userData.login}</p>
                   </NavLink>
