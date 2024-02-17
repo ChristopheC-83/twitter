@@ -35,7 +35,7 @@ export default function ModalRegister({ closeModal }) {
   async function getAllLogins() {
     try {
       const response = await fetch(
-        "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users.json"
+        FIREBASE_URL+`users.json`
       );
       console.log("response", response);
       if (!response.ok) {
@@ -111,7 +111,7 @@ export default function ModalRegister({ closeModal }) {
 
     // Add to firebase realtime with email as the key
     const response = await fetch(
-      `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${newUser.uid}.json`,
+      FIREBASE_URL+`users/${newUser.uid}.json`,
       {
         method: "PUT",
         headers: {

@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { FIREBASE_URL, auth } from "../firebase-config";
 import { toast } from "sonner";
 
 export const UserContext = createContext();
@@ -34,7 +34,7 @@ export function UserContextProvider({ children }) {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json`
+        FIREBASE_URL+`users/${uid}.json`
       );
       if (!response.ok) {
         throw new Error("Erreur : mauvaise ressource.");

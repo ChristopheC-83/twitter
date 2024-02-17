@@ -40,7 +40,8 @@ export default function Home() {
 
   useEffect(() => {
     fetchTwits();
-  }, [twits]);
+    console.log("MAJ Home");
+  }, []);
 
   // contenu contidionnel dans content
   let content;

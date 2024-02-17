@@ -16,7 +16,8 @@ const firebaseConfig = {
 };
 
 // constante pour l'url de la base de données
-export const FIREBASE_URL = "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/"
+// export const FIREBASE_URL = "https://twitest-9f90c-default-rtdb.europe-west1.firebasedatabase.app/"
+export const FIREBASE_URL = "https://twitter-clone-bac5e-default-rtdb.europe-west1.firebasedatabase.app/"
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
