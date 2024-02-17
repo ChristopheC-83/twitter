@@ -152,6 +152,7 @@ export default function HeaderUser({ user_id }) {
 
   useEffect(() => {
     getUser(user_id);
+    console.log(user);
   }, [user_id]);
 
   // boutton modulable en fonction de si on y est déjà abonné ou non

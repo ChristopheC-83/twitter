@@ -14,6 +14,7 @@ export default function UsersFollowed() {
       for (const userId of currentUserDatas.users_followed) {
         const userData = await fetchUserLogin(userId);
         if (userData) {
+          console.log("userData", userData);
           usersData.push(userData);
         }
       }
@@ -45,7 +46,7 @@ export default function UsersFollowed() {
         );
       }
 
-      return { login: userData.login, avatarUrl: userData.avatar_url };
+      return {id:userId, login: userData.login, avatarUrl: userData.avatar_url };
     } catch (error) {
       console.error(
         "Une erreur est survenue lors de la récupération du login de l'utilisateur :",
@@ -71,9 +72,10 @@ export default function UsersFollowed() {
       </div>
       <ul className="flex flex-col ml-8 gap-y-4">
         {loginFollowedUsers.map((userData, index) => (
+        
           <NavLink
             key={index}
-            to={`/user/${userData.login}`}
+            to={`/user/${userData.id}`}
             className="flex items-center justify-start gap-x-8"
           >
             <img
