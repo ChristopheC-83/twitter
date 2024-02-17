@@ -5,15 +5,15 @@ import { GoHeart } from "react-icons/go";
 import { NavLink } from "react-router-dom";
 
 export default function UsersFollowed() {
+  const {
+    currentUser,
+    currentUserDatas,
+    setCurrentUserDatas,
+    loading,
+    setLoading,
+  } = useContext(UserContext);
+  const [loginFollowedUsers, setLoginFollowedUsers] = useState([]);
 
-    const {
-        currentUser,
-        currentUserDatas,
-        setCurrentUserDatas,
-      } = useContext(UserContext);
-      const [loginFollowedUsers, setLoginFollowedUsers] = useState([]);
-
-    
   // récupérer le login d'un userFollowed avec son id
   const fetchUserLogin = async (userId) => {
     try {
@@ -77,6 +77,7 @@ export default function UsersFollowed() {
   // Définir une fonction pour récupérer les utilisateurs suivis et mettre à jour l'état en conséquence
   const fetchAndUpdateFollowedUsers = async () => {
     try {
+      setLoading(true);
       const usersData = [];
       const updatedUsersFollowed = []; // Pour stocker les IDs des utilisateurs suivis encore inscrits
       let shouldUpdate = false; // Variable pour suivre si une mise à jour est nécessaire
@@ -101,6 +102,7 @@ export default function UsersFollowed() {
         }));
       }
       setLoginFollowedUsers(usersData);
+      setLoading(false);
     } catch (error) {
       console.error(
         "Erreur lors de la récupération des données des utilisateurs suivis :",

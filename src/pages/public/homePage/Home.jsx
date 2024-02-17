@@ -1,17 +1,20 @@
 //  page d'accueil de l'utilisateur connecté ou pas
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTwitsStore } from "../../../stores/useTwitsStore";
 
 import { toast } from "sonner";
 import { FIREBASE_URL } from "../../../firebase-config";
 import LoadingComponent from "../../commonsComponents/toolsComponents/LoadingComponent";
 import MainTwit from "../../commonsComponents/MainTwit";
+import { UserContext } from "../../../context/userContext";
 
 export default function Home() {
   const { twits, setTwits } = useTwitsStore();
-  const [loading, setLoading] = useState(true);
+
+  const { loading, setLoading } = useContext(UserContext);
   const [error, setError] = useState(null);
+  const [noContent, setNoContent] = useState(false);
 
   // récupération de tous les twits
   async function fetchTwits() {
@@ -26,17 +29,30 @@ export default function Home() {
       const data = await response.json();
       setLoading(false);
 
-      const tweetsArray = Object.entries(data).map(([id, twit]) => ({
-        id,
-        ...twit,
-      }));
+      // Vérifier si la réponse est vide
+      if (data === null) {
+        // Aucun twit disponible, afficher un message approprié
+        console.log("Aucun twit disponible pour le moment.");
+
+        return setNoContent(true);
+      } else {
+        console.log(data);
+        const tweetsArray = Object.entries(data).map(([id, twit]) => ({
+          id,
+          ...twit,
+        }));
+      }
       setTwits(tweetsArray);
     } catch (error) {
+      setNoContent(false);
       setError(error);
       setLoading(false);
+      // console.log(error);
       toast.error(error.message);
     }
   }
+  // contenu contidionnel dans content
+ 
 
   useEffect(() => {
     fetchTwits();
@@ -47,30 +63,25 @@ export default function Home() {
   let content;
 
   if (loading) {
-    content = <LoadingComponent />;
-    return;
+    return <LoadingComponent />;
   }
   if (error) {
-    content = (
-      <div className="pt-24 text-center">Une erreur est survenue !</div>
-    );
-    return;
+    return <div className="pt-24 text-center">Une erreur est survenue !</div>;
   }
-  if (!loading && !error && twits.length === 0) {
-    content = (
-      <div className="pt-24 text-center">Aucun twit pour le moment.</div>
+  if (noContent) {
+    return (
+      <div className="pt-24 text-xl text-center gtext-white">
+        Aucun twit pour le moment.
+      </div>
     );
-    return;
   }
   if (!loading && !error && twits.length != 0) {
-    content = twits.map((twit, index) =>
-      <MainTwit key={index} twit={twit} />
+    return (
+      <div className="flex flex-col-reverse flex-grow text-xl">
+        {twits.map((twit, index) => (
+          <MainTwit key={index} twit={twit} />
+        ))}
+      </div>
     );
   }
-
-  return (
-    <div className="flex flex-col-reverse flex-grow text-xl">
-      {content}
-    </div>
-  );
 }
