@@ -35,7 +35,7 @@ export default function Home() {
         console.log("Aucun twit disponible pour le moment.");
         return setNoContent(true);
       }
-      console.log(data);
+      // console.log(data);
       const tweetsArray = Object.entries(data).map(([id, twit]) => ({
         id,
         ...twit,

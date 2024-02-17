@@ -235,12 +235,12 @@ export default function HeaderUser({ user_id }) {
             <div className="flex items-center gap-x-3">
               <LuMail className="mt-1 mr-1" /> : <p>{user.email}</p>
             </div>
-            <div className="flex items-center gap-x-3">
+            {/* <div className="flex items-center gap-x-3">
               <LuLink2 className="mt-1 mr-1" /> :{" "}
               <a href={user.personnalLink} className="text-blue-500">
                 {user.personnalLink}
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="font-thin text-md sm:text-lg text-neutral-300">

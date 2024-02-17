@@ -74,6 +74,7 @@ export default function MainTwit({ twit }) {
       }
       // Ajoutez le nouveau twit localement dans le store Zustand
       addTwit(newPost);
+      setMaj();
       navigate(`/`);
       scrollToTop();
     } catch (error) {

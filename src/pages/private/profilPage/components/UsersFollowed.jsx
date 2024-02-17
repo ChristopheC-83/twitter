@@ -25,6 +25,7 @@ export default function UsersFollowed() {
         );
       }
       const userData = await response.json();
+      console.log("userData", userData);
       return { login: userData.login, avatarUrl: userData.avatar_url }; //
     } catch (error) {
       console.error(
@@ -34,9 +35,9 @@ export default function UsersFollowed() {
       return null; // Retourner null en cas d'erreur
     }
   };
-
   // Fonction pour supprimer l'utilisateur de la liste suivie dans Firebase
   const removeUserFromFollowedList = async (userIdToRemove) => {
+    console.log("users_followed", currentUserDatas.users_followed);
     try {
       const updatedFollowedList = currentUserDatas.users_followed.filter(
         (userId) => userId !== userIdToRemove
@@ -73,7 +74,6 @@ export default function UsersFollowed() {
       );
     }
   };
-
   // Définir une fonction pour récupérer les utilisateurs suivis et mettre à jour l'état en conséquence
   const fetchAndUpdateFollowedUsers = async () => {
     try {
@@ -111,13 +111,14 @@ export default function UsersFollowed() {
     }
   };
 
-  // Utiliser useEffect avec la fonction séparée
+ 
+
   useEffect(() => {
-    if (currentUserDatas.users_followed) {
+    if (currentUserDatas && currentUserDatas.users_followed) {
       fetchAndUpdateFollowedUsers();
       console.log("currentUserDatas", currentUserDatas);
     }
-  }, [currentUserDatas.users_followed]);
+  }, [currentUserDatas, currentUserDatas.users_followed]);
 
   if (
     !currentUserDatas.users_followed ||
