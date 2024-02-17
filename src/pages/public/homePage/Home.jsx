@@ -47,7 +47,7 @@ export default function Home() {
       setNoContent(false);
       setError(error);
       setLoading(false);
-      console.log(error);
+      // console.log(error);
       toast.error(error.message);
     }
   }
