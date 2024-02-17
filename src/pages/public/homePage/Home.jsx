@@ -33,15 +33,14 @@ export default function Home() {
       if (data === null) {
         // Aucun twit disponible, afficher un message approprié
         console.log("Aucun twit disponible pour le moment.");
-
         return setNoContent(true);
-      } else {
-        console.log(data);
-        const tweetsArray = Object.entries(data).map(([id, twit]) => ({
-          id,
-          ...twit,
-        }));
       }
+      console.log(data);
+      const tweetsArray = Object.entries(data).map(([id, twit]) => ({
+        id,
+        ...twit,
+      }));
+
       setTwits(tweetsArray);
     } catch (error) {
       setNoContent(false);
@@ -52,7 +51,6 @@ export default function Home() {
     }
   }
   // contenu contidionnel dans content
- 
 
   useEffect(() => {
     fetchTwits();
