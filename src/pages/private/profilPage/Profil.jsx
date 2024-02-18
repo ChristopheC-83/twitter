@@ -1,5 +1,7 @@
-//  profil d'un utilisateur
-//  avec la page timeline de l'utilisateur connecté
+//  profil perso d'un utilisateur
+//  possibilité de supprimer le compte
+// voir et modifier avatar, biography
+//voir infos perso et utilisateurs suivis.
 
 import { useContext, useEffect, useState } from "react";
 import LoadingComponent from "../../commonsComponents/toolsComponents/LoadingComponent";
@@ -17,7 +19,7 @@ export default function Profil() {
   if (loading) {
     return <LoadingComponent />;
   }
-  
+
   return (
     <div className="flex flex-col w-full p-4 rounded shadow-md mb-36 sm:p-6 md:p-8">
       <div className="flex flex-col">
