@@ -18,13 +18,13 @@ export default function Main() {
   }
 
   return (
-    <div className="flex min-h-screen mx-auto max-w-7xl bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50">
+    <div className="flex min-h-screen mx-auto text-white max-w-7xl bg-neutral-900">
       {/* Menu pour pc / tablette */}
       <div className="relative hidden p-4 border-r-2 sm:block sm:min-w-32 xl:min-w-72 xl:p-8 border-neutral-500">
         <Header />
       </div>
       {/* Menu pour smartphone en pieds de page */}
-      <div className="fixed bottom-0 left-0 right-0 z-10 w-full h-24 border-t-2 bg-neutral-50 dark:bg-neutral-900 sm:hidden border-neutral-500">
+      <div className="fixed bottom-0 left-0 right-0 z-10 w-full h-24 text-white border-t-2 sm:hidden bg-neutral-900">
         <Footer />
       </div>
 
