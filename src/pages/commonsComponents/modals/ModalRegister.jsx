@@ -37,7 +37,7 @@ export default function ModalRegister({ closeModal }) {
       const response = await fetch(
         FIREBASE_URL+`users.json`
       );
-      console.log("response", response);
+      // console.log("response", response);
       if (!response.ok) {
         // Gestion des erreurs
         console.error(
@@ -51,7 +51,7 @@ export default function ModalRegister({ closeModal }) {
       if (data) {
         setLoginsList(Object.values(data).map((user) => user.login));
       }
-      console.log(loginsList);
+      // console.log(loginsList);
       return loginsList;
     } catch (error) {
       console.error("Une erreur inattendue est survenue :", error);

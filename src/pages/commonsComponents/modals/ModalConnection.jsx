@@ -59,7 +59,7 @@ export default function ModalConnection({ closeModal }) {
         password.current.value
       );
       const user = userCredential.user;
-      console.log("currentUser : ", user);
+      // console.log("currentUser : ", user);
 
       // Appeler getCurrentUserDatas avec l'UID de l'utilisateur
       const userData = await getCurrentUserDatas(user.uid);
@@ -69,7 +69,7 @@ export default function ModalConnection({ closeModal }) {
       scrollToTop();
       closeModal();
       toast.success("Vous êtes connecté !");
-      console.log("Vous êtes connecté !");
+      // console.log("Vous êtes connecté !");
     } catch (error) {
       if (error.code === "auth/invalid-credential") {
         setValidation(

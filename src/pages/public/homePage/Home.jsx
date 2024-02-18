@@ -32,7 +32,7 @@ export default function Home() {
       // Vérifier si la réponse est vide
       if (data === null) {
         // Aucun twit disponible, afficher un message approprié
-        console.log("Aucun twit disponible pour le moment.");
+        // console.log("Aucun twit disponible pour le moment.");
         return setNoContent(true);
       }
       // console.log(data);

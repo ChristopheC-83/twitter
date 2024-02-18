@@ -14,7 +14,7 @@ export default function UsersFollowed() {
       for (const userId of currentUserDatas.users_followed) {
         const userData = await fetchUserLogin(userId);
         if (userData) {
-          console.log("userData", userData);
+          // console.log("userData", userData);
           usersData.push(userData);
         }
       }

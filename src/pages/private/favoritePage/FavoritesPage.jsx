@@ -40,7 +40,7 @@ export default function FavoritesPage() {
   useEffect(() => {
     if (currentUserDatas.users_followed) {
       fetchTwitsFiltered();
-      console.log("currentUserDatas.users_followed", currentUserDatas.users_followed);
+      // console.log("currentUserDatas.users_followed", currentUserDatas.users_followed);
     }else{
       setCurrentUserDatas((prevData) => ({
         ...prevData,
