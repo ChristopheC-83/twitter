@@ -1,4 +1,4 @@
-//  pour la connexion, propose l'enregistrement su ce n'est pas déjà fait
+//  pour la connexion, propose l'enregistrement si ce n'est pas déjà fait
 
 import {  useRef, useState, useContext } from "react";
 import {  toast } from "sonner";
