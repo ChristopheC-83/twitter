@@ -88,6 +88,7 @@ export default function HeaderUser({ user_id }) {
       toast.error(error.message);
     }
   }
+
   // pour s'en désabonner
   async function handleFormUnFollowing() {
     try {
