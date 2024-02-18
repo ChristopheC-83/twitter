@@ -211,3 +211,4 @@
     <br>
     <p><b>Je voulais initilament entrer dans le détails de tous les composants et en expliquer le fonctinnement, les fonctions, les states... <br>mais je trouve déjà ce readme hautement imbuvable !😅</b></p>
     <p><b>On se limitera à ce document et à la vidéo de présentation :</b></p>
+    <a href="https://www.youtube.com/watch?v=Cb9aj3ZrBnk"> Lien vers la vidéo </a>
