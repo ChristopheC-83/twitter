@@ -3,8 +3,6 @@ import { useContext } from "react";
 import { UserContext } from "./context/userContext";
 
 import { lazy, Suspense } from "react";
-// import { onAuthStateChanged } from "firebase/auth";
-// import { auth } from "./firebase-config";
 
 const Home = lazy(() => import("./pages/public/homePage/Home"));
 const AllTwitsOfOneUser = lazy(() =>
