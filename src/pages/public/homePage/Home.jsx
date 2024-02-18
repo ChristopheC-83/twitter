@@ -54,8 +54,8 @@ export default function Home() {
 
   useEffect(() => {
     fetchTwits();
-    console.log("MAJ Home");
-    console.log("maj : ", maj);
+    // console.log("MAJ Home");
+    // console.log("maj : ", maj);
   }, [maj]);
 
   // contenu contidionnel dans content

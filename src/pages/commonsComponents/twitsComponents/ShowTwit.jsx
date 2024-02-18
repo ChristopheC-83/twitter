@@ -32,7 +32,7 @@ export default function ShowTwit({ twit, retwit , deleteTwitFunction}) {
         <div className="mb-8">{twit.text}</div>
         {twit.img && (
           <img
-            className="min-w-full rounded"
+            className="w-full rounded max-w-[450px] mx-auto"
             src={twit.img}
             alt={twit.author}
           />
@@ -44,12 +44,13 @@ export default function ShowTwit({ twit, retwit , deleteTwitFunction}) {
           <ImBubble2 />
           <span>{twit.comments.length}</span>
         </div>
+        {currentUserDatas &&
         <div className="flex items-center gap-2 text-neutral-500 hover:text-neutral-50 hover:cursor-pointer">
           <FaRetweet
             onClick={() => retwit(twit.id)}
             className="cursor-pointer"
           />
-        </div>
+        </div>}
         {currentUserDatas && twit.author === currentUserDatas.login && (
           <div className="flex items-center gap-2 text-neutral-500 hover:text-neutral-50 hover:cursor-pointer">
             <FaRegTrashAlt

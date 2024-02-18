@@ -7,7 +7,7 @@ import NoFavorites from "./components/NoFavorites";
 import MainTwit from "../../commonsComponents/MainTwit";
 
 export default function FavoritesPage() {
-  const { currentUserDatas } = useContext(UserContext);
+  const { currentUserDatas, setCurrentUserDatas } = useContext(UserContext);
   const [filteredTwits, setFilteredTwits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,6 +40,12 @@ export default function FavoritesPage() {
   useEffect(() => {
     if (currentUserDatas.users_followed) {
       fetchTwitsFiltered();
+      console.log("currentUserDatas.users_followed", currentUserDatas.users_followed);
+    }else{
+      setCurrentUserDatas((prevData) => ({
+        ...prevData,
+        users_followed: [],
+      }));
     }
   }, [currentUserDatas.users_followed]);
 

@@ -201,7 +201,7 @@ export default function ModalRegister({ closeModal }) {
           />
           <input
             type="password"
-            placeholder="Mot de passe (1 minuscule, 1 majuscule, 1 chiffre & 8 car. min.)"
+            placeholder="Mot de passe (6 caractères min.)"
             ref={password}
             className="w-full p-4 my-2 border-2 rounded-lg bg-neutral-900 border-neutral-500"
           />

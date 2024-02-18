@@ -83,7 +83,7 @@ export default function BiographyManager() {
       >
         <textarea
           type="text"
-          placeholder="Un petit de vous en 150 caractères max !"
+          placeholder="Un petit de vous en 200 caractères max !"
           className="w-full h-24 p-2 text-white rounded-md bg-neutral-800"
           value={currentUserDatas.biography}
           onChange={(e) =>
